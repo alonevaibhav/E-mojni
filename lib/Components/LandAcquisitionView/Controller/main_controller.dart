@@ -14,7 +14,6 @@ import 'land_preview_controller.dart';
 import 'land_seventh_controller.dart';
 import 'land_sixth_controller.dart';
 
-
 class MainLandAcquisitionController extends GetxController {
   // Navigation State
   final currentStep = 0.obs;
@@ -66,19 +65,13 @@ class MainLandAcquisitionController extends GetxController {
   }
 
   void _initializeControllers() {
-    personalInfoController =
-        Get.put(PersonalInfoController(), tag: 'personal_info');
+    personalInfoController = Get.put(PersonalInfoController(), tag: 'personal_info');
     surveyCTSController = Get.put(LandSecondController(), tag: 'survey_cts');
-    calculationController =
-        Get.put(CalculationController(), tag: 'calculation'); // Add this line
-    landFouthController =
-        Get.put(LandFouthController(), tag: 'land_fouth'); // Add this line
-    landFifthController =
-        Get.put(LandFifthController(), tag: 'land_fifth'); // Add this line
-    laandSixthController =
-        Get.put(LandSixthController(), tag: 'land_sixth'); // Add this line
-    landSeventhController =
-        Get.put(LandSeventhController(), tag: 'survey_seventh'); // Add this line
+    calculationController = Get.put(CalculationController(), tag: 'calculation'); // Add this line
+    landFouthController = Get.put(LandFouthController(), tag: 'land_fouth'); // Add this line
+    landFifthController = Get.put(LandFifthController(), tag: 'land_fifth'); // Add this line
+    laandSixthController = Get.put(LandSixthController(), tag: 'land_sixth'); // Add this line
+    landSeventhController = Get.put(LandSeventhController(), tag: 'survey_seventh'); // Add this line
   }
 
   @override
@@ -103,8 +96,7 @@ class MainLandAcquisitionController extends GetxController {
   }
 
   // Get total sub-steps for current main step
-  int get totalSubStepsInCurrentStep =>
-      stepConfigurations[currentStep.value]?.length ?? 1;
+  int get totalSubStepsInCurrentStep => stepConfigurations[currentStep.value]?.length ?? 1;
 
   // Get current sub-step field name
   String get currentSubStepField {
@@ -866,6 +858,18 @@ class MainLandAcquisitionController extends GetxController {
         filePath: landSeventhController.demarcationCertificateFiles!.first.toString(),
       ));
     }
+    if (landSeventhController.adhikarPatra?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: landSeventhController.adhikarPatra!.first.toString(),
+      ));
+    }
+    if (landSeventhController.otherDocument?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "other_document_path",
+        filePath: landSeventhController.otherDocument!.first.toString(),
+      ));
+    }
 
     print('🔍 Total Files: ${files.length}');
     for (var file in files) {
@@ -967,17 +971,9 @@ class MainLandAcquisitionController extends GetxController {
           'sub_entries': subEntriesData,
         });
       } else {
-        // Handle other natural resources types (these have main entry controllers)
-        final addressController = entry['addressController'] as TextEditingController?;
-        final mobileController = entry['mobileController'] as TextEditingController?;
-        final surveyNoController = entry['surveyNoController'] as TextEditingController?;
-
         nextOfKinList.add({
           'direction': direction,
           'natural_resources': naturalResources,
-          'address': addressController?.text ?? '',
-          'mobile': mobileController?.text ?? '',
-          'survey_no': surveyNoController?.text ?? '',
         });
       }
     }

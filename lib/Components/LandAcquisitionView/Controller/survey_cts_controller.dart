@@ -7,7 +7,7 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
   final surveyNumberController = TextEditingController();
 
   // Dropdown Values
-  final selectedDepartment = ''.obs;
+  final selectedDepartment = 'Land Records Department'.obs;
   final selectedDistrict = ''.obs;
   final selectedTaluka = ''.obs;
   final selectedVillage = ''.obs;
@@ -21,7 +21,6 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
 
   // Dropdown Options - You can make these dynamic by fetching from API
   final List<String> departmentOptions = [
-    'Revenue Department',
     'Land Records Department'
   ];
 
