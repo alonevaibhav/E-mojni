@@ -50,7 +50,7 @@ class GovernmentCensusController extends GetxController {
       'village',
     ],
     2: ['government_survey'], // Survey Information
-    3: ['calculation', 'status'], // Calculation Information
+    3: ['calculation'], // Calculation Information
     4: [
       'applicant',
     ], // Applicant Information
