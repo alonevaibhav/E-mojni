@@ -196,7 +196,9 @@ class CourtCommissionCaseController extends GetxController {
 
     // Print the current survey data to the console
     // debugPrintPersonalInfo();
-    submitCourtCommissionSurvey();
+
+    debugPrint();
+    // submitCourtCommissionSurvey();
     // print('Current Survey Data: ${surveyData.value}');
 
     // Get the current step's total substeps
@@ -219,7 +221,7 @@ class CourtCommissionCaseController extends GetxController {
 
       else {
         // We're at the last step and last substep, submit the survey
-        submitCourtCommissionSurvey();
+        // submitCourtCommissionSurvey();
       }
     }
   }
@@ -455,8 +457,8 @@ class CourtCommissionCaseController extends GetxController {
       "user_id": userId?.toString() ?? "0",
 
       //User Name
-      "declarant_name": "hsf",
-      "declarant_address": "hdahf",
+      "holder_name": personalInfoController.applicantNameController.text.trim(),
+      "holder_address": personalInfoController.applicantAddressController.text.trim(),
 
 
       // === COURT COMMISSION INFO ===
@@ -476,13 +478,13 @@ class CourtCommissionCaseController extends GetxController {
       // "office": surveyCTSController.selectedOffice.value,
 
 
-      "survey_number": surveyCTSController.selectedSurveyNo.value,
+      "survey_number": surveyCTSController.surveyCtsNumber.text.trim(),
       "department": surveyCTSController.selectedDepartment.value,
       "division": "1",
       "district": "26",
       "taluka": "5",
       "village": "3",
-      "office_name": surveyCTSController.selectedOffice.value,
+      // "office_name": surveyCTSController.selectedOffice.value,
 
 
       // === COURT FOURTH INFO === // there is change in UI as per the conditions we have to manage that in controller
@@ -490,8 +492,8 @@ class CourtCommissionCaseController extends GetxController {
       "duration": courtFourthController.selectedDuration.value ?? "",
       "holder_type": courtFourthController.selectedHolderType.value ?? "",
       "within_municipal": courtFourthController.selectedLocationCategory.value ?? "",
-      "measurement_fee": courtFourthController.calculationFeeController.text.trim(),
-      "calculation_fee_numeric": courtFourthController.extractNumericFee()?.toString() ?? "0",
+      // "measurement_fee": courtFourthController.calculationFeeController.text.trim(),
+      // "calculation_fee_numeric": courtFourthController.extractNumericFee()?.toString() ?? "0",
 
       // === IDENTITY TYPE ===
       "identity_card_type": courtSeventhController.selectedIdentityType.value,
@@ -502,10 +504,6 @@ class CourtCommissionCaseController extends GetxController {
     final plaintiffDefendants = _getPlaintiffDefendants();
     final nextOfKin = _getCourtNextOfKin();
 
-    // Debug: Print the arrays before encoding
-    print('🔍 Survey Entries: $surveyAreas');
-    print('🔍 Plaintiff/Defendants: $plaintiffDefendants');
-    print('🔍 Next of Kin: $nextOfKin');
 
     fields["survey_areas"] = jsonEncode(surveyAreas);
     fields["plaintiff_defendants"] = jsonEncode(plaintiffDefendants);
@@ -576,6 +574,31 @@ class CourtCommissionCaseController extends GetxController {
       ));
     }
 
+    if (courtSeventhController.adhikarPatra?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: courtSeventhController.adhikarPatra!.first.toString(),
+      ));
+    }
+    if (courtSeventhController.sammatiPatraFiles?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: courtSeventhController.sammatiPatraFiles!.first.toString(),
+      ));
+    }
+    if (courtSeventhController.utaraAkharband?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: courtSeventhController.utaraAkharband!.first.toString(),
+      ));
+    }
+    if (courtSeventhController.otherDocument?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "other_document_path",
+        filePath: courtSeventhController.otherDocument!.first.toString(),
+      ));
+    }
+
     print('🔍 Total Files: ${files.length}');
     for (var file in files) {
       print('🔍 File: ${file.field} -> ${file.filePath}');
@@ -597,10 +620,11 @@ class CourtCommissionCaseController extends GetxController {
       for (int i = 0; i < calculationController.surveyEntries.length; i++) {
         final entry = calculationController.surveyEntries[i];
         entries.add({
+          "land_entry_village": entry['village']?.toString() ?? "",
           "survey_group_number": entry['surveyNo']?.toString() ?? "",
-          "sub_survey_group_number": entry['share']?.toString() ?? "",
+          // "sub_survey_group_number": entry['share']?.toString() ?? "",
           "area": entry['area']?.toString() ?? "",
-          "survey_village": entry['selectedVillage']?.toString() ?? "",
+          // "survey_village": entry['selectedVillage']?.toString() ?? "",
         });
       }
     } else {
@@ -625,13 +649,13 @@ class CourtCommissionCaseController extends GetxController {
 
         plaintiffDefendantsList.add({
           "name": entry['nameController']?.text ?? "",
-          "address": entry['addressController']?.text ?? "",
+          // "address": entry['addressController']?.text ?? "",
           "mobile": entry['mobileController']?.text ?? "",
           "survey_number": entry['surveyNumberController']?.text ?? "",
           "type": selectedType?.value ?? "",
           // Individual detailed address fields
           "plot_no": detailedAddress?['plotNo'] ?? "",
-          "detailed_address": detailedAddress?['address'] ?? "",
+          // "detailed_address": detailedAddress?['address'] ?? "",
           "mobile_number": detailedAddress?['mobileNumber'] ?? "",
           "email": detailedAddress?['email'] ?? "",
           "pincode": detailedAddress?['pincode'] ?? "",
@@ -652,26 +676,65 @@ class CourtCommissionCaseController extends GetxController {
   List<Map<String, dynamic>> _getCourtNextOfKin() {
     List<Map<String, dynamic>> nextOfKinList = [];
 
-    if (courtSixthController.nextOfKinEntries.isNotEmpty) {
-      print('🔍 Processing ${courtSixthController.nextOfKinEntries.length} next of kin entries');
+    print('🔍 Processing ${courtSixthController.nextOfKinEntries.length} next of kin entries');
 
-      for (int i = 0; i < courtSixthController.nextOfKinEntries.length; i++) {
-        final entry = courtSixthController.nextOfKinEntries[i];
+    for (final entry in courtSixthController.nextOfKinEntries) {
+      final naturalResources = entry['naturalResources'] as String? ?? '';
+      final direction = entry['direction'] as String? ?? '';
+
+      if (naturalResources == 'Name' || naturalResources == 'Other') {
+        // Handle sub-entries for Name/Other types (these have controllers)
+        final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
+        final List<Map<String, dynamic>> subEntriesData = [];
+
+        if (subEntries != null) {
+          for (final subEntry in subEntries) {
+            // Get data from controllers in sub-entries
+            final nameController = subEntry['nameController'] as TextEditingController?;
+            final addressController = subEntry['addressController'] as TextEditingController?;
+            final mobileController = subEntry['mobileController'] as TextEditingController?;
+            final surveyNoController = subEntry['surveyNoController'] as TextEditingController?;
+
+            subEntriesData.add({
+              'name': nameController?.text ?? '',
+              'address': addressController?.text ?? '',
+              'mobile': mobileController?.text ?? '',
+              'survey_no': surveyNoController?.text ?? '',
+            });
+          }
+        }
+
         nextOfKinList.add({
-          "address": entry['address']?.toString() ?? "",
-          "mobile_number": entry['mobile']?.toString() ?? "",
-          "survey_no": entry['surveyNo']?.toString() ?? "",
-          "direction": entry['direction']?.toString() ?? "",
-          "natural_resources": entry['naturalResources']?.toString() ?? "",
+          'direction': direction,
+          'natural_resources': naturalResources,
+          'sub_entries': subEntriesData,
+        });
+      } else {
+        nextOfKinList.add({
+          'direction': direction,
+          'natural_resources': naturalResources,
         });
       }
-    } else {
-      print('🔍 No next of kin entries found in courtSixthController');
     }
 
     print('🔍 Generated ${nextOfKinList.length} next of kin entries');
     return nextOfKinList;
   }
+
+  void debugPrint(){
+
+    String userId = "0";
+    print('🆔 User ID: $userId');
+
+    final multipartData = prepareMultipartData(userId);
+    final fields = multipartData['fields'] as Map<String, String>;
+    final files = multipartData['files'] as List<MultipartFiles>;
+
+    developer.log(jsonEncode(fields), name: 'REQUEST_BODY');
+
+
+  }
+
 
   Future<void> submitCourtCommissionSurvey() async {
     try {

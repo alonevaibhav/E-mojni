@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../API Service/api_service.dart';
+import '../Constants/api_constant.dart';
 import '../Constants/color_constant.dart';
 import '../Models/login_model.dart';
 import '../Route Manager/app_routes.dart'; // Add your model imports
@@ -160,7 +161,7 @@ class LoginViewController extends GetxController {
       // Make API call
       ApiResponse<Map<String, dynamic>> response =
           await ApiService.post<Map<String, dynamic>>(
-        endpoint: 'api/user/login',
+        endpoint:loginUrl,
         body: {
           'username': username,
           'password': password,
