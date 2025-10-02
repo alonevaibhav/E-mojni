@@ -4,7 +4,9 @@ import 'dart:developer' as developer;
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../API Service/api_service.dart';
+import '../../../Animation/lottie_animation.dart';
 import '../../../Constants/api_constant.dart';
+import '../../../Route Manager/app_routes.dart';
 import '../../CourtCommissionCaseView/Controller/personal_info_controller.dart';
 import '../../CourtCommissionCaseView/Controller/step_three_controller.dart';
 import '../../CourtCommissionCaseView/Controller/survey_cts.dart';
@@ -443,22 +445,14 @@ class CourtCommissionCaseController extends GetxController {
 
 
   Map<String, dynamic> prepareMultipartData(userId) {
-    // Debug: Print raw controller data to check what's available
-    print('🔍 Survey Entries Length: ${calculationController.surveyEntries.length}');
-    print('🔍 Survey Entries: ${calculationController.surveyEntries}');
-    print('🔍 Plaintiff/Defendant Entries Length: ${courtFifthController.plaintiffDefendantEntries.length}');
-    print('🔍 Plaintiff/Defendant Entries: ${courtFifthController.plaintiffDefendantEntries}');
-    print('🔍 Next of Kin Entries Length: ${courtSixthController.nextOfKinEntries.length}');
-    print('🔍 Next of Kin Entries: ${courtSixthController.nextOfKinEntries}');
-
     // Prepare fields (non-file data)
     Map<String, String> fields = {
       // User ID
-      "user_id": userId?.toString() ?? "0",
+      "user_id": "6",
 
       //User Name
-      "holder_name": personalInfoController.applicantNameController.text.trim(),
-      "holder_address": personalInfoController.applicantAddressController.text.trim(),
+      "declarant_name": personalInfoController.applicantNameController.text.trim(),
+      "declarant_address": personalInfoController.applicantAddressController.text.trim(),
 
 
       // === COURT COMMISSION INFO ===
@@ -582,13 +576,13 @@ class CourtCommissionCaseController extends GetxController {
     }
     if (courtSeventhController.sammatiPatraFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "adhikar_patra_path",
+        field: "sarva_saha_dharakache_samatti_patra_path",
         filePath: courtSeventhController.sammatiPatraFiles!.first.toString(),
       ));
     }
     if (courtSeventhController.utaraAkharband?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "adhikar_patra_path",
+        field: "written_application_path",
         filePath: courtSeventhController.utaraAkharband!.first.toString(),
       ));
     }
@@ -757,8 +751,26 @@ class CourtCommissionCaseController extends GetxController {
 
       if (response.success && response.data != null) {
 
+        Get.offAllNamed(AppRoutes.mainDashboard);
+
+        Get.snackbar(
+          'Success',
+          'Court commission survey submitted successfully',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+
         print('✅ Court commission survey submitted successfully: ${response.data}');
       } else {
+
+        Get.snackbar(
+          'Submission Failed',
+          response.errorMessage ?? 'Unknown error occurred',
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
         print('❌ Court commission survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
       }
     } catch (e) {
