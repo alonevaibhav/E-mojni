@@ -289,28 +289,45 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   //------------------------Applicant Address Methods ------------------------//
 
-  // Applicant address formatting method
+
   String getFormattedApplicantAddress() {
     final parts = <String>[];
-
+    // Plot No
     if (applicantAddressData['plotNo']?.isNotEmpty == true) {
-      parts.add(applicantAddressData['plotNo']!);
+      parts.add('Plot No: ${applicantAddressData['plotNo']}');
     }
+    // Address (house/building, street, locality)
     if (applicantAddressData['address']?.isNotEmpty == true) {
       parts.add(applicantAddressData['address']!);
     }
+    // Village
     if (applicantAddressData['village']?.isNotEmpty == true) {
       parts.add(applicantAddressData['village']!);
     }
+    // Post Office
     if (applicantAddressData['postOffice']?.isNotEmpty == true) {
-      parts.add(applicantAddressData['postOffice']!);
+      parts.add('Post: ${applicantAddressData['postOffice']}');
     }
+    // District
+    if (applicantAddressData['district']?.isNotEmpty == true) {
+      parts.add('Dist: ${applicantAddressData['district']}');
+    }
+    // Pincode
     if (applicantAddressData['pincode']?.isNotEmpty == true) {
-      parts.add(applicantAddressData['pincode']!);
+      parts.add('Pin: ${applicantAddressData['pincode']}');
+    }
+    // Mobile Number (optional)
+    if (applicantAddressData['mobileNumber']?.isNotEmpty == true) {
+      parts.add('Mobile: ${applicantAddressData['mobileNumber']}');
+    }
+    // Email (optional)
+    if (applicantAddressData['email']?.isNotEmpty == true) {
+      parts.add('Email: ${applicantAddressData['email']}');
     }
 
-    return parts.isEmpty ? 'Click to add applicant address' : parts.join(', ');
+    return parts.isEmpty ? 'Click to add address' : parts.join(', ');
   }
+
 
   // Check if detailed applicant address is available
   bool hasDetailedApplicantAddress() {

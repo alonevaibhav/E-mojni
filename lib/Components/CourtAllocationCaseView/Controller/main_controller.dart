@@ -441,6 +441,9 @@ class CourtAllocationCaseController extends GetxController {
       // User ID
       "user_id": userId?.toString() ?? "0",
 
+      "holder_name": personalInfoController.applicantNameController.text.trim(),
+      "holder_address": personalInfoController.applicantAddressController.text.trim(),
+
       // === COURT ORDER INFO ===
       "court_name": personalInfoController.courtNameController.text.trim(),
       "court_address": personalInfoController.courtAddressController.text.trim(),
@@ -451,20 +454,21 @@ class CourtAllocationCaseController extends GetxController {
       "special_order_comments": personalInfoController.specialOrderCommentsController.text.trim(),
 
       // === SURVEY CTS INFO ===
+
       "survey_number": surveyCTSController.surveyNumberController.text.trim(),
-      "department": surveyCTSController.selectedDepartment.value ?? "",
-      "district": surveyCTSController.selectedDistrict.value ?? "",
-      "taluka": surveyCTSController.selectedTaluka.value ?? "",
-      "village": surveyCTSController.selectedVillage.value ?? "",
-      "office": surveyCTSController.selectedOffice.value ?? "",
+      "department": surveyCTSController.selectedDepartment.value,
+      "division": "1",
+      "district": "26",
+      "taluka": "5",
+      "village": "3",
 
       // === COURT ALLOCATION FOURTH INFO ===
       "selected_calculation_type": courtAlloFouthController.selectedCalculationType.value ?? "",
       "selected_duration": courtAlloFouthController.selectedDuration.value ?? "",
       "selected_holder_type": courtAlloFouthController.selectedHolderType.value ?? "",
       "selected_location_category": courtAlloFouthController.selectedLocationCategory.value ?? "",
-      "calculation_fee": courtAlloFouthController.calculationFeeController.text.trim(),
-      "calculation_fee_numeric": courtAlloFouthController.extractNumericFee()?.toString() ?? "0",
+      // "calculation_fee": courtAlloFouthController.calculationFeeController.text.trim(),
+      // "calculation_fee_numeric": courtAlloFouthController.extractNumericFee()?.toString() ?? "0",
 
       // === DOCUMENT INFO ===
       "identity_card_type": allocationSeventhController.selectedIdentityType.value ?? "",
@@ -555,6 +559,31 @@ class CourtAllocationCaseController extends GetxController {
       ));
     }
 
+    if (allocationSeventhController.adhikarPatra?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: allocationSeventhController.adhikarPatra!.first.toString(),
+      ));
+    }
+    if (allocationSeventhController.sammatiPatraFiles?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: allocationSeventhController.sammatiPatraFiles!.first.toString(),
+      ));
+    }
+    if (allocationSeventhController.utaraAkharband?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: allocationSeventhController.utaraAkharband!.first.toString(),
+      ));
+    }
+    if (allocationSeventhController.otherDocument?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "other_document_path",
+        filePath: allocationSeventhController.otherDocument!.first.toString(),
+      ));
+    }
+
     print('🔍 Total Files: ${files.length}');
     for (var file in files) {
       print('🔍 File: ${file.field} -> ${file.filePath}');
@@ -575,9 +604,9 @@ class CourtAllocationCaseController extends GetxController {
     for (int i = 0; i < calculationController.surveyEntries.length; i++) {
       final entry = calculationController.surveyEntries[i];
       entries.add({
-        "selected_village": entry['selectedVillage']?.toString() ?? "",
+        "selected_village": entry['villageController']?.toString() ?? "",
         "survey_no": entry['surveyNo']?.toString() ?? "",
-        "share": entry['share']?.toString() ?? "",
+        // "share": entry['share']?.toString() ?? "",
         "area": entry['area']?.toString() ?? "",
       });
     }
@@ -599,7 +628,7 @@ class CourtAllocationCaseController extends GetxController {
 
       entries.add({
         "name": entry['nameController']?.text?.trim() ?? "",
-        "address": entry['addressController']?.text?.trim() ?? "",
+        // "address": entry['addressController']?.text?.trim() ?? "",
         "mobile": entry['mobileController']?.text?.trim() ?? "",
         "survey_number": entry['surveyNumberController']?.text?.trim() ?? "",
         "type": selectedType?.value ?? "",
@@ -621,25 +650,74 @@ class CourtAllocationCaseController extends GetxController {
   }
 
 // Helper method to get next of kin entries
+//   List<Map<String, dynamic>> _getNextOfKinEntries() {
+//     List<Map<String, dynamic>> entries = [];
+//
+//     print('🔍 Processing ${allocationSixthController.nextOfKinEntries.length} next of kin entries');
+//
+//     for (int i = 0; i < allocationSixthController.nextOfKinEntries.length; i++) {
+//       final entry = allocationSixthController.nextOfKinEntries[i];
+//
+//       entries.add({
+//         "address": entry['addressController']?.text?.trim() ?? "",
+//         "mobile": entry['mobileController']?.text?.trim() ?? "",
+//         "survey_no": entry['surveyNoController']?.text?.trim() ?? "",
+//         "direction": entry['direction']?.toString() ?? "",
+//         "natural_resources": entry['naturalResources']?.toString() ?? "",
+//       });
+//     }
+//
+//     print('🔍 Generated ${entries.length} next of kin entries');
+//     return entries;
+//   }
+
+
   List<Map<String, dynamic>> _getNextOfKinEntries() {
-    List<Map<String, dynamic>> entries = [];
+    List<Map<String, dynamic>> nextOfKinList = [];
 
     print('🔍 Processing ${allocationSixthController.nextOfKinEntries.length} next of kin entries');
 
-    for (int i = 0; i < allocationSixthController.nextOfKinEntries.length; i++) {
-      final entry = allocationSixthController.nextOfKinEntries[i];
+    for (final entry in allocationSixthController.nextOfKinEntries) {
+      final naturalResources = entry['naturalResources'] as String? ?? '';
+      final direction = entry['direction'] as String? ?? '';
 
-      entries.add({
-        "address": entry['addressController']?.text?.trim() ?? "",
-        "mobile": entry['mobileController']?.text?.trim() ?? "",
-        "survey_no": entry['surveyNoController']?.text?.trim() ?? "",
-        "direction": entry['direction']?.toString() ?? "",
-        "natural_resources": entry['naturalResources']?.toString() ?? "",
-      });
+      if (naturalResources == 'Name' || naturalResources == 'Other') {
+        // Handle sub-entries for Name/Other types (these have controllers)
+        final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
+        final List<Map<String, dynamic>> subEntriesData = [];
+
+        if (subEntries != null) {
+          for (final subEntry in subEntries) {
+            // Get data from controllers in sub-entries
+            final nameController = subEntry['nameController'] as TextEditingController?;
+            final addressController = subEntry['addressController'] as TextEditingController?;
+            final mobileController = subEntry['mobileController'] as TextEditingController?;
+            final surveyNoController = subEntry['surveyNoController'] as TextEditingController?;
+
+            subEntriesData.add({
+              'name': nameController?.text ?? '',
+              'address': addressController?.text ?? '',
+              'mobile': mobileController?.text ?? '',
+              'survey_no': surveyNoController?.text ?? '',
+            });
+          }
+        }
+
+        nextOfKinList.add({
+          'direction': direction,
+          'natural_resources': naturalResources,
+          'sub_entries': subEntriesData,
+        });
+      } else {
+        nextOfKinList.add({
+          'direction': direction,
+          'natural_resources': naturalResources,
+        });
+      }
     }
 
-    print('🔍 Generated ${entries.length} next of kin entries');
-    return entries;
+    print('🔍 Generated ${nextOfKinList.length} next of kin entries');
+    return nextOfKinList;
   }
 
 
