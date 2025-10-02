@@ -244,6 +244,15 @@ class AllocationSeventhView extends StatelessWidget {
                   onFilesSelected: (files) => docController.utaraAkharband.assignAll(files),
                 ),
                 Gap(16.h),
+
+                ImagePickerUtil.buildFileUploadField(
+                  label: 'Sammati Patra/ Pratidnya Patra *',
+                  hint: 'Upload Sammati Patra document',
+                  icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
+                  uploadedFiles: docController.sammatiPatraFiles,
+                  onFilesSelected: (files) => docController.sammatiPatraFiles.assignAll(files),
+                ),
+                Gap(16.h),
                 ImagePickerUtil.buildFileUploadField(
                   label: 'Other Document  *',
                   hint: 'Upload Other document If You Have Any',

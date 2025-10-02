@@ -700,17 +700,17 @@ class CensusFifthView extends StatelessWidget {
                 index, 'mobileNumber', value),
           ),
 
-          Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
+          // Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 
           // Server Number Input
-          GovernmentCensusUIUtils.buildTextFormField(
-            controller: entry['serverNumberController'] ,
-            label: 'Server Number',
-            hint: 'Enter server number',
-            icon: PhosphorIcons.infinity(PhosphorIconsStyle.regular),
-            onChanged: (value) => fifthController.updateApplicantEntry(
-                index, 'serverNumber', value),
-          ),
+          // GovernmentCensusUIUtils.buildTextFormField(
+          //   controller: entry['serverNumberController'] ,
+          //   label: 'Server Number',
+          //   hint: 'Enter server number',
+          //   icon: PhosphorIcons.infinity(PhosphorIconsStyle.regular),
+          //   onChanged: (value) => fifthController.updateApplicantEntry(
+          //       index, 'serverNumber', value),
+          // ),
 
           Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 
@@ -725,31 +725,31 @@ class CensusFifthView extends StatelessWidget {
                 fifthController.updateApplicantEntry(index, 'area', value),
           ),
 
-          Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
+          // Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 
           // Potkharaba Area Input
-          GovernmentCensusUIUtils.buildTextFormField(
-            controller: entry['potkaharabaAreaController'] ,
-            label: 'Potkharaba Area',
-            hint: 'Enter potkharaba area',
-            icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            onChanged: (value) => fifthController.updateApplicantEntry(
-                index, 'potkaharabaArea', value),
-          ),
+          // GovernmentCensusUIUtils.buildTextFormField(
+          //   controller: entry['potkaharabaAreaController'] ,
+          //   label: 'Potkharaba Area',
+          //   hint: 'Enter potkharaba area',
+          //   icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+          //   keyboardType: TextInputType.numberWithOptions(decimal: true),
+          //   onChanged: (value) => fifthController.updateApplicantEntry(
+          //       index, 'potkaharabaArea', value),
+          // ),
 
-          Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
+          // Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 
           // Total Area Input
-          GovernmentCensusUIUtils.buildTextFormField(
-            controller: entry['totalAreaController'] ,
-            label: 'Total Area',
-            hint: 'Enter total area',
-            icon: PhosphorIcons.resize(PhosphorIconsStyle.regular),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            onChanged: (value) =>
-                fifthController.updateApplicantEntry(index, 'totalArea', value),
-          ),
+          // GovernmentCensusUIUtils.buildTextFormField(
+          //   controller: entry['totalAreaController'] ,
+          //   label: 'Total Area',
+          //   hint: 'Enter total area',
+          //   icon: PhosphorIcons.resize(PhosphorIconsStyle.regular),
+          //   keyboardType: TextInputType.numberWithOptions(decimal: true),
+          //   onChanged: (value) =>
+          //       fifthController.updateApplicantEntry(index, 'totalArea', value),
+          // ),
 
           Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 

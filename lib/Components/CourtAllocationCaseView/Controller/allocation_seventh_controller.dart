@@ -20,6 +20,8 @@ class AllocationSeventhController extends GetxController with StepValidationMixi
 
   final adhikarPatra = <String>[].obs;
 
+  final sammatiPatraFiles = <String>[].obs;
+
   // Loading states
   final isUploading = false.obs;
   final uploadProgress = 0.0.obs;

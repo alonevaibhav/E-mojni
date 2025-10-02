@@ -580,12 +580,21 @@ class CourtSeventhView extends StatelessWidget {
                 ),
                 Gap(16.h),
                 ImagePickerUtil.buildFileUploadField(
+                  label: 'Sammati Patra/ Pratidnya Patra *',
+                  hint: 'Upload Sammati Patra document',
+                  icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
+                  uploadedFiles: docController.sammatiPatraFiles,
+                  onFilesSelected: (files) => docController.sammatiPatraFiles.assignAll(files),
+                ),
+                Gap(16.h),
+                ImagePickerUtil.buildFileUploadField(
                   label: 'Other Document  *',
                   hint: 'Upload Other document If You Have Any',
                   icon: PhosphorIcons.certificate(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.otherDocument,
                   onFilesSelected: (files) => docController.otherDocument.assignAll(files),
                 ),
+
               ],
             ),
           ),

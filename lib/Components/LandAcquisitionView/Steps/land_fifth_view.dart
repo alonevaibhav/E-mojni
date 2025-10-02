@@ -224,14 +224,14 @@ class LandFifthView extends StatelessWidget {
           // Gap(16.h * LandAcquisitionUIUtils.sizeFactor),
 
           // Server Number Input
-          LandAcquisitionUIUtils.buildTextFormField(
-            controller: entry['serverNumberController'],
-            label: 'Server Number *',
-            hint: 'Enter server number',
-            icon: PhosphorIcons.numberSquareOne(PhosphorIconsStyle.regular),
-            onChanged: (value) => holderController.updateHolderEntry(
-                index, 'serverNumber', value),
-          ),
+          // LandAcquisitionUIUtils.buildTextFormField(
+          //   controller: entry['serverNumberController'],
+          //   label: 'Server Number *',
+          //   hint: 'Enter server number',
+          //   icon: PhosphorIcons.numberSquareOne(PhosphorIconsStyle.regular),
+          //   onChanged: (value) => holderController.updateHolderEntry(
+          //       index, 'serverNumber', value),
+          // ),
 
           Gap(16.h * LandAcquisitionUIUtils.sizeFactor),
 
@@ -259,19 +259,10 @@ class LandFifthView extends StatelessWidget {
           //       index, 'potKharabaArea', value),
           // ),
 
-          Gap(16.h * LandAcquisitionUIUtils.sizeFactor),
+          // Gap(16.h * LandAcquisitionUIUtils.sizeFactor),
 
           // Total Area Input
-          LandAcquisitionUIUtils.buildTextFormField(
-            controller: entry['totalAreaController'],
-            label: 'Total Area *',
-            hint: 'Enter total area',
-            icon: PhosphorIcons.resize(PhosphorIconsStyle.regular),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            onChanged: (value) =>
-                holderController.updateHolderEntry(index, 'totalArea', value),
-          ),
-
+          // LandAcquisitionUIUtils.buildTextFormF0
           Gap(16.h * LandAcquisitionUIUtils.sizeFactor),
 
         ],

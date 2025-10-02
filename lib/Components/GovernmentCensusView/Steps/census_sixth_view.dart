@@ -629,16 +629,16 @@ class CensusSixthView extends StatelessWidget {
           Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 
           // Server Number Input
-          GovernmentCensusUIUtils.buildTextFormField(
-            controller: entry['serverNumberController'] ,
-            label: 'Server Number',
-            hint: 'Enter server number',
-            icon: PhosphorIcons.infinity(PhosphorIconsStyle.regular),
-            onChanged: (value) =>
-                sixthController.updateCoownerEntry(index, 'serverNumber', value),
-          ),
-
-          Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
+          // GovernmentCensusUIUtils.buildTextFormField(
+          //   controller: entry['serverNumberController'] ,
+          //   label: 'Server Number',
+          //   hint: 'Enter server number',
+          //   icon: PhosphorIcons.infinity(PhosphorIconsStyle.regular),
+          //   onChanged: (value) =>
+          //       sixthController.updateCoownerEntry(index, 'serverNumber', value),
+          // ),
+          //
+          // Gap(16.h * GovernmentCensusUIUtils.sizeFactor),
 
           // Consent Input
           // GovernmentCensusUIUtils.buildTextFormField(

@@ -565,7 +565,7 @@ class SurveyEightView extends StatelessWidget {
       child: Column(
         children: [
           ImagePickerUtil.buildFileUploadField(
-            label: 'Saksham Pradikaran Adesh *',
+            label: 'Saksham Pradikaran Adesh/ N/A Order*',
             hint: 'Upload Saksham Pradikaran Adesh document',
             icon: PhosphorIcons.stamp(PhosphorIconsStyle.regular),
             uploadedFiles: docController.sakshamPradikaranAdeshFiles,
@@ -573,7 +573,7 @@ class SurveyEightView extends StatelessWidget {
           ),
           Gap(16.h),
           ImagePickerUtil.buildFileUploadField(
-            label: 'Nakasha *',
+            label: 'Nakasha/Layout Blueprint*',
             hint: 'Upload Nakasha document',
             icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
             uploadedFiles: docController.nakashaFiles,
@@ -589,7 +589,7 @@ class SurveyEightView extends StatelessWidget {
           ),
           Gap(16.h),
           ImagePickerUtil.buildFileUploadField(
-            label: 'Bhandhakam Parvana *',
+            label: 'Bhandhakam Parvangi *',
             hint: 'Upload Bhandhakam Parvana document',
             icon: PhosphorIcons.scroll(PhosphorIconsStyle.regular),
             uploadedFiles: docController.bhandhakamParvanaFiles,
@@ -614,7 +614,7 @@ class SurveyEightView extends StatelessWidget {
           ),
           Gap(16.h),
           ImagePickerUtil.buildFileUploadField(
-            label: 'Band Photo *',
+            label: 'Mojni karawayacha Jagecha Photo*',
             hint: 'Upload Band Photo',
             icon: PhosphorIcons.camera(PhosphorIconsStyle.regular),
             uploadedFiles: docController.bandPhotoFiles,
@@ -630,7 +630,7 @@ class SurveyEightView extends StatelessWidget {
           ),
           Gap(16.h),
           ImagePickerUtil.buildFileUploadField(
-            label: 'Sammati Patra *',
+            label: 'Sammati Patra/ Pratidnya Patra *',
             hint: 'Upload Sammati Patra document',
             icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
             uploadedFiles: docController.sammatiPatraFiles,
