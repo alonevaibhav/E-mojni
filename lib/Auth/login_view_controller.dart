@@ -7,6 +7,7 @@ import '../API Service/api_service.dart';
 import '../Constants/api_constant.dart';
 import '../Constants/color_constant.dart';
 import '../Models/login_model.dart';
+import '../Repository/user_datils_repo.dart';
 import '../Route Manager/app_routes.dart'; // Add your model imports
 
 class LoginViewController extends GetxController {
@@ -246,6 +247,15 @@ class LoginViewController extends GetxController {
 
             // Start monitoring token expiration
             TokenManager.startTokenExpirationTimer();
+
+            try {
+              final repository = UserProfileRepository();
+              final userProfileDetails = await repository.getUserProfile();
+              print('✅ User profile fetched successfully');
+            } catch (profileError) {
+              print('⚠️ Profile fetch failed: $profileError');
+            }
+
           } else {
             throw Exception('Invalid login response format');
           }

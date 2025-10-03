@@ -6,11 +6,13 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:get/get.dart';
-import '../Auth/login_view_controller.dart';
-import '../Constants/color_constant.dart';
-import '../../Controller/get_translation_controller/get_translation_controller.dart';
-import '../../Utils/TranslationManager/translation_service.dart';
-import '../Controller/get_translation_controller/get_text_form.dart';
+import '../../Auth/login_view_controller.dart';
+import '../../Constants/color_constant.dart';
+import '../../../Controller/get_translation_controller/get_translation_controller.dart';
+import '../../../Utils/TranslationManager/translation_service.dart';
+import '../../Controller/ProfileController/user_details_controller.dart';
+import '../../Controller/get_translation_controller/get_text_form.dart';
+import 'ProfileDetails/profile_details.dart';
 
 class ProfileView extends StatelessWidget {
   final ScrollController scrollController;
@@ -20,6 +22,7 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     // final translationController = Get.put(TranslationController());
     final translationController = Get.find<TranslationController>();
+    final controller = Get.put(UserDetailsController());
 
     return Scaffold(
       backgroundColor: SetuColors.background,
@@ -69,8 +72,9 @@ class ProfileView extends StatelessWidget {
                         ),
                       ).animate().scale(duration: 800.ms, delay: 200.ms),
                       Gap(16.h * 0.85),
+                      // Value
                       GetTranslatableText(
-                        'Farmer Name',
+                        controller.state?.fullName ?? 'Farmer Name',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24.sp * 0.85,
@@ -78,36 +82,11 @@ class ProfileView extends StatelessWidget {
                         ),
                       ).animate().fadeIn(duration: 600.ms, delay: 400.ms),
                       Gap(4.h * 0.85),
-                      GetTranslatableText(
-                        'Village, District',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 16.sp * 0.85,
-                        ),
-                      ).animate().fadeIn(duration: 600.ms, delay: 500.ms),
                     ],
                   ),
                 ),
               ),
             ),
-            actions: [
-              Container(
-                margin: EdgeInsets.only(right: 16.w * 0.85),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12.r * 0.85),
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    PhosphorIcons.gear(PhosphorIconsStyle.regular),
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    _navigateToAppSettings(context);
-                  },
-                ),
-              ),
-            ],
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -144,7 +123,7 @@ class ProfileView extends StatelessWidget {
   Widget _buildSettingsItem(int index, BuildContext context, TranslationController translationController) {
     final settings = [
       {
-        'title': 'Edit Profile',
+        'title': 'Profile Details',
         'subtitle': 'Update your personal information',
         'icon': PhosphorIcons.userCircle(PhosphorIconsStyle.regular)
       },
@@ -285,7 +264,7 @@ class ProfileView extends StatelessWidget {
 
   void _handleSettingsTap(BuildContext context, String settingTitle) {
     switch (settingTitle) {
-      case 'Edit Profile':
+      case 'Profile Details':
         _navigateToEditProfile(context);
         break;
       case 'Notifications':
@@ -885,24 +864,7 @@ class AppSettingsPage extends StatelessWidget {
   }
 }
 
-class EditProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GetTranslatableText('Edit Profile'),
-        backgroundColor: SetuColors.primaryGreen,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        child: GetTranslatableText(
-          'Edit Profile Page',
-          style: TextStyle(fontSize: 18.sp * 0.85),
-        ),
-      ),
-    );
-  }
-}
+
 
 class NotificationSettingsPage extends StatelessWidget {
   @override

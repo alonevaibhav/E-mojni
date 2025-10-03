@@ -17,7 +17,8 @@ String courtAllocation = "/api/user/court-vatap/create";
 String governmentCensus = "/api/user/shaskiya-mojni/create";
 
 
+String userProfileDetails(int id) => "/api/user/$id";
+
 
 String stateGet = "api/location/states";
 
-String getCleanerPlantsInfoUrl(int inspectorId) => "/api/plant/cleaner/$inspectorId";
