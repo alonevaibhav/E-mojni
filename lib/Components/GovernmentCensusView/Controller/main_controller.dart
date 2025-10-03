@@ -759,10 +759,10 @@ class GovernmentCensusController extends GetxController {
       // === SURVEY CTS INFO ===
       "survey_number": surveyCTSController.surveyNumberController.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
-      "division_id": "1", // Hardcoded as per your example
-      "district_id": "26", // Hardcoded as per your example
-      "taluka_id": "5", // Hardcoded as per your example
-      "village_id": "3", // Hardcoded as per your example
+      "division": "1", // Hardcoded as per your example
+      "district": "26", // Hardcoded as per your example
+      "taluka": "5", // Hardcoded as per your example
+      "village": "3", // Hardcoded as per your example
 
       // === CENSUS FOURTH INFO ===
       "calculation_type": censusFourthController.selectedCalculationType.value ?? "",

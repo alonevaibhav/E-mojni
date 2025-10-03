@@ -248,6 +248,7 @@
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../Route Manager/app_routes.dart';
 import 'main_controller.dart';
 
 class GovernmentCensusPreviewController extends GetxController {
@@ -449,6 +450,8 @@ class GovernmentCensusPreviewController extends GetxController {
       final result = await mainController.submitSurvey();
 
       if (result['success'] == true) {
+
+
         Get.snackbar(
           'Success',
           'Government Census Survey submitted successfully!',
@@ -456,6 +459,8 @@ class GovernmentCensusPreviewController extends GetxController {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
+        Get.offAllNamed(AppRoutes.mainDashboard);
+
         Get.back();
       } else {
         // Show actual error message from API
