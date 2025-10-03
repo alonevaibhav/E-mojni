@@ -142,9 +142,9 @@ class DashboardView extends StatelessWidget {
         'color': SetuColors.skyBlue,
       },
       {
-        'icon': PhosphorIcons.checkCircle, // Represents something verified
-        'title': 'Verified Applications',
-        'color': SetuColors.earthBrown,
+        'icon': PhosphorIcons.link, // Represents something verified
+        'title': 'Government Link ',
+        'color': SetuColors.error,
       },
     ];
 
@@ -364,8 +364,10 @@ class DashboardView extends StatelessWidget {
           // Add your route here
           print('Navigate to: Contact Support Page');
           break;
-        case 'Verified Applications':
-          // Add your route here
+        case 'Government Link ':
+        Get.toNamed(AppRoutes.governmentLink);
+
+        // Add your route here
           print('Navigate to: Verified Applications Page');
           break;
         default:
