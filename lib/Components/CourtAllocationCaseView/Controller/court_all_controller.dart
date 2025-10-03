@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../Route Manager/app_routes.dart';
 import 'main_controller.dart';
 
 class CourtAllocationPreviewController extends GetxController {
@@ -260,8 +261,6 @@ class CourtAllocationPreviewController extends GetxController {
   List<String> get schemeSheetFiles => List<String>.from(documentsData.value?['schemeSheetFiles'] ?? []);
   List<String> get oldCensusMapFiles => List<String>.from(documentsData.value?['oldCensusMapFiles'] ?? []);
   List<String> get demarcationCertificateFiles => List<String>.from(documentsData.value?['demarcationCertificateFiles'] ?? []);
-
-  // === SUBMIT METHOD ===
   Future<void> submitCourtAllocationSurvey() async {
     if (isSubmitting.value) return;
 
@@ -269,26 +268,39 @@ class CourtAllocationPreviewController extends GetxController {
       isSubmitting.value = true;
       errorMessage.value = '';
 
-      await mainController.submitSurvey();
+      final result = await mainController.submitSurvey();
 
-      Get.snackbar(
-        'Success',
-        'Court Allocation Survey submitted successfully!',
-        backgroundColor: Color(0xFF52B788),
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+      if (result['success'] == true) {
+        Get.snackbar(
+          'Success',
+          'Court Allocation Survey submitted successfully!',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
 
-      // Navigate to success page or close
-      Get.back();
+        Get.offAllNamed(AppRoutes.mainDashboard);
+      } else {
+        // Show actual error message from API
+        final errorMsg = result['error'] ?? 'Failed to submit court allocation survey';
+        errorMessage.value = errorMsg;
 
+        Get.snackbar(
+          'Error',
+          errorMsg,
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
     } catch (e) {
       print('❌ Submit error: $e');
-      errorMessage.value = 'Failed to submit court allocation survey: ${e.toString()}';
+      final errorMsg = 'Failed to submit court allocation survey: ${e.toString()}';
+      errorMessage.value = errorMsg;
 
       Get.snackbar(
         'Error',
-        'Failed to submit court allocation survey. Please try again.',
+        errorMsg,
         backgroundColor: Color(0xFFDC3545),
         colorText: Colors.white,
         duration: Duration(seconds: 3),
@@ -297,7 +309,6 @@ class CourtAllocationPreviewController extends GetxController {
       isSubmitting.value = false;
     }
   }
-
   // === UTILITY METHODS ===
   String formatFieldName(String fieldName) {
     return fieldName

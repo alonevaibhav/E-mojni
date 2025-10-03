@@ -10,11 +10,13 @@ class CensusFourthController extends GetxController with StepValidationMixin, St
 
   final List<String> durationOptions = [
     'Regular',
+    'Fast-track'
   ];
 
   final List<String> holderTypeOptions = [
-    'Companies/Other Institutions/Various Authorities/Corporations and Land Acquisition Joint Enumeration Holders (Other than Farmers)',
-  ];
+    'Holder (farmer)',
+    'Companies/Other Institutions/Various Authorities/Corporations and Land Acquisition Joint Enumeration Holders (Other than Farmers)'
+  ].obs;
 
   final List<String> calculationFeeRateOptions = [
     'Full calculation fee',

@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../Route Manager/app_routes.dart';
 import 'main_controller.dart';
 
 class LandAcquisitionPreviewController extends GetxController {
@@ -261,7 +262,6 @@ class LandAcquisitionPreviewController extends GetxController {
   List<String> get oldCensusMapFiles => List<String>.from(documentsData.value?['oldCensusMapFiles'] ?? []);
   List<String> get demarcationCertificateFiles => List<String>.from(documentsData.value?['demarcationCertificateFiles'] ?? []);
 
-  // === SUBMIT METHOD ===
   Future<void> submitLandAcquisitionSurvey() async {
     if (isSubmitting.value) return;
 
@@ -269,26 +269,39 @@ class LandAcquisitionPreviewController extends GetxController {
       isSubmitting.value = true;
       errorMessage.value = '';
 
-      await mainController.submitLandAcquisitionSurvey();
+      final result = await mainController.submitLandAcquisitionSurvey();
 
-      Get.snackbar(
-        'Success',
-        'Land Acquisition Survey submitted successfully!',
-        backgroundColor: Color(0xFF52B788),
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+      if (result['success'] == true) {
+        Get.snackbar(
+          'Success',
+          'Land Acquisition Survey submitted successfully!',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
 
-      // Navigate to success page or close
-      Get.back();
+        Get.offAllNamed(AppRoutes.mainDashboard);
+      } else {
+        // Show actual error message from API
+        final errorMsg = result['error'] ?? 'Failed to submit land acquisition survey';
+        errorMessage.value = errorMsg;
 
+        Get.snackbar(
+          'Error',
+          errorMsg,
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
     } catch (e) {
       print('❌ Submit error: $e');
-      errorMessage.value = 'Failed to submit land acquisition survey: ${e.toString()}';
+      final errorMsg = 'Failed to submit land acquisition survey: ${e.toString()}';
+      errorMessage.value = errorMsg;
 
       Get.snackbar(
         'Error',
-        'Failed to submit land acquisition survey. Please try again.',
+        errorMsg,
         backgroundColor: Color(0xFFDC3545),
         colorText: Colors.white,
         duration: Duration(seconds: 3),

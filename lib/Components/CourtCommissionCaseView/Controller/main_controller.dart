@@ -730,7 +730,7 @@ class CourtCommissionCaseController extends GetxController {
   }
 
 
-  Future<void> submitCourtCommissionSurvey() async {
+  Future<Map<String, dynamic>> submitCourtCommissionSurvey() async {
     try {
       String userId = (await ApiService.getUid()) ?? "0";
       print('🆔 User ID: $userId');
@@ -742,7 +742,7 @@ class CourtCommissionCaseController extends GetxController {
       developer.log(jsonEncode(fields), name: 'COURT_REQUEST_BODY');
 
       final response = await ApiService.multipartPost<Map<String, dynamic>>(
-        endpoint: courtCommissionCase, // Your API endpoint
+        endpoint: courtCommissionCase,
         fields: fields,
         files: files,
         fromJson: (json) => json as Map<String, dynamic>,
@@ -750,35 +750,23 @@ class CourtCommissionCaseController extends GetxController {
       );
 
       if (response.success && response.data != null) {
-
-
-        Get.snackbar(
-          'Success',
-          'Court commission survey submitted successfully',
-          backgroundColor: Color(0xFF52B788),
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-        );
-        Get.offAllNamed(AppRoutes.mainDashboard);
-
-
         print('✅ Court commission survey submitted successfully: ${response.data}');
+        return {'success': true};
       } else {
-
-        Get.snackbar(
-          'Submission Failed',
-          response.errorMessage ?? 'Unknown error occurred',
-          backgroundColor: Color(0xFFDC3545),
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-        );
         print('❌ Court commission survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
+        return {
+          'success': false,
+          'error': response.errorMessage ?? 'Unknown error occurred'
+        };
       }
     } catch (e) {
       print('💥 Exception during court commission survey submission: $e');
+      return {
+        'success': false,
+        'error': e.toString()
+      };
     }
   }
-
   void _saveAllStepsData() {
     // Collect data from all step controllers
     final allControllers = [

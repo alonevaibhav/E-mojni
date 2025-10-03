@@ -439,7 +439,6 @@ class GovernmentCensusPreviewController extends GetxController {
   List<String> get oldCensusMapFiles => mainController.censusEighthController.oldCensusMapFiles.map((e) => e.toString()).toList();
   List<String> get demarcationCertificateFiles => mainController.censusEighthController.demarcationCertificateFiles.map((e) => e.toString()).toList();
 
-  // === SUBMIT METHOD ===
   Future<void> submitGovernmentCensusSurvey() async {
     if (isSubmitting.value) return;
 
@@ -447,25 +446,38 @@ class GovernmentCensusPreviewController extends GetxController {
       isSubmitting.value = true;
       errorMessage.value = '';
 
-      await mainController.submitSurvey();
+      final result = await mainController.submitSurvey();
 
-      Get.snackbar(
-        'Success',
-        'Government Census Survey submitted successfully!',
-        backgroundColor: Color(0xFF52B788),
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+      if (result['success'] == true) {
+        Get.snackbar(
+          'Success',
+          'Government Census Survey submitted successfully!',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+        Get.back();
+      } else {
+        // Show actual error message from API
+        final errorMsg = result['error'] ?? 'Failed to submit government census survey';
+        errorMessage.value = errorMsg;
 
-      Get.back();
-
+        Get.snackbar(
+          'Error',
+          errorMsg,
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
     } catch (e) {
       print('❌ Submit error: $e');
-      errorMessage.value = 'Failed to submit government census survey: ${e.toString()}';
+      final errorMsg = 'Failed to submit government census survey: ${e.toString()}';
+      errorMessage.value = errorMsg;
 
       Get.snackbar(
         'Error',
-        'Failed to submit government census survey. Please try again.',
+        errorMsg,
         backgroundColor: Color(0xFFDC3545),
         colorText: Colors.white,
         duration: Duration(seconds: 3),

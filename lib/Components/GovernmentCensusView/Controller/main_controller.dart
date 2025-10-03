@@ -744,17 +744,17 @@ class GovernmentCensusController extends GetxController {
       // User ID
       "user_id": userId?.toString() ?? "0",
 
-      "applicant_name": personalInfoController.applicantNameController.text.trim(),
-      "applicant_address": personalInfoController.applicantAddressController.text.trim(),
+      "applicant_fullname": personalInfoController.applicantNameController.text.trim(),
+      "applicant_fulladdress": personalInfoController.applicantAddressController.text.trim(),
 
       // === GOVERNMENT COUNTING INFO ===
-      "government_counting_officer": personalInfoController.governmentCountingOfficerController.text.trim(),
-      "government_counting_officer_address": personalInfoController.governmentCountingOfficerAddressController.text.trim(),
-      "government_counting_order_number": personalInfoController.governmentCountingOrderNumberController.text.trim(),
-      "government_counting_order_date": personalInfoController.governmentCountingOrderDateController.text.trim(),
-      "counting_applicant_name": personalInfoController.countingApplicantNameController.text.trim(),
-      "counting_applicant_address": personalInfoController.countingApplicantAddressController.text.trim(),
-      "government_counting_details": personalInfoController.governmentCountingDetailsController.text.trim(),
+      "officer_name": personalInfoController.governmentCountingOfficerController.text.trim(),
+      "officer_address": personalInfoController.governmentCountingOfficerAddressController.text.trim(),
+      "survey_order_number": personalInfoController.governmentCountingOrderNumberController.text.trim(),
+      "survey_order_date": personalInfoController.governmentCountingOrderDateController.text.trim(),
+      "applicant_name": personalInfoController.countingApplicantNameController.text.trim(),
+      "applicant_address": personalInfoController.countingApplicantAddressController.text.trim(),
+      "survey_details": personalInfoController.governmentCountingDetailsController.text.trim(),
 
       // === SURVEY CTS INFO ===
       "survey_number": surveyCTSController.surveyNumberController.text,
@@ -767,7 +767,7 @@ class GovernmentCensusController extends GetxController {
       // === CENSUS FOURTH INFO ===
       "calculation_type": censusFourthController.selectedCalculationType.value ?? "",
       "duration": censusFourthController.selectedDuration.value ?? "",
-      "holder_type": censusFourthController.selectedHolderType.value ?? "",
+      "landholder_type": censusFourthController.selectedHolderType.value ?? "",
       // "calculation_fee_rate": censusFourthController.selectedCalculationFeeRate.value ?? "",
       // "counting_fee": censusFourthController.countingFee.value?.toString() ?? "",
     };
@@ -797,7 +797,7 @@ class GovernmentCensusController extends GetxController {
         final filePath = personalInfoController.governmentCountingOrderFiles.first.toString();
         if (filePath.isNotEmpty) {
           files.add(MultipartFiles(
-            field: "government_counting_order_file",
+            field: "survey_order_file_path",
             filePath: filePath,
           ));
 
@@ -814,35 +814,35 @@ class GovernmentCensusController extends GetxController {
 
     if (censusEighthController.sevenTwelveFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "seven_twelve_path",
+        field: "seven_twelve_extract_path",
         filePath: censusEighthController.sevenTwelveFiles!.first.toString(),
       ));
     }
 
     if (censusEighthController.noteFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "note_path",
+        field: "tipan_path",
         filePath: censusEighthController.noteFiles!.first.toString(),
       ));
     }
 
     if (censusEighthController.partitionFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "partition_path",
+        field: "fadani_path",
         filePath: censusEighthController.partitionFiles!.first.toString(),
       ));
     }
 
     if (censusEighthController.schemeSheetFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "scheme_sheet_path",
+        field: "yojana_patrak_path",
         filePath: censusEighthController.schemeSheetFiles!.first.toString(),
       ));
     }
 
     if (censusEighthController.oldCensusMapFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "old_census_map_path",
+        field: "old_measurement_path",
         filePath: censusEighthController.oldCensusMapFiles!.first.toString(),
       ));
     }
@@ -1066,7 +1066,7 @@ class GovernmentCensusController extends GetxController {
 
   }
 
-  Future<void> submitSurvey() async {
+  Future<Map<String, dynamic>> submitSurvey() async {
     try {
       String userId = (await ApiService.getUid()) ?? "0";
       print('🆔 User ID: $userId');
@@ -1078,7 +1078,7 @@ class GovernmentCensusController extends GetxController {
       developer.log(jsonEncode(fields), name: 'REQUEST_BODY');
 
       final response = await ApiService.multipartPost<Map<String, dynamic>>(
-        endpoint: landAcquisitionPost, // Update this endpoint name as needed
+        endpoint: governmentCensus,
         fields: fields,
         files: files,
         fromJson: (json) => json as Map<String, dynamic>,
@@ -1087,29 +1087,20 @@ class GovernmentCensusController extends GetxController {
 
       if (response.success && response.data != null) {
         print('✅ Government counting survey submitted successfully: ${response.data}');
-        Get.snackbar(
-          'Success',
-          'Government counting survey submitted successfully.',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-
-        // Get.offAllNamed(AppRoutes.mainDashboard);
-
+        return {'success': true};
       } else {
-
-        Get.snackbar(
-          'Error',
-          'Failed to submit government counting survey: ${response.errorMessage ?? 'Unknown error'}',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
         print('❌ Government counting survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
+        return {
+          'success': false,
+          'error': response.errorMessage ?? 'Unknown error occurred'
+        };
       }
     } catch (e) {
       print('💥 Exception during government counting survey submission: $e');
+      return {
+        'success': false,
+        'error': e.toString()
+      };
     }
   }
 

@@ -999,7 +999,7 @@ class MainLandAcquisitionController extends GetxController {
 
 
 // Updated submit method for land acquisition
-  Future<void> submitLandAcquisitionSurvey() async {
+  Future<Map<String, dynamic>> submitLandAcquisitionSurvey() async {
     try {
       String userId = (await ApiService.getUid()) ?? "0";
       print('🆔 User ID: $userId');
@@ -1011,7 +1011,7 @@ class MainLandAcquisitionController extends GetxController {
       developer.log(jsonEncode(fields), name: 'LAND_ACQUISITION_REQUEST_BODY');
 
       final response = await ApiService.multipartPost<Map<String, dynamic>>(
-        endpoint: landAcquisitionPost, // Update with your actual endpoint
+        endpoint: landAcquisitionPost,
         fields: fields,
         files: files,
         fromJson: (json) => json as Map<String, dynamic>,
@@ -1019,31 +1019,25 @@ class MainLandAcquisitionController extends GetxController {
       );
 
       if (response.success && response.data != null) {
-        Get.offAllNamed(AppRoutes.mainDashboard);
         print('✅ Land acquisition survey submitted successfully: ${response.data}');
-        Get.snackbar(
-          'Success',
-          'Land acquisition survey submitted successfully!',
-          backgroundColor: Color(0xFF52B788),
-          colorText: Colors.white,
-          duration: Duration(milliseconds: 2000),
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        return {'success': true};
       } else {
-        Get.snackbar(
-          'Error',
-          response.errorMessage ?? 'Unknown error occurred during submission.',
-          backgroundColor: Color(0xFFDC3545),
-          colorText: Colors.white,
-          duration: Duration(milliseconds: 3000),
-          snackPosition: SnackPosition.BOTTOM,
-        );
         print('❌ Land acquisition survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
+        return {
+          'success': false,
+          'error': response.errorMessage ?? 'Unknown error occurred'
+        };
       }
     } catch (e) {
       print('💥 Exception during land acquisition survey submission: $e');
+      return {
+        'success': false,
+        'error': e.toString()
+      };
     }
   }
+
+
 
   void _saveAllStepsData() {
     // Collect data from all step controllers

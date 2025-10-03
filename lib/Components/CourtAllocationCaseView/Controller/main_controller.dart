@@ -738,13 +738,9 @@ class CourtAllocationCaseController extends GetxController {
   }
 
 
-
-
-  Future<void> submitSurvey() async {
-
-
+// In MainController
+  Future<Map<String, dynamic>> submitSurvey() async {
     try {
-
       String userId = await ApiService.getUid() ?? "0";
       print('🆔 User ID: $userId');
 
@@ -752,7 +748,7 @@ class CourtAllocationCaseController extends GetxController {
       final fields = multipartData['fields'] as Map<String, String>;
       final files = multipartData['files'] as List<MultipartFiles>;
 
-      developer.log(jsonEncode(fields), name: 'REQUEST_BODY',);
+      developer.log(jsonEncode(fields), name: 'REQUEST_BODY');
 
       final response = await ApiService.multipartPost<Map<String, dynamic>>(
         endpoint: courtAllocation,
@@ -764,29 +760,20 @@ class CourtAllocationCaseController extends GetxController {
 
       if (response.success && response.data != null) {
         print('✅ Survey submitted successfully: ${response.data}');
-
-        Get.snackbar(
-          'Success',
-          'Court allocation submitted successfully!',
-          backgroundColor: Color(0xFF52B788),
-          colorText: Colors.white,
-          duration: Duration(seconds: 2),
-        );
-
-        // Get.offAllNamed(AppRoutes.mainDashboard);
+        return {'success': true};
       } else {
-
-        Get.snackbar(
-          'Error',
-          response.errorMessage ?? 'Unknown error occurred during submission.',
-          backgroundColor: Color(0xFFDC3545),
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-        );
         print('❌ Survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
+        return {
+          'success': false,
+          'error': response.errorMessage ?? 'Unknown error occurred'
+        };
       }
     } catch (e) {
       print('💥 Exception during survey submission: $e');
+      return {
+        'success': false,
+        'error': e.toString()
+      };
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../Route Manager/app_routes.dart';
 import 'main_controller.dart';
 
 class CourtCommissionPreviewController extends GetxController {
@@ -260,6 +261,8 @@ class CourtCommissionPreviewController extends GetxController {
   List<String> get demarcationCertificateFiles => List<String>.from(documentsData.value?['demarcationCertificateFiles'] ?? []);
 
   // === SUBMIT METHOD ===
+
+// In your UI Controller
   Future<void> submitCourtCommissionSurvey() async {
     if (isSubmitting.value) return;
 
@@ -267,26 +270,39 @@ class CourtCommissionPreviewController extends GetxController {
       isSubmitting.value = true;
       errorMessage.value = '';
 
-      await mainController.submitCourtCommissionSurvey();
+      final result = await mainController.submitCourtCommissionSurvey();
 
-      Get.snackbar(
-        'Success',
-        'Court Commission Survey submitted successfully!',
-        backgroundColor: Color(0xFF52B788),
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+      if (result['success'] == true) {
+        Get.snackbar(
+          'Success',
+          'Court Commission Survey submitted successfully!',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
 
-      // Navigate to success page or close
-      Get.back();
+        Get.offAllNamed(AppRoutes.mainDashboard);
+      } else {
+        // Show error message from API
+        final errorMsg = result['error'] ?? 'Failed to submit court commission survey';
+        errorMessage.value = errorMsg;
 
+        Get.snackbar(
+          'Error',
+          errorMsg,
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+      }
     } catch (e) {
       print('❌ Submit error: $e');
-      errorMessage.value = 'Failed to submit court commission survey: ${e.toString()}';
+      final errorMsg = 'Failed to submit court commission survey: ${e.toString()}';
+      errorMessage.value = errorMsg;
 
       Get.snackbar(
         'Error',
-        'Failed to submit court commission survey. Please try again.',
+        errorMsg,
         backgroundColor: Color(0xFFDC3545),
         colorText: Colors.white,
         duration: Duration(seconds: 3),

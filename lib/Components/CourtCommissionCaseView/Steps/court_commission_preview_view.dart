@@ -372,7 +372,7 @@ class CourtCommissionPreviewStep extends StatelessWidget {
     return Obx(() => Container(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: controller.isSubmitting.value ? null : mainController.submitCourtCommissionSurvey,
+        onPressed: controller.isSubmitting.value ? null : controller.submitCourtCommissionSurvey,
         style: ElevatedButton.styleFrom(
           backgroundColor: SetuColors.primaryGreen,
           padding: EdgeInsets.symmetric(vertical: 16.h),
