@@ -983,9 +983,9 @@ class MainLandAcquisitionController extends GetxController {
   }
 
 
-  void debugPrint(){
+  Future<void> debugPrint() async {
 
-    String userId = "0";
+    String userId = (await ApiService.getUid()) ?? "0";
     print('🆔 User ID: $userId');
 
     final multipartData = prepareMultipartData(userId);

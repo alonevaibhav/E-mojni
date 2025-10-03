@@ -197,8 +197,9 @@ class CourtAllocationCaseController extends GetxController {
     // Print the current survey data to the console
     // print('Current Survey Data: ${surveyData.value}');
     // debugPrintInfo();
-    submitSurvey();
+    // submitSurvey();
 
+    debugPrint();
     // Get the current step's total substeps
     final currentStepSubSteps = stepConfigurations[currentStep.value];
     final totalSubSteps = currentStepSubSteps?.length ?? 1;
@@ -217,7 +218,7 @@ class CourtAllocationCaseController extends GetxController {
         previewController.refreshData();
       }else {
         // We're at the last step and last substep, submit the survey
-        submitSurvey();
+        // submitSurvey();
       }
     }
   }
@@ -439,7 +440,7 @@ class CourtAllocationCaseController extends GetxController {
     // Prepare fields (non-file data)
     Map<String, String> fields = {
       // User ID
-      "user_id": userId?.toString() ?? "0",
+      "user_id": userId,
 
       "holder_name": personalInfoController.applicantNameController.text.trim(),
       "holder_address": personalInfoController.applicantAddressController.text.trim(),
@@ -522,7 +523,7 @@ class CourtAllocationCaseController extends GetxController {
     // Add note files
     if (allocationSeventhController.noteFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "note_path",
+        field: "tipan_path",
         filePath: allocationSeventhController.noteFiles!.first.toString(),
       ));
     }
@@ -530,7 +531,7 @@ class CourtAllocationCaseController extends GetxController {
     // Add partition files
     if (allocationSeventhController.partitionFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "partition_path",
+        field: "fadani_path",
         filePath: allocationSeventhController.partitionFiles!.first.toString(),
       ));
     }
@@ -565,16 +566,16 @@ class CourtAllocationCaseController extends GetxController {
         filePath: allocationSeventhController.adhikarPatra!.first.toString(),
       ));
     }
-    if (allocationSeventhController.sammatiPatraFiles?.isNotEmpty == true) {
-      files.add(MultipartFiles(
-        field: "adhikar_patra_path",
-        filePath: allocationSeventhController.sammatiPatraFiles!.first.toString(),
-      ));
-    }
     if (allocationSeventhController.utaraAkharband?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "adhikar_patra_path",
+        field: "utara_akharband_path",
         filePath: allocationSeventhController.utaraAkharband!.first.toString(),
+      ));
+    }
+    if (allocationSeventhController.sammatiPatraFiles?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "sammati_patra_path",
+        filePath: allocationSeventhController.sammatiPatraFiles!.first.toString(),
       ));
     }
     if (allocationSeventhController.otherDocument?.isNotEmpty == true) {
@@ -720,6 +721,20 @@ class CourtAllocationCaseController extends GetxController {
     return nextOfKinList;
   }
 
+
+  Future<void> debugPrint() async {
+
+    String userId = (await ApiService.getUid()) ?? "0";
+    print('🆔 User ID: $userId');
+
+    final multipartData = prepareMultipartData(userId);
+    final fields = multipartData['fields'] as Map<String, String>;
+    final files = multipartData['files'] as List<MultipartFiles>;
+
+    developer.log(jsonEncode(fields), name: 'REQUEST_BODY');
+
+
+  }
 
 
   Future<void> submitSurvey() async {

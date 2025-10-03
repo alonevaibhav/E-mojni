@@ -1671,8 +1671,8 @@ class MainSurveyController extends GetxController {
     return nextOfKinList;
   }
 
-  void debugPrint() {
-    String userId = "0";
+  Future<void> debugPrint() async {
+    String userId = (await ApiService.getUid()) ?? "0";
     print('🆔 User ID: $userId');
 
     final multipartData = prepareMultipartData(userId);
