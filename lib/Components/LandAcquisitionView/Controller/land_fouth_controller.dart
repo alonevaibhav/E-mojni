@@ -18,8 +18,8 @@ class LandFouthController extends GetxController with StepValidationMixin, StepD
   ];
 
   final durationOptions = [
-    'Regular',
-    'Fast pace',
+    'niyamit',
+    'drutgati',
   ];
 
   final holderTypeOptions = [

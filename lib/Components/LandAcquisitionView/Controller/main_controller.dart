@@ -1021,7 +1021,23 @@ class MainLandAcquisitionController extends GetxController {
       if (response.success && response.data != null) {
         Get.offAllNamed(AppRoutes.mainDashboard);
         print('✅ Land acquisition survey submitted successfully: ${response.data}');
+        Get.snackbar(
+          'Success',
+          'Land acquisition survey submitted successfully!',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(milliseconds: 2000),
+          snackPosition: SnackPosition.BOTTOM,
+        );
       } else {
+        Get.snackbar(
+          'Error',
+          response.errorMessage ?? 'Unknown error occurred during submission.',
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(milliseconds: 3000),
+          snackPosition: SnackPosition.BOTTOM,
+        );
         print('❌ Land acquisition survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
       }
     } catch (e) {

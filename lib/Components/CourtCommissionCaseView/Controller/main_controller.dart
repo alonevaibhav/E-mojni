@@ -448,7 +448,7 @@ class CourtCommissionCaseController extends GetxController {
     // Prepare fields (non-file data)
     Map<String, String> fields = {
       // User ID
-      "user_id": "6",
+      "user_id": userId?.toString() ?? "0",
 
       //User Name
       "declarant_name": personalInfoController.applicantNameController.text.trim(),
@@ -751,7 +751,6 @@ class CourtCommissionCaseController extends GetxController {
 
       if (response.success && response.data != null) {
 
-        Get.offAllNamed(AppRoutes.mainDashboard);
 
         Get.snackbar(
           'Success',
@@ -760,6 +759,8 @@ class CourtCommissionCaseController extends GetxController {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
+        Get.offAllNamed(AppRoutes.mainDashboard);
+
 
         print('✅ Court commission survey submitted successfully: ${response.data}');
       } else {
