@@ -794,7 +794,7 @@ class GovernmentCensusController extends GetxController {
 
     // Add government counting order files
     if (personalInfoController.governmentCountingOrderFiles.isNotEmpty) {
-        final filePath = personalInfoController.governmentCountingOrderFiles.toString();
+        final filePath = personalInfoController.governmentCountingOrderFiles.first.toString();
         if (filePath.isNotEmpty) {
           files.add(MultipartFiles(
             field: "government_counting_order_file",
@@ -851,6 +851,24 @@ class GovernmentCensusController extends GetxController {
       files.add(MultipartFiles(
         field: "demarcation_certificate_path",
         filePath: censusEighthController.demarcationCertificateFiles!.first.toString(),
+      ));
+    }
+    if (censusEighthController.adhikarPatra?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "adhikar_patra_path",
+        filePath: censusEighthController.adhikarPatra!.first.toString(),
+      ));
+    }
+    if (censusEighthController.utaraAkharband?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "utara_akharband_path",
+        filePath: censusEighthController.utaraAkharband!.first.toString(),
+      ));
+    }
+    if (censusEighthController.otherDocument?.isNotEmpty == true) {
+      files.add(MultipartFiles(
+        field: "other_document_path",
+        filePath: censusEighthController.otherDocument!.first.toString(),
       ));
     }
 

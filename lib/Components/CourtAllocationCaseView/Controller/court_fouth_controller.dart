@@ -17,7 +17,7 @@ class CourtAlloFouthController extends GetxController with StepValidationMixin, 
 
   final durationOptions = [
     'Regular',
-    'Fast pace'
+    'Fast-track'
   ].obs;
 
   final holderTypeOptions = [

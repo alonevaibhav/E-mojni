@@ -443,21 +443,21 @@ class CourtAllocationCaseController extends GetxController {
       // User ID
       "user_id": userId,
 
-      "holder_name": personalInfoController.applicantNameController.text.trim(),
-      "holder_address": personalInfoController.applicantAddressController.text.trim(),
+      "declarant_name": personalInfoController.applicantNameController.text.trim(),
+      "declarant_address": personalInfoController.applicantAddressController.text.trim(),
 
       // === COURT ORDER INFO ===
       "court_name": personalInfoController.courtNameController.text.trim(),
       "court_address": personalInfoController.courtAddressController.text.trim(),
-      "court_order_number": personalInfoController.courtOrderNumberController.text.trim(),
+      "court_allocation_order_number": personalInfoController.courtOrderNumberController.text.trim(),
       "court_allotment_date": personalInfoController.courtAllotmentDateController.text.trim(),
       "court_allotment_date_selected": personalInfoController.courtAllotmentDate.value?.toString() ?? "",
-      "claim_number_year": personalInfoController.claimNumberYearController.text.trim(),
+      "case_number_year": personalInfoController.claimNumberYearController.text.trim(),
       "special_order_comments": personalInfoController.specialOrderCommentsController.text.trim(),
 
       // === SURVEY CTS INFO ===
 
-      "survey_number": surveyCTSController.surveyNumberController.text.trim(),
+      "survey_group_number": surveyCTSController.surveyNumberController.text.trim(),
       "department": surveyCTSController.selectedDepartment.value,
       "division": "1",
       "district": "26",
@@ -466,9 +466,9 @@ class CourtAllocationCaseController extends GetxController {
 
       // === COURT ALLOCATION FOURTH INFO ===
       "selected_calculation_type": courtAlloFouthController.selectedCalculationType.value ?? "",
-      "selected_duration": courtAlloFouthController.selectedDuration.value ?? "",
-      "selected_holder_type": courtAlloFouthController.selectedHolderType.value ?? "",
-      "selected_location_category": courtAlloFouthController.selectedLocationCategory.value ?? "",
+      "duration": courtAlloFouthController.selectedDuration.value ?? "",
+      "holder_type": courtAlloFouthController.selectedHolderType.value ?? "",
+      "within_municipal": courtAlloFouthController.selectedLocationCategory.value ?? "",
       // "calculation_fee": courtAlloFouthController.calculationFeeController.text.trim(),
       // "calculation_fee_numeric": courtAlloFouthController.extractNumericFee()?.toString() ?? "0",
 
@@ -498,7 +498,7 @@ class CourtAllocationCaseController extends GetxController {
         final filePath = personalInfoController.courtOrderFiles!.first.toString();
         if (filePath.isNotEmpty) {
           files.add(MultipartFiles(
-            field: "court_order_document",
+            field: "court_allocation_order",
             filePath: filePath,
           ));
 
@@ -738,8 +738,13 @@ class CourtAllocationCaseController extends GetxController {
   }
 
 
+
+
   Future<void> submitSurvey() async {
+
+
     try {
+
       String userId = await ApiService.getUid() ?? "0";
       print('🆔 User ID: $userId');
 
