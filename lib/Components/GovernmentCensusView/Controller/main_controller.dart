@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../API Service/api_service.dart';
 import '../../../Constants/api_constant.dart';
+import '../../../Route Manager/app_routes.dart';
 import '../../GovernmentCensusView/Controller/personal_info_controller.dart';
 import '../../GovernmentCensusView/Controller/step_three_controller.dart';
 import '../../GovernmentCensusView/Controller/survey_cts.dart';
@@ -201,7 +202,8 @@ class GovernmentCensusController extends GetxController {
     // Print the current survey data to the console
     // print('Current Survey Data: ${surveyData.value}');
     // debugPrintInfo();
-    submitSurvey();
+    // submitSurvey();
+    debugPrint();
 
     // Get the current step's total substeps
     final currentStepSubSteps = stepConfigurations[currentStep.value];
@@ -723,19 +725,6 @@ class GovernmentCensusController extends GetxController {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   Map<String, dynamic> prepareMultipartData(userId) {
     // Get all data
     final governmentCountingData = getGovernmentCountingData();
@@ -755,6 +744,9 @@ class GovernmentCensusController extends GetxController {
       // User ID
       "user_id": userId?.toString() ?? "0",
 
+      "applicant_name": personalInfoController.applicantNameController.text.trim(),
+      "applicant_address": personalInfoController.applicantAddressController.text.trim(),
+
       // === GOVERNMENT COUNTING INFO ===
       "government_counting_officer": personalInfoController.governmentCountingOfficerController.text.trim(),
       "government_counting_officer_address": personalInfoController.governmentCountingOfficerAddressController.text.trim(),
@@ -765,19 +757,19 @@ class GovernmentCensusController extends GetxController {
       "government_counting_details": personalInfoController.governmentCountingDetailsController.text.trim(),
 
       // === SURVEY CTS INFO ===
-      "survey_number": surveyCTSController.surveyNumberController.text.trim(),
-      "department": surveyCTSController.selectedDepartment.value ?? "",
-      "district": surveyCTSController.selectedDistrict.value ?? "",
-      "taluka": surveyCTSController.selectedTaluka.value ?? "",
-      "village": surveyCTSController.selectedVillage.value ?? "",
-      "office": surveyCTSController.selectedOffice.value ?? "",
+      "survey_number": surveyCTSController.surveyNumberController.text,
+      "department": surveyCTSController.selectedDepartment.value.toString(),
+      "division_id": "1", // Hardcoded as per your example
+      "district_id": "26", // Hardcoded as per your example
+      "taluka_id": "5", // Hardcoded as per your example
+      "village_id": "3", // Hardcoded as per your example
 
       // === CENSUS FOURTH INFO ===
       "calculation_type": censusFourthController.selectedCalculationType.value ?? "",
       "duration": censusFourthController.selectedDuration.value ?? "",
       "holder_type": censusFourthController.selectedHolderType.value ?? "",
-      "calculation_fee_rate": censusFourthController.selectedCalculationFeeRate.value ?? "",
-      "counting_fee": censusFourthController.countingFee.value?.toString() ?? "",
+      // "calculation_fee_rate": censusFourthController.selectedCalculationFeeRate.value ?? "",
+      // "counting_fee": censusFourthController.countingFee.value?.toString() ?? "",
     };
 
     // Convert complex data to JSON strings for multipart
@@ -906,14 +898,15 @@ class GovernmentCensusController extends GetxController {
         final addressData = entry['address'] as RxMap<String, dynamic>?;
 
         applicantsList.add({
-          "agreement": (entry['agreementController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "agreement": (entry['agreementController'] as TextEditingController?)?.text?.trim() ?? "",
           "account_holder_name": (entry['accountHolderNameController'] as TextEditingController?)?.text?.trim() ?? "",
-          "account_number": (entry['accountNumberController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "account_number": (entry['accountNumberController'] as TextEditingController?)?.text?.trim() ?? "",
           "mobile_number": (entry['mobileNumberController'] as TextEditingController?)?.text?.trim() ?? "",
-          "server_number": (entry['serverNumberController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "server_number": (entry['serverNumberController'] as TextEditingController?)?.text?.trim() ?? "",
           "area": (entry['areaController'] as TextEditingController?)?.text?.trim() ?? "",
-          "potkaharaba_area": (entry['potkaharabaAreaController'] as TextEditingController?)?.text?.trim() ?? "",
-          "total_area": (entry['totalAreaController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "potkaharaba_area": (entry['potkaharabaAreaController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "total_area": (entry['totalAreaController'] as TextEditingController?)?.text?.trim() ?? "",
+
           "plot_no": addressData?['plotNo']?.toString() ?? "",
           "address": addressData?['address']?.toString() ?? "",
           "address_mobile_number": addressData?['mobileNumber']?.toString() ?? "",
@@ -945,8 +938,9 @@ class GovernmentCensusController extends GetxController {
         coOwnersList.add({
           "name": (entry['nameController'] as TextEditingController?)?.text?.trim() ?? "",
           "mobile_number": (entry['mobileNumberController'] as TextEditingController?)?.text?.trim() ?? "",
-          "server_number": (entry['serverNumberController'] as TextEditingController?)?.text?.trim() ?? "",
-          "consent": (entry['consentController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "server_number": (entry['serverNumberController'] as TextEditingController?)?.text?.trim() ?? "",
+          // "consent": (entry['consentController'] as TextEditingController?)?.text?.trim() ?? "",
+
           "plot_no": address['plotNo'] ?? "",
           "address": address['address'] ?? "",
           "address_mobile_number": address['mobileNumber'] ?? "",
@@ -963,23 +957,72 @@ class GovernmentCensusController extends GetxController {
     return coOwnersList;
   }
 
-// Helper method to get next of kin
+// // Helper method to get next of kin
+//   List<Map<String, dynamic>> _getNextOfKin(Map<String, dynamic> censusSeventhData) {
+//     List<Map<String, dynamic>> nextOfKinList = [];
+//
+//     print('🔍 Processing next of kin: ${censusSeventhController.nextOfKinEntries.length}');
+//
+//     if (censusSeventhController.nextOfKinEntries.isNotEmpty) {
+//       for (int i = 0; i < censusSeventhController.nextOfKinEntries.length; i++) {
+//         final entry = censusSeventhController.nextOfKinEntries[i];
+//
+//         nextOfKinList.add({
+//           "name": (entry['nameController'] as TextEditingController?)?.text?.trim() ?? "",
+//           "address": (entry['addressController'] as TextEditingController?)?.text?.trim() ?? "",
+//           "mobile": (entry['mobileController'] as TextEditingController?)?.text?.trim() ?? "",
+//           "survey_no": (entry['surveyNoController'] as TextEditingController?)?.text?.trim() ?? "",
+//           "direction": entry['direction']?.toString() ?? "",
+//           "natural_resources": entry['naturalResources']?.toString() ?? "",
+//         });
+//       }
+//     }
+//
+//     print('🔍 Generated ${nextOfKinList.length} next of kin entries');
+//     return nextOfKinList;
+//   }
+
+
   List<Map<String, dynamic>> _getNextOfKin(Map<String, dynamic> censusSeventhData) {
     List<Map<String, dynamic>> nextOfKinList = [];
 
-    print('🔍 Processing next of kin: ${censusSeventhController.nextOfKinEntries.length}');
+    print('🔍 Processing ${censusSeventhController.nextOfKinEntries.length} next of kin entries');
 
-    if (censusSeventhController.nextOfKinEntries.isNotEmpty) {
-      for (int i = 0; i < censusSeventhController.nextOfKinEntries.length; i++) {
-        final entry = censusSeventhController.nextOfKinEntries[i];
+    for (final entry in censusSeventhController.nextOfKinEntries) {
+      final naturalResources = entry['naturalResources'] as String? ?? '';
+      final direction = entry['direction'] as String? ?? '';
+
+      if (naturalResources == 'Name' || naturalResources == 'Other') {
+        // Handle sub-entries for Name/Other types (these have controllers)
+        final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
+        final List<Map<String, dynamic>> subEntriesData = [];
+
+        if (subEntries != null) {
+          for (final subEntry in subEntries) {
+            // Get data from controllers in sub-entries
+            final nameController = subEntry['nameController'] as TextEditingController?;
+            final addressController = subEntry['addressController'] as TextEditingController?;
+            final mobileController = subEntry['mobileController'] as TextEditingController?;
+            final surveyNoController = subEntry['surveyNoController'] as TextEditingController?;
+
+            subEntriesData.add({
+              'name': nameController?.text ?? '',
+              'address': addressController?.text ?? '',
+              'mobile': mobileController?.text ?? '',
+              'survey_no': surveyNoController?.text ?? '',
+            });
+          }
+        }
 
         nextOfKinList.add({
-          "name": (entry['nameController'] as TextEditingController?)?.text?.trim() ?? "",
-          "address": (entry['addressController'] as TextEditingController?)?.text?.trim() ?? "",
-          "mobile": (entry['mobileController'] as TextEditingController?)?.text?.trim() ?? "",
-          "survey_no": (entry['surveyNoController'] as TextEditingController?)?.text?.trim() ?? "",
-          "direction": entry['direction']?.toString() ?? "",
-          "natural_resources": entry['naturalResources']?.toString() ?? "",
+          'direction': direction,
+          'natural_resources': naturalResources,
+          'sub_entries': subEntriesData,
+        });
+      } else {
+        nextOfKinList.add({
+          'direction': direction,
+          'natural_resources': naturalResources,
         });
       }
     }
@@ -987,6 +1030,24 @@ class GovernmentCensusController extends GetxController {
     print('🔍 Generated ${nextOfKinList.length} next of kin entries');
     return nextOfKinList;
   }
+
+
+
+
+  Future<void> debugPrint() async {
+
+    String userId = (await ApiService.getUid()) ?? "0";
+    print('🆔 User ID: $userId');
+
+    final multipartData = prepareMultipartData(userId);
+    final fields = multipartData['fields'] as Map<String, String>;
+    final files = multipartData['files'] as List<MultipartFiles>;
+
+    developer.log(jsonEncode(fields), name: 'REQUEST_BODY');
+
+
+  }
+
   Future<void> submitSurvey() async {
     try {
       String userId = (await ApiService.getUid()) ?? "0";
@@ -1008,7 +1069,25 @@ class GovernmentCensusController extends GetxController {
 
       if (response.success && response.data != null) {
         print('✅ Government counting survey submitted successfully: ${response.data}');
+        Get.snackbar(
+          'Success',
+          'Government counting survey submitted successfully.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+
+        // Get.offAllNamed(AppRoutes.mainDashboard);
+
       } else {
+
+        Get.snackbar(
+          'Error',
+          'Failed to submit government counting survey: ${response.errorMessage ?? 'Unknown error'}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
         print('❌ Government counting survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
       }
     } catch (e) {

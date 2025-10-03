@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../API Service/api_service.dart';
 import '../../../Constants/api_constant.dart';
+import '../../../Route Manager/app_routes.dart';
 import '../../CourtAllocationCaseView/Controller/personal_info_controller.dart';
 import '../../CourtAllocationCaseView/Controller/step_three_controller.dart';
 import '../../CourtAllocationCaseView/Controller/survey_cts.dart';
@@ -494,7 +495,7 @@ class CourtAllocationCaseController extends GetxController {
 
     // Add court order files
     if (personalInfoController.courtOrderFiles?.isNotEmpty == true) {
-        final filePath = personalInfoController.courtOrderFiles!.toString();
+        final filePath = personalInfoController.courtOrderFiles!.first.toString();
         if (filePath.isNotEmpty) {
           files.add(MultipartFiles(
             field: "court_order_document",
@@ -605,7 +606,7 @@ class CourtAllocationCaseController extends GetxController {
     for (int i = 0; i < calculationController.surveyEntries.length; i++) {
       final entry = calculationController.surveyEntries[i];
       entries.add({
-        "selected_village": entry['villageController']?.toString() ?? "",
+        "selected_village": entry['villageController']?.text ?? "",
         "survey_no": entry['surveyNo']?.toString() ?? "",
         // "share": entry['share']?.toString() ?? "",
         "area": entry['area']?.toString() ?? "",
@@ -749,7 +750,7 @@ class CourtAllocationCaseController extends GetxController {
       developer.log(jsonEncode(fields), name: 'REQUEST_BODY',);
 
       final response = await ApiService.multipartPost<Map<String, dynamic>>(
-        endpoint: haddakayamPost,
+        endpoint: courtAllocation,
         fields: fields,
         files: files,
         fromJson: (json) => json as Map<String, dynamic>,
@@ -758,7 +759,25 @@ class CourtAllocationCaseController extends GetxController {
 
       if (response.success && response.data != null) {
         print('✅ Survey submitted successfully: ${response.data}');
+
+        Get.snackbar(
+          'Success',
+          'Court allocation submitted successfully!',
+          backgroundColor: Color(0xFF52B788),
+          colorText: Colors.white,
+          duration: Duration(seconds: 2),
+        );
+
+        // Get.offAllNamed(AppRoutes.mainDashboard);
       } else {
+
+        Get.snackbar(
+          'Error',
+          response.errorMessage ?? 'Unknown error occurred during submission.',
+          backgroundColor: Color(0xFFDC3545),
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
         print('❌ Survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
       }
     } catch (e) {

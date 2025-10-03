@@ -1193,10 +1193,8 @@ class MainSurveyController extends GetxController {
       "user_id": userId?.toString() ?? "0",
 
       // === PERSONAL INFO ===
-      "applicant_name":
-          personalInfoController.applicantNameController.text.trim(),
-      "applicant_address":
-          personalInfoController.applicantAddressController.text.trim(),
+      "applicant_name": personalInfoController.applicantNameController.text.trim(),
+      "applicant_address": personalInfoController.applicantAddressController.text.trim(),
       "is_landholder":
           personalInfoController.isHolderThemselves.value.toString(),
       "is_power_of_attorney":
