@@ -90,15 +90,15 @@ class LoginViewController extends GetxController {
         // Navigate to dashboard
         Get.offAllNamed(AppRoutes.mainDashboard);
 
-        Get.snackbar(
-          'Welcome Back!',
-          'Session restored successfully',
-          backgroundColor: SetuColors.success,
-          colorText: Colors.white,
-          duration: Duration(seconds: 2),
-          snackPosition: SnackPosition.TOP,
-          margin: EdgeInsets.all(16),
-        );
+        // Get.snackbar(
+        //   'Welcome Back!',
+        //   'Session restored successfully',
+        //   backgroundColor: SetuColors.success,
+        //   colorText: Colors.white,
+        //   duration: Duration(seconds: 2),
+        //   snackPosition: SnackPosition.TOP,
+        //   margin: EdgeInsets.all(16),
+        // );
       } else {
         // No valid session, stay on login page
         isLoggedIn.value = false;
@@ -112,6 +112,8 @@ class LoginViewController extends GetxController {
   }
 
   // Load user session data
+// Load user session data
+// Load user session data
   Future<void> loadUserSession() async {
     try {
       final token = await TokenManager.getToken();
@@ -119,12 +121,32 @@ class LoginViewController extends GetxController {
       final email = await UserSession.getEmail();
       final userName = await UserSession.getUserName();
       final username = await UserSession.getUsername();
-      final userId = await UserSession.getUserId();
+
+      // ✅ FIX: Get UID directly from SharedPreferences instead of UserSession
+      final storedUid = await ApiService.getUid();
+      print('📌 UID from SharedPreferences: $storedUid');
 
       if (token != null && role != null) {
+        // Use stored UID or extract from token
+        String userId = storedUid ?? '';
+
+        // If no stored UID, extract from token
+        if (userId.isEmpty) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+            userId = decodedToken['id'].toString();
+            await ApiService.setUid(userId);
+            print('✅ UID extracted from token and saved: $userId');
+          } catch (e) {
+            print('❌ Error extracting UID from token: $e');
+          }
+        } else {
+          print('✅ UID restored from SharedPreferences: $userId');
+        }
+
         // Create user model from session data
         currentUser.value = UserModel(
-          id: userId?.toString() ?? '',
+          id: userId,
           email: email ?? '',
           name: userName ?? '',
           role: UserRole.fromString(role),
@@ -133,12 +155,9 @@ class LoginViewController extends GetxController {
 
         // Update API service with token
         await ApiService.setToken(token);
-        if (userId != null) {
-          await ApiService.setUid(userId.toString());
-        }
       }
     } catch (e) {
-      print('Error loading user session: $e');
+      print('❌ Error loading user session: $e');
     }
   }
 
@@ -203,9 +222,8 @@ class LoginViewController extends GetxController {
 
             // Extract and save user ID from JWT token
             Map<String, dynamic> decodedToken =
-                JwtDecoder.decode(loginData.token);
-            String userId =
-                decodedToken['id'].toString(); // Change 'id' to your field name
+            JwtDecoder.decode(loginData.token);
+            String userId = decodedToken['id'].toString(); // Change 'id' to your field name
             await ApiService.setUid(userId);
             print('Extracted and saved UID: $userId');
 
@@ -253,35 +271,6 @@ class LoginViewController extends GetxController {
     }
   }
 
-  // Save user session data
-  // Future<void> _saveUserSession(LoginData loginData) async {
-  //   try {
-  //     // Save token with TokenManager
-  //     await TokenManager.saveToken(
-  //       loginData.token,
-  //       expirationTime: loginData.expirationTime,
-  //     );
-  //
-  //     // Save user session data
-  //     await UserSession.saveSession(
-  //       token: loginData.token,
-  //       role: loginData.role,
-  //       email: loginData.profile.username,
-  //       profile: loginData.profile,
-  //     );
-  //
-  //     // Update API service
-  //     await ApiService.setToken(loginData.token);
-  //     print('Saving UID: ${loginData.token}');
-  //     await ApiService.setUid(loginData.userId.toString());
-  //
-  //   } catch (e) {
-  //     print('Error saving user session: $e');
-  //     throw Exception('Failed to save session data');
-  //   }
-  // }
-
-  // Enhanced logout function
 
   Future<void> _saveUserSession(LoginData loginData) async {
     try {
@@ -299,15 +288,6 @@ class LoginViewController extends GetxController {
         profile: loginData.profile,
       );
 
-      // Update API service with token
-      // await ApiService.setToken(loginData.token);
-      // print('Saving UID: ${loginData.token}');
-      //
-      // // Extract and save user ID from JWT token
-      // Map<String, dynamic> decodedToken = JwtDecoder.decode(loginData.token);
-      // String userId = decodedToken['id'].toString(); // Change 'id' to your field name
-      // await ApiService.setUid(userId);
-      // print('Extracted and saved UID: $userId');
     } catch (e) {
       print('Error saving user session: $e');
       throw Exception('Failed to save session data');

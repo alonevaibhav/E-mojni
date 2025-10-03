@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../API Service/api_service.dart';
 import '../../Constants/color_constant.dart';
 import '../../Controller/get_translation_controller/get_text_form.dart';
 import '../../Utils/double_tap_to_exit.dart';
@@ -17,6 +18,11 @@ class SurveyView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MainSurveyController());
     const double sizeFactor = 0.9; // Size constant variable
+
+    ApiService.getUid().then((uid) {
+      debugPrint("📌 UID from SharedPreferences: $uid");
+    });
+
 
     return PopToExitGetX(
       child: Scaffold(
