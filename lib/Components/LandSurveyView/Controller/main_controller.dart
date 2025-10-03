@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as Developer;
 import 'package:emojni/Components/LandSurveyView/Controller/preview_controller.dart';
 import 'package:emojni/Components/LandSurveyView/Controller/step_four_controller.dart';
 import 'package:emojni/Components/LandSurveyView/Controller/survey_eight_controller.dart';
@@ -1215,7 +1216,7 @@ class MainSurveyController extends GetxController {
           personalInfoController.poaHolderAddressController.text.trim(),
 
       // === SURVEY INFO ===
-      "survey_type": surveyCTSController.surveyCtsNumber.text,
+      "survey_number": surveyCTSController.surveyCtsNumber.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
       "division_id": "1", // Hardcoded as per your example
       "district_id": "26", // Hardcoded as per your example
@@ -1708,7 +1709,11 @@ class MainSurveyController extends GetxController {
       );
 
       if (response.success && response.data != null) {
-        print('✅ Survey submitted successfully: ${response.data}');
+        Developer.log(
+          'Survey submitted successfully: ${response.data}',
+          name: 'SurveySubmission',
+        );
+
 
         Get.snackbar(
           'Success',
