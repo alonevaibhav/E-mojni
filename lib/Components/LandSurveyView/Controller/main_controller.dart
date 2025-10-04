@@ -1363,12 +1363,13 @@ class MainSurveyController extends GetxController {
           true) {
         files.add(MultipartFiles(
           field: "non_agricultural_zone_certificate_path",
-          filePath: surveyEightController
-              .nonAgriculturalZoneCertificateFiles!.first
-              .toString(),
+          filePath: surveyEightController.nonAgriculturalZoneCertificateFiles!.first.toString(),
         ));
       }
     }
+
+
+
 
     // Add stomach specific files
     if (surveyEightController.isStomach) {
@@ -1402,16 +1403,6 @@ class MainSurveyController extends GetxController {
       }
     }
 
-
-  // Integration calculation files
-    if (calculationController.incorporationOrderFiles.isNotEmpty) {
-      for (var filePath in calculationController.incorporationOrderFiles) {
-        files.add(MultipartFiles(
-          field: "incorporation_order_files",
-          filePath: filePath,
-        ));
-      }
-    }
 
     print('🔍 Total Files: ${files.length}');
     for (var file in files) {
