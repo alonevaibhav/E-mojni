@@ -119,150 +119,150 @@ class StepFourView extends StatelessWidget {
         }),
 
         // Total Plot Number Input (for Non-agricultural calculation only)
-        Obx(() {
-          if (controller.requiresTotalPlotNumber()) {
-            return Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(
-                      color: Colors.green.withOpacity(0.2),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(12.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SurveyUIUtils.buildTextFormField(
-                        controller: controller.totalPlotNumberController,
-                        label: 'Total plot number as per approved layout *',
-                        hint: 'Enter total number of plots (minimum 1)',
-                        icon:
-                            PhosphorIcons.buildings(PhosphorIconsStyle.regular),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter total plot number';
-                          }
-                          final number = int.tryParse(value);
-                          if (number == null || number <= 0) {
-                            return 'Please enter a valid number greater than 0';
-                          }
-                          if (number > 999) {
-                            return 'Please enter a reasonable number (max 999)';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Gap(16.h),
-              ],
-            );
-          }
-          return SizedBox.shrink();
-        }),
+        // Obx(() {
+        //   if (controller.requiresTotalPlotNumber()) {
+        //     return Column(
+        //       children: [
+        //         Container(
+        //           decoration: BoxDecoration(
+        //             color: Colors.green.withOpacity(0.05),
+        //             borderRadius: BorderRadius.circular(8.r),
+        //             border: Border.all(
+        //               color: Colors.green.withOpacity(0.2),
+        //               width: 1,
+        //             ),
+        //           ),
+        //           padding: EdgeInsets.all(12.w),
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               SurveyUIUtils.buildTextFormField(
+        //                 controller: controller.totalPlotNumberController,
+        //                 label: 'Total plot number as per approved layout *',
+        //                 hint: 'Enter total number of plots (minimum 1)',
+        //                 icon:
+        //                     PhosphorIcons.buildings(PhosphorIconsStyle.regular),
+        //                 keyboardType: TextInputType.number,
+        //                 validator: (value) {
+        //                   if (value == null || value.trim().isEmpty) {
+        //                     return 'Please enter total plot number';
+        //                   }
+        //                   final number = int.tryParse(value);
+        //                   if (number == null || number <= 0) {
+        //                     return 'Please enter a valid number greater than 0';
+        //                   }
+        //                   if (number > 999) {
+        //                     return 'Please enter a reasonable number (max 999)';
+        //                   }
+        //                   return null;
+        //                 },
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         Gap(16.h),
+        //       ],
+        //     );
+        //   }
+        //   return SizedBox.shrink();
+        // }),
 
         // Knot Count Input (for Counting by number of knots calculation only)
-        Obx(() {
-          if (controller.requiresKnotCount()) {
-            return Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(
-                      color: Colors.orange.withOpacity(0.2),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(12.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SurveyUIUtils.buildTextFormField(
-                        controller: controller.knotCountController,
-                        label: 'Total plot number as per approved layout *',
-                        hint: 'Enter number of knots (minimum 1)',
-                        icon: PhosphorIcons.link(PhosphorIconsStyle.regular),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter knot count';
-                          }
-                          final number = int.tryParse(value);
-                          if (number == null || number <= 0) {
-                            return 'Please enter a valid number greater than 0';
-                          }
-                          if (number > 999) {
-                            return 'Please enter a reasonable number (max 999)';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Gap(16.h),
-              ],
-            );
-          }
-          return SizedBox.shrink();
-        }),
+        // Obx(() {
+        //   if (controller.requiresKnotCount()) {
+        //     return Column(
+        //       children: [
+        //         Container(
+        //           decoration: BoxDecoration(
+        //             color: Colors.orange.withOpacity(0.05),
+        //             borderRadius: BorderRadius.circular(8.r),
+        //             border: Border.all(
+        //               color: Colors.orange.withOpacity(0.2),
+        //               width: 1,
+        //             ),
+        //           ),
+        //           padding: EdgeInsets.all(12.w),
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               SurveyUIUtils.buildTextFormField(
+        //                 controller: controller.knotCountController,
+        //                 label: 'Total plot number as per approved layout *',
+        //                 hint: 'Enter number of knots (minimum 1)',
+        //                 icon: PhosphorIcons.link(PhosphorIconsStyle.regular),
+        //                 keyboardType: TextInputType.number,
+        //                 validator: (value) {
+        //                   if (value == null || value.trim().isEmpty) {
+        //                     return 'Please enter knot count';
+        //                   }
+        //                   final number = int.tryParse(value);
+        //                   if (number == null || number <= 0) {
+        //                     return 'Please enter a valid number greater than 0';
+        //                   }
+        //                   if (number > 999) {
+        //                     return 'Please enter a reasonable number (max 999)';
+        //                   }
+        //                   return null;
+        //                 },
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         Gap(16.h),
+        //       ],
+        //     );
+        //   }
+        //   return SizedBox.shrink();
+        // }),
 
         // Abdominal Section Input (for Stomach calculation only)
-        Obx(() {
-          if (controller.requiresAbdominalSection()) {
-            return Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(
-                      color: Colors.blue.withOpacity(0.2),
-                      width: 1,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(12.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SurveyUIUtils.buildTextFormField(
-                        controller: controller.abdominalSectionController,
-                        label: 'Abdominal section *',
-                        hint: 'Enter number of abdominal sections (minimum 1)',
-                        icon: PhosphorIcons.listNumbers(
-                            PhosphorIconsStyle.regular),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter abdominal section number';
-                          }
-                          final number = int.tryParse(value);
-                          if (number == null || number <= 0) {
-                            return 'Please enter a valid number greater than 0';
-                          }
-                          if (number > 999) {
-                            return 'Please enter a reasonable number (max 999)';
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Gap(16.h),
-              ],
-            );
-          }
-          return SizedBox.shrink();
-        }),
+        // Obx(() {
+        //   if (controller.requiresAbdominalSection()) {
+        //     return Column(
+        //       children: [
+        //         Container(
+        //           decoration: BoxDecoration(
+        //             color: Colors.blue.withOpacity(0.05),
+        //             borderRadius: BorderRadius.circular(8.r),
+        //             border: Border.all(
+        //               color: Colors.blue.withOpacity(0.2),
+        //               width: 1,
+        //             ),
+        //           ),
+        //           padding: EdgeInsets.all(12.w),
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               SurveyUIUtils.buildTextFormField(
+        //                 controller: controller.abdominalSectionController,
+        //                 label: 'Abdominal section *',
+        //                 hint: 'Enter number of abdominal sections (minimum 1)',
+        //                 icon: PhosphorIcons.listNumbers(
+        //                     PhosphorIconsStyle.regular),
+        //                 keyboardType: TextInputType.number,
+        //                 validator: (value) {
+        //                   if (value == null || value.trim().isEmpty) {
+        //                     return 'Please enter abdominal section number';
+        //                   }
+        //                   final number = int.tryParse(value);
+        //                   if (number == null || number <= 0) {
+        //                     return 'Please enter a valid number greater than 0';
+        //                   }
+        //                   if (number > 999) {
+        //                     return 'Please enter a reasonable number (max 999)';
+        //                   }
+        //                   return null;
+        //                 },
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         Gap(16.h),
+        //       ],
+        //     );
+        //   }
+        //   return SizedBox.shrink();
+        // }),
 
         // // Calculation Fee (Auto-calculated, read-only)
         // SurveyUIUtils.buildTextFormField(

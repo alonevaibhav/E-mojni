@@ -1402,6 +1402,17 @@ class MainSurveyController extends GetxController {
       }
     }
 
+
+  // Integration calculation files
+    if (calculationController.incorporationOrderFiles.isNotEmpty) {
+      for (var filePath in calculationController.incorporationOrderFiles) {
+        files.add(MultipartFiles(
+          field: "incorporation_order_files",
+          filePath: filePath,
+        ));
+      }
+    }
+
     print('🔍 Total Files: ${files.length}');
     for (var file in files) {
       print('🔍 File: ${file.field} -> ${file.filePath}');
@@ -1455,26 +1466,22 @@ class MainSurveyController extends GetxController {
       case 'Non-agricultural':
         // Add order details first
         entries.add({
-          "survey_number":
-              calculationController.nonAgrisurveyNumberGatNumber.text.trim(),
+          "survey_number_cts_gat_no":
+          calculationController.nonAgrisurveyNumberGatNumber.text.trim(),
           "order_approval_number":
-              calculationController.orderNumberController.text.trim(),
-          "order_approval_date":
-              calculationController.orderDateController.text.trim(),
+          calculationController.orderNumberController.text.trim(),
+          "order_approval_date": formatDate(calculationController.orderDateController.text.trim()),
           "layout_approval_number":
-              calculationController.schemeOrderNumberController.text.trim(),
-          "layout_approval_date":
-              calculationController.appointmentDateController.text.trim(),
+          calculationController.schemeOrderNumberController.text.trim(),
+          "layout_approval_date": formatDate(calculationController.appointmentDateController.text.trim()),
         });
 
         // Then add survey entries
         if (calculationController.nonAgriculturalEntries.isNotEmpty) {
-          for (int i = 0;
-              i < calculationController.nonAgriculturalEntries.length;
-              i++) {
+          for (int i = 0; i < calculationController.nonAgriculturalEntries.length; i++) {
             final entry = calculationController.nonAgriculturalEntries[i];
             entries.add({
-              "survey_number": entry['surveyNumber']?.toString() ?? "",
+              "sub_survey_number": entry['surveyNumber']?.toString() ?? "",
               "original_area": entry['area']?.toString() ?? "",
               "area_hector": entry['areaHectaresController']?.text ?? "",
             });
@@ -1484,17 +1491,37 @@ class MainSurveyController extends GetxController {
 
       case 'Counting by number of knots':
         // Add order details first
+        String formatDatek(String dateStr) {
+          if (dateStr.isEmpty) return '';
+
+          // Check if the date is already in YYYY-MM-DD format
+          final dateRegex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+          if (dateRegex.hasMatch(dateStr)) {
+            return dateStr;
+          }
+
+          // If not, try to parse DD/MM/YYYY format
+          try {
+            final parts = dateStr.split('/');
+            if (parts.length == 3) {
+              final day = parts[0].padLeft(2, '0');
+              final month = parts[1].padLeft(2, '0');
+              final year = parts[2];
+              return '$year-$month-$day';
+            }
+          } catch (e) {
+            print('Error formatting date: $e');
+          }
+
+          return dateStr; // Fallback to original if conversion fails
+        }
+
         entries.add({
-          "survey_number":
-              calculationController.countingKsurveyNumberGatNumber.text.trim(),
-          "order_approval_number":
-              calculationController.orderNumberController.text.trim(),
-          "order_approval_date":
-              calculationController.orderDateController.text.trim(),
-          "layout_approval_number":
-              calculationController.schemeOrderNumberController.text.trim(),
-          "layout_approval_date":
-              calculationController.appointmentDateController.text.trim(),
+          "survey_number": calculationController.countingKsurveyNumberGatNumber.text.trim(),
+          "order_approval_number": calculationController.orderNumberController.text.trim(),
+          "order_approval_date": formatDatek(calculationController.orderDateController.text.trim()),
+          "layout_approval_number": calculationController.schemeOrderNumberController.text.trim(),
+          "layout_approval_date": formatDatek(calculationController.appointmentDateController.text.trim()),
         });
 
         // Then add survey entries
@@ -1515,12 +1542,9 @@ class MainSurveyController extends GetxController {
       case 'Integration calculation':
         // Add consolidation details first
         entries.add({
-          "consolidation_order_number":
-              calculationController.mergerOrderNumberController.text.trim(),
-          "consolidation_order_date":
-              calculationController.mergerOrderDateController.text.trim(),
-          "old_consolidation_mrn":
-              calculationController.oldMergerNumberController.text.trim(),
+          "consolidation_order_number": calculationController.mergerOrderNumberController.text.trim(),
+          "consolidation_order_date": calculationController.mergerOrderDateController.text.trim(),
+          "old_consolidation_mrn": calculationController.oldMergerNumberController.text.trim(),
         });
 
         // Then add survey entries
@@ -1721,7 +1745,7 @@ class MainSurveyController extends GetxController {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
-        Get.offAllNamed(AppRoutes.mainDashboard);
+        // Get.offAllNamed(AppRoutes.mainDashboard);
 
         // Show success animation
         update(); // Update UI
@@ -1803,6 +1827,23 @@ class MainSurveyController extends GetxController {
       }
     }
   }
+}
+
+
+String formatDate(String dateStr) {
+  if (dateStr.isEmpty) return '';
+  try {
+    final parts = dateStr.split('/');
+    if (parts.length == 3) {
+      final day = parts[0];
+      final month = parts[1];
+      final year = parts[2];
+      return '$year-$month-$day';
+    }
+  } catch (e) {
+    print('Error formatting date: $e');
+  }
+  return dateStr; // Fallback to original if conversion fails
 }
 
 // Mixins for step controllers to implement

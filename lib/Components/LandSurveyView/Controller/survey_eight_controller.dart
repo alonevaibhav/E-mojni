@@ -99,6 +99,19 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       return false;
     }
   }
+  bool get isIntegrationCalculation {
+    try {
+      final calculationController = Get.find<CalculationController>(tag: 'calculation');
+      bool result = calculationController.selectedCalculationType.value == 'Integration calculation';
+
+      Developer.log('isStomach check: ${calculationController.selectedCalculationType.value} -> $result', name: 'SurveyEightController');
+
+      return result;
+    } catch (e) {
+      print('Error in isStomach: $e');
+      return false;
+    }
+  }
 
   // Validation Methods
   @override

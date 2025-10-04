@@ -97,25 +97,25 @@ class PersonalInfoStep extends StatelessWidget {
             Gap(16.h),
 
             // Conditional Question 2: Authority on behalf
-            if (controller.shouldShowAuthorityQuestion) ...[
-              SurveyUIUtils.buildQuestionCard(
-                question:
-                    'Note: Are you holding the authority on behalf of the applicant?/or are you applying as a competent Gunthewari Regularization/Gunthewari Planning Authority?',
-                selectedValue: controller.hasAuthorityOnBehalf.value,
-                onChanged: (value) async {
-                  controller.updateAuthorityOnBehalf(value);
-
-                  if (value == true) {
-                    // Show dialog when user selects Yes
-                    await _showAuthorityConfirmationDialog();
-                  }
-                },
-              ),
-              Gap(16.h),
-            ],
+            // if (controller.shouldShowAuthorityQuestion) ...[
+            //   SurveyUIUtils.buildQuestionCard(
+            //     question:
+            //         'Note: Are you holding the authority on behalf of the applicant?/or are you applying as a competent Gunthewari Regularization/Gunthewari Planning Authority?',
+            //     selectedValue: controller.hasAuthorityOnBehalf.value,
+            //     onChanged: (value) async {
+            //       controller.updateAuthorityOnBehalf(value);
+            //
+            //       if (value == true) {
+            //         // Show dialog when user selects Yes
+            //         await _showAuthorityConfirmationDialog();
+            //       }
+            //     },
+            //   ),
+            //   Gap(16.h),
+            // ],
 
             // Additional fields when has authority on behalf
-            if (controller.shouldShowPOAFields) ...[
+            if (controller.shouldShowAuthorityQuestion) ...[
               _buildAdditionalFields(),
               Gap(16.h),
             ],
