@@ -10,7 +10,7 @@ import '../../Auth/login_view_controller.dart';
 import '../../Constants/color_constant.dart';
 import '../../../Controller/get_translation_controller/get_translation_controller.dart';
 import '../../../Utils/TranslationManager/translation_service.dart';
-import '../../Controller/ProfileController/user_details_controller.dart';
+import '../../Controller/Profile/ProfileController/user_details_controller.dart';
 import '../../Controller/get_translation_controller/get_text_form.dart';
 import 'ProfileDetails/profile_details.dart';
 

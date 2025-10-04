@@ -1476,7 +1476,7 @@ class MainSurveyController extends GetxController {
             entries.add({
               "survey_number": entry['surveyNumber']?.toString() ?? "",
               "original_area": entry['area']?.toString() ?? "",
-              "area_hector": entry['areaHectaresController']?.toString() ?? "",
+              "area_hector": entry['areaHectaresController']?.text ?? "",
             });
           }
         }
@@ -1506,7 +1506,7 @@ class MainSurveyController extends GetxController {
             entries.add({
               "survey_number": entry['surveyNumber']?.toString() ?? "",
               "original_area": entry['area']?.toString() ?? "",
-              "hector_area": entry['areaHectaresController']?.toString() ?? "",
+              "hector_area": entry['areaHectaresController']?.text ?? "",
             });
           }
         }
@@ -1533,6 +1533,7 @@ class MainSurveyController extends GetxController {
             entries.add({
               "ct_survey_number": entry['ctSurveyNumber']?.toString() ?? "",
               "original_area": entry['area']?.toString() ?? "",
+              "area": entry['areaSqmController']?.text ?? "",
             });
           }
         }

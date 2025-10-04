@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../../Models/user_profile_details.dart';
-import '../../Repository/user_datils_repo.dart';
+import '../../../Models/user_profile_details.dart';
+import '../../../Repository/user_datils_repo.dart';
 
 class UserDetailsController extends GetxController with StateMixin<UserProfileDetails> {
   final UserProfileRepository _repository = UserProfileRepository();

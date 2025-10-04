@@ -48,10 +48,6 @@ class GovLink extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
     color: SetuColors.primaryGreen,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(24.r * sizeFactor),
-          bottomRight: Radius.circular(24.r * sizeFactor),
-        ),
       ),
       child: Column(
         children: [

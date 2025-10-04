@@ -353,7 +353,7 @@ class DashboardView extends StatelessWidget {
 
       switch (actionTitle) {
         case 'My Application': // Fixed: This should match your actual action title
-          // Get.toNamed(AppRoutes.dashboardMyApplication);
+          Get.toNamed(AppRoutes.dashboardMyApplication);
           print('Navigated to: My Application Page');
           break;
         case 'Pending Application':

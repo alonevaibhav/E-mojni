@@ -8,7 +8,8 @@ import '../Components/LandAcquisitionView/main_view.dart';
 import '../Components/LandSurveyView/land_survey_view.dart';
 import '../Components/join_as_site_lead.dart';
 import '../View/Dashboard/GovLink/gov_link.dart';
-import '../View/MyApplication/my_application.dart';
+import '../View/Dashboard/MyApplication/lifecycle_view.dart';
+import '../View/Dashboard/MyApplication/my_all_application.dart';
 import '../View/bottum_nevigation_bar.dart';
 import 'app_bindings.dart';
 
@@ -77,7 +78,7 @@ class AppRoutes {
 
     GetPage(
       name: dashboardMyApplication,
-      page: () => MyApplication(),
+      page: () => MyAllApplication(),
       binding: AppBindings(),
     ),
 

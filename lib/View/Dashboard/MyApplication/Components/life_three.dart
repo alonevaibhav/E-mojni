@@ -5,8 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../Constants/color_constant.dart';
-import '../../../Controller/my_application_controller.dart';
+import '../../../../Constants/color_constant.dart';
+import '../../../../Controller/my_application_controller.dart';
 
 
 

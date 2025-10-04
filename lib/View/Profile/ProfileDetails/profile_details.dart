@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import '../../../Constants/color_constant.dart';
-import '../../../Controller/ProfileController/user_details_controller.dart';
+import '../../../Controller/Profile/ProfileController/user_details_controller.dart';
 import '../../../Controller/get_translation_controller/get_text_form.dart';
 import '../../../Models/user_profile_details.dart';
 
