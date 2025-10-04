@@ -22,6 +22,7 @@ String userProfileDetails(int id) => "/api/user/$id";
 
 String getMyApplication(int id) => "/api/user/$id/forms/summary";
 
+String getPreviewData(int userId, String formType) {return "/api/user/$userId/forms/type?type=$formType";}
 
 String stateGet = "api/location/states";
 

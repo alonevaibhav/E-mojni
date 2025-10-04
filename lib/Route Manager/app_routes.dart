@@ -10,6 +10,7 @@ import '../Components/join_as_site_lead.dart';
 import '../View/Dashboard/GovLink/gov_link.dart';
 import '../View/Dashboard/MyApplication/lifecycle_view.dart';
 import '../View/Dashboard/MyApplication/my_all_application.dart';
+import '../View/Dashboard/MyApplication/my_app_component/preview_page.dart';
 import '../View/bottum_nevigation_bar.dart';
 import 'app_bindings.dart';
 
@@ -30,6 +31,8 @@ class AppRoutes {
 
 
   static const dashboardMyApplication = '/dashboardMyApplication';
+  static const previewPage = '/dashboardMyApplication/previewPage';
+
 
   static const cleaner = '/cleaner/dashboard';
   static const inspector = '/inspector/dashboard';
@@ -85,6 +88,11 @@ class AppRoutes {
     GetPage(
       name: governmentLink,
       page: () => GovLink(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: previewPage,
+      page: () => PreviewPage(),
       binding: AppBindings(),
     ),
   ];
