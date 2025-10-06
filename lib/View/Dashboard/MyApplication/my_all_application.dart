@@ -625,7 +625,7 @@ class MyAllApplication extends StatelessWidget {
         route = AppRoutes.courtVatapPage; // Replace with actual route
         break;
       case 'shaskiya_mojni':
-        route = AppRoutes.countingLand; // Replace with actual route
+        route = AppRoutes.shaskiyaPage; // Replace with actual route
         break;
       default:
         route = AppRoutes.countingLand;

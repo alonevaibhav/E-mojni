@@ -65,7 +65,9 @@ class CalculationController extends GetxController with StepValidationMixin, Ste
   final mergerOrderNumberController = TextEditingController();
   final mergerOrderDateController = TextEditingController();
   final oldMergerNumberController = TextEditingController();
+
   final RxList<String> incorporationOrderFiles = <String>[].obs;
+  final RxList<String> gunthewari_order_path = <String>[].obs;
 
   // Status fields
   final isCalculationComplete = Rxn<bool>();

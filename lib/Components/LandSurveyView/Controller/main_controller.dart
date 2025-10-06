@@ -1334,6 +1334,15 @@ class MainSurveyController extends GetxController {
         ));
       }
     }
+    if (calculationData['calculationType'] == 'Counting by number of knots') {
+      final filePath = calculationController.gunthewari_order_path!.first.toString();
+      if (filePath.isNotEmpty) {
+        files.add(MultipartFiles(
+          field: "gunthewari_order_path",
+          filePath: filePath,
+        ));
+      }
+    }
 
     // Add non-agricultural specific files
     if (surveyEightController.isNonAgricultural) {

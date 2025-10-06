@@ -136,15 +136,15 @@ class BhusampadanPage extends StatelessWidget {
                   ),
                 ),
                 Gap(12.w * sizeFactor),
-                Expanded(
-                  child: buildHeaderStatCard(
-                    icon: PhosphorIcons.seal(PhosphorIconsStyle.fill),
-                    label: 'Approved',
-                    value: '$approvedCount',
-                    color: Colors.purple,
-                    sizeFactor: sizeFactor,
-                  ),
-                ),
+                // Expanded(
+                //   child: buildHeaderStatCard(
+                //     icon: PhosphorIcons.seal(PhosphorIconsStyle.fill),
+                //     label: 'Approved',
+                //     value: '$approvedCount',
+                //     color: Colors.purple,
+                //     sizeFactor: sizeFactor,
+                //   ),
+                // ),
               ],
             ),
           ],

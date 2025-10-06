@@ -17,7 +17,7 @@ class CourtVatapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CourtVatapController>();
+    final controller =Get.put(CourtVatapController());
     final sizeFactor = 0.85;
 
     return Scaffold(
@@ -137,15 +137,15 @@ class CourtVatapPage extends StatelessWidget {
                   ),
                 ),
                 Gap(12.w * sizeFactor),
-                Expanded(
-                  child: buildHeaderStatCard(
-                    icon: PhosphorIcons.calendar(PhosphorIconsStyle.fill),
-                    label: 'Scheduled',
-                    value: '$scheduleProposedCount',
-                    color: Colors.purple,
-                    sizeFactor: sizeFactor,
-                  ),
-                ),
+                // Expanded(
+                //   child: buildHeaderStatCard(
+                //     icon: PhosphorIcons.calendar(PhosphorIconsStyle.fill),
+                //     label: 'Scheduled',
+                //     value: '$scheduleProposedCount',
+                //     color: Colors.purple,
+                //     sizeFactor: sizeFactor,
+                //   ),
+                // ),
               ],
             ),
           ],

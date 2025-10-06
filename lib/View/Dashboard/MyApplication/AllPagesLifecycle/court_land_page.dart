@@ -137,15 +137,15 @@ class CourtLandPage extends StatelessWidget {
                   ),
                 ),
                 Gap(12.w * sizeFactor),
-                Expanded(
-                  child: buildHeaderStatCard(
-                    icon: PhosphorIcons.currencyDollar(PhosphorIconsStyle.fill),
-                    label: 'Fee Confirmed',
-                    value: '$confirmedFeeCount',
-                    color: Colors.purple,
-                    sizeFactor: sizeFactor,
-                  ),
-                ),
+                // Expanded(
+                //   child: buildHeaderStatCard(
+                //     icon: PhosphorIcons.currencyDollar(PhosphorIconsStyle.fill),
+                //     label: 'Fee Confirmed',
+                //     value: '$confirmedFeeCount',
+                //     color: Colors.purple,
+                //     sizeFactor: sizeFactor,
+                //   ),
+                // ),
               ],
             ),
           ],

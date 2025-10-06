@@ -609,6 +609,17 @@ class CalculationInformation extends StatelessWidget {
         ),
         Gap(24.h * SurveyUIUtils.sizeFactor),
 
+        // Gap(16.h * SurveyUIUtils.sizeFactor),
+
+        // Map of incorporation order field - OUTSIDE the entry list
+        ImagePickerUtil.buildFileUploadField(
+          label: 'Upload Gunthewari Order Photo  *',
+          hint: 'Upload images or Gunthewari Order',
+          icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
+          uploadedFiles: calcController.gunthewari_order_path,
+          onFilesSelected: (files) => calcController.gunthewari_order_path.assignAll(files),
+        ),
+
         // Entry list with table-like structure
         _buildEntryList(
           title:

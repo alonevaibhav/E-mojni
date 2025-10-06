@@ -573,14 +573,7 @@ class ProfileView extends StatelessWidget {
 
   }
 
-  void _navigateToNotificationSettings(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NotificationSettingsPage(),
-      ),
-    );
-  }
+
 
   void _navigateToPrivacySettings(BuildContext context) {
     Navigator.push(
@@ -618,20 +611,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  void _rateApp(BuildContext context) async {
-    try {
-      const String androidUrl = 'https://play.google.com/store/apps/details?id=com.yourapp.package';
-      const String iosUrl = 'https://apps.apple.com/app/your-app-id';
-      final Uri url = Uri.parse(androidUrl);
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      } else {
-        _showErrorDialog(context, 'Could not open app store');
-      }
-    } catch (e) {
-      _showErrorDialog(context, 'Error opening app store: $e');
-    }
-  }
+
 
   void _shareApp() {
     Share.share(
@@ -640,53 +620,6 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: SetuColors.cardBackground,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r * 0.85),
-          ),
-          title: GetTranslatableText(
-            'Error',
-            style: TextStyle(
-              fontSize: 20.sp * 0.85,
-              fontWeight: FontWeight.bold,
-              color: SetuColors.error,
-            ),
-          ),
-          content: GetTranslatableText(
-            message,
-            style: TextStyle(
-              fontSize: 16.sp * 0.85,
-              color: SetuColors.textSecondary,
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: SetuColors.primaryGreen,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r * 0.85),
-                ),
-              ),
-              child: GetTranslatableText(
-                'OK',
-                style: TextStyle(
-                  fontSize: 16.sp * 0.85,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   void _showComingSoonDialog(BuildContext context, String feature) {
     showDialog(
