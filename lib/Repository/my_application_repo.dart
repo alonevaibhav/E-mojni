@@ -15,7 +15,6 @@ class UserFormsRepository {
   }
 
 
-
   Future<UserFormsSummary> getUserFormsSummary() async {
     try {
       // Get user ID

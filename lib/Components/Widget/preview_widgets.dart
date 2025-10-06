@@ -7,7 +7,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../Constants/color_constant.dart';
 import '../../Utils/file_full_screen_view.dart';
-import '../LandSurveyView/Controller/preview_controller.dart';
 
 
 

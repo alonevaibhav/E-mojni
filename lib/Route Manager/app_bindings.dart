@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../Controller/Dashboard/MyApplication/counting_land_controller.dart';
 import '../Controller/buttom_nevigation_controller.dart';
 import '../Controller/get_translation_controller/get_translation_controller.dart';
 import '../Controller/login_controller.dart';
@@ -13,9 +14,8 @@ class AppBindings extends Bindings {
     Get.lazyPut(() => TranslationController(), fenix: true); // Add fenix: true
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<LoginViewController>(() => LoginViewController(), fenix: true);
-    Get.put<MainNavigationController>(
-        MainNavigationController(),
-        permanent: true
-    );
+    Get.put<MainNavigationController>(MainNavigationController(), permanent: true);
+    Get.lazyPut<CountingLandController>(() => CountingLandController(), );
+
   }
 }

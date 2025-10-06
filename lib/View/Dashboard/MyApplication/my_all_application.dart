@@ -346,8 +346,7 @@ class MyAllApplication extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 0,
       ),
-      body: controller.obx(
-            (formsSummary) => _buildFormsContent(formsSummary!, sizeFactor),
+      body: controller.obx((formsSummary) => _buildFormsContent(formsSummary!, sizeFactor),
         onLoading: CommonStateWidgets.loading(
           message: 'Loading applications...',
           sizeFactor: sizeFactor,
@@ -610,8 +609,30 @@ class MyAllApplication extends StatelessWidget {
   }
 
   void _navigateToFormDetails(String formType, String formName) {
+    String route;
+
+    switch (formType) {
+      case 'counting_land':
+        route = AppRoutes.countingLand;
+        break;
+      case 'bhusampadan_citizen':
+        route = AppRoutes.bhusampadanPage; // Replace with actual route
+        break;
+      case 'court_land_details':
+        route = AppRoutes.courtLandPage; // Replace with actual route
+        break;
+      case 'court_vatap_citizen_application':
+        route = AppRoutes.courtVatapPage; // Replace with actual route
+        break;
+      case 'shaskiya_mojni':
+        route = AppRoutes.countingLand; // Replace with actual route
+        break;
+      default:
+        route = AppRoutes.countingLand;
+    }
+
     Get.toNamed(
-      AppRoutes.previewPage,
+      route,
       arguments: {
         'formType': formType,
         'formName': formName,

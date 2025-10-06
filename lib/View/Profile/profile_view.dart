@@ -12,18 +12,22 @@ import '../../../Controller/get_translation_controller/get_translation_controlle
 import '../../../Utils/TranslationManager/translation_service.dart';
 import '../../Controller/Profile/ProfileController/user_details_controller.dart';
 import '../../Controller/get_translation_controller/get_text_form.dart';
-import 'ProfileDetails/profile_details.dart';
+import 'components/help & support.dart';
+import 'components/privacy_policy.dart';
+import 'components/profile_details.dart';
+import 'components/terms_conditions.dart';
+
+
 
 class ProfileView extends StatelessWidget {
   final ScrollController scrollController;
-   ProfileView({Key? key, required this.scrollController}) : super(key: key);
+
+  ProfileView({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // final translationController = Get.put(TranslationController());
     final translationController = Get.find<TranslationController>();
     final controller = Get.put(UserDetailsController());
-
     return Scaffold(
       backgroundColor: SetuColors.background,
       body: CustomScrollView(
@@ -72,7 +76,6 @@ class ProfileView extends StatelessWidget {
                         ),
                       ).animate().scale(duration: 800.ms, delay: 200.ms),
                       Gap(16.h * 0.85),
-                      // Value
                       GetTranslatableText(
                         controller.state?.fullName ?? 'Farmer Name',
                         style: TextStyle(
@@ -105,7 +108,7 @@ class ProfileView extends StatelessWidget {
                   ).animate().fadeIn(duration: 600.ms, delay: 1200.ms),
                   Gap(16.h * 0.85),
                   ...List.generate(
-                    10,
+                    7,
                         (index) => _buildSettingsItem(index, context, translationController).animate().fadeIn(
                       duration: 600.ms,
                       delay: (1400 + (index * 100)).ms,
@@ -128,11 +131,6 @@ class ProfileView extends StatelessWidget {
         'icon': PhosphorIcons.userCircle(PhosphorIconsStyle.regular)
       },
       {
-        'title': 'Notifications',
-        'subtitle': 'Manage your notification preferences',
-        'icon': PhosphorIcons.bell(PhosphorIconsStyle.regular),
-      },
-      {
         'title': 'Privacy & Security',
         'subtitle': 'Control your privacy settings',
         'icon': PhosphorIcons.shield(PhosphorIconsStyle.regular)
@@ -153,16 +151,6 @@ class ProfileView extends StatelessWidget {
         'icon': PhosphorIcons.fileText(PhosphorIconsStyle.regular)
       },
       {
-        'title': 'Privacy Policy',
-        'subtitle': 'Read our privacy policy',
-        'icon': PhosphorIcons.file(PhosphorIconsStyle.regular)
-      },
-      {
-        'title': 'Rate App',
-        'subtitle': 'Rate us on the app store',
-        'icon': PhosphorIcons.star(PhosphorIconsStyle.regular)
-      },
-      {
         'title': 'Share App',
         'subtitle': 'Share this app with friends',
         'icon': PhosphorIcons.shareNetwork(PhosphorIconsStyle.regular)
@@ -173,10 +161,8 @@ class ProfileView extends StatelessWidget {
         'icon': PhosphorIcons.signOut(PhosphorIconsStyle.regular)
       },
     ];
-
     final setting = settings[index % settings.length];
     final isLogout = setting['title'] == 'Logout';
-
     return Container(
       margin: EdgeInsets.only(bottom: 12.h * 0.85),
       decoration: BoxDecoration(
@@ -198,9 +184,7 @@ class ProfileView extends StatelessWidget {
         leading: Container(
           padding: EdgeInsets.all(8.w * 0.85),
           decoration: BoxDecoration(
-            color: isLogout
-                ? SetuColors.error.withOpacity(0.1)
-                : SetuColors.accent.withOpacity(0.1),
+            color: isLogout ? SetuColors.error.withOpacity(0.1) : SetuColors.accent.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8.r * 0.85),
           ),
           child: Icon(
@@ -267,26 +251,14 @@ class ProfileView extends StatelessWidget {
       case 'Profile Details':
         _navigateToEditProfile(context);
         break;
-      case 'Notifications':
-        _navigateToNotificationSettings(context);
-        break;
       case 'Privacy & Security':
         _navigateToPrivacySettings(context);
         break;
-      // case 'Language':
-      //   _showLanguageSelectionDialog(context);
-      //   break;
       case 'Help & Support':
         _navigateToHelpSupport(context);
         break;
       case 'Terms & Conditions':
         _navigateToTermsConditions(context);
-        break;
-      case 'Privacy Policy':
-        _navigateToPrivacyPolicy(context);
-        break;
-      case 'Rate App':
-        _rateApp(context);
         break;
       case 'Share App':
         _shareApp();
@@ -598,6 +570,7 @@ class ProfileView extends StatelessWidget {
         builder: (context) => EditProfilePage(),
       ),
     );
+
   }
 
   void _navigateToNotificationSettings(BuildContext context) {
@@ -613,7 +586,7 @@ class ProfileView extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PrivacySettingsPage(),
+        builder: (context) => PrivacyPolicyPage(),
       ),
     );
   }
@@ -904,59 +877,59 @@ class PrivacySettingsPage extends StatelessWidget {
   }
 }
 
-class HelpSupportPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GetTranslatableText('Help & Support'),
-        backgroundColor: SetuColors.primaryGreen,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        child: GetTranslatableText(
-          'Help & Support Page',
-          style: TextStyle(fontSize: 18.sp * 0.85),
-        ),
-      ),
-    );
-  }
-}
+// class HelpSupportPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: GetTranslatableText('Help & Support'),
+//         backgroundColor: SetuColors.primaryGreen,
+//         foregroundColor: Colors.white,
+//       ),
+//       body: Center(
+//         child: GetTranslatableText(
+//           'Help & Support Page',
+//           style: TextStyle(fontSize: 18.sp * 0.85),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-class TermsConditionsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GetTranslatableText('Terms & Conditions'),
-        backgroundColor: SetuColors.primaryGreen,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        child: GetTranslatableText(
-          'Terms & Conditions Page',
-          style: TextStyle(fontSize: 18.sp * 0.85),
-        ),
-      ),
-    );
-  }
-}
+// class TermsConditionsPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: GetTranslatableText('Terms & Conditions'),
+//         backgroundColor: SetuColors.primaryGreen,
+//         foregroundColor: Colors.white,
+//       ),
+//       body: Center(
+//         child: GetTranslatableText(
+//           'Terms & Conditions Page',
+//           style: TextStyle(fontSize: 18.sp * 0.85),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-class PrivacyPolicyPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GetTranslatableText('Privacy Policy'),
-        backgroundColor: SetuColors.primaryGreen,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        child: GetTranslatableText(
-          'Privacy Policy Page',
-          style: TextStyle(fontSize: 18.sp * 0.85),
-        ),
-      ),
-    );
-  }
-}
+// class PrivacyPolicyPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: GetTranslatableText('Privacy Policy'),
+//         backgroundColor: SetuColors.primaryGreen,
+//         foregroundColor: Colors.white,
+//       ),
+//       body: Center(
+//         child: GetTranslatableText(
+//           'Privacy Policy Page',
+//           style: TextStyle(fontSize: 18.sp * 0.85),
+//         ),
+//       ),
+//     );
+//   }
+// }

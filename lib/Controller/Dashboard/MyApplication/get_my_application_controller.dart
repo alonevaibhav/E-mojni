@@ -1,18 +1,21 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../Models/my_application_model.dart';
 import '../../../Repository/my_application_repo.dart';
 
-class UserFormsController extends GetxController with StateMixin<UserFormsSummary> {
-  // final UserFormsRepository _repository;
-
+class UserFormsController extends GetxController
+    with StateMixin<UserFormsSummary> {
   final UserFormsRepository _repository = UserFormsRepository();
-
 
   @override
   void onInit() {
+    developer.log('Arguments received: formType');
+
     super.onInit();
+    // fetchUserForms();
     fetchUserForms();
   }
 
@@ -29,7 +32,8 @@ class UserFormsController extends GetxController with StateMixin<UserFormsSummar
         change(formsSummary, status: RxStatus.success());
       }
     } catch (e) {
-      change(null, status: RxStatus.error('Failed to load forms: ${e.toString()}'));
+      change(null,
+          status: RxStatus.error('Failed to load forms: ${e.toString()}'));
     }
   }
 
@@ -46,10 +50,10 @@ class UserFormsController extends GetxController with StateMixin<UserFormsSummar
         change(formsSummary, status: RxStatus.success());
       }
     } catch (e) {
-      change(state, status: RxStatus.error('Failed to refresh forms: ${e.toString()}'));
+      change(state,
+          status: RxStatus.error('Failed to refresh forms: ${e.toString()}'));
     }
   }
-
 
   IconData getFormIcon(String formKey) {
     switch (formKey) {
@@ -67,5 +71,4 @@ class UserFormsController extends GetxController with StateMixin<UserFormsSummar
         return PhosphorIcons.file();
     }
   }
-
 }

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../API Service/api_service.dart';
 import '../../../Constants/api_constant.dart';
-import '../../../Models/preview_model.dart';
+import '../../../Models/counting_land_model.dart';
 
-class PreviewController extends GetxController with StateMixin<List<CountingLandForm>> {
+class CountingLandController extends GetxController with StateMixin<List<CountingLandForm>> {
   late String formType;
   late String formName;
 
@@ -13,41 +13,32 @@ class PreviewController extends GetxController with StateMixin<List<CountingLand
   void onInit() {
     super.onInit();
 
-    // Get arguments passed from navigation
     final args = Get.arguments as Map<String, dynamic>?;
 
     if (args != null) {
-      formType = args['formType'] ?? ''; // e.g., 'counting_land'
-      formName = args['formName'] ?? ''; // e.g., 'Counting Land'
+      formType = args['formType'] ?? '';
+      formName = args['formName'] ?? '';
 
-      developer.log(
-          'PreviewController initialized with formType: $formType, formName: $formName');
-
-      // Fetch forms data
-      fetchFormsByType();
+      developer.log('Arguments received: formType=$formType, formName=$formName');
     } else {
       change(null, status: RxStatus.error('No arguments provided'));
     }
+
+    fetchFormsByType();
   }
 
   Future<void> fetchFormsByType() async {
     try {
       change(null, status: RxStatus.loading());
 
-      // Get user ID
       String userId = (await ApiService.getUid()) ?? "0";
-      developer.log('🆔 User ID: $userId');
 
-      // Make API call
       final response = await ApiService.get<CountingLandFormResponse>(
         endpoint: getPreviewData(int.parse(userId), formType),
         fromJson: (json) => CountingLandFormResponse.fromJson(json),
         includeToken: true,
       );
 
-      developer.log('API Response received');
-
-      // Validate response
       if (response.success && response.data != null) {
         final formsData = response.data!.data.forms;
 
@@ -60,8 +51,7 @@ class PreviewController extends GetxController with StateMixin<List<CountingLand
         throw Exception(response.errorMessage ?? 'Failed to load forms');
       }
     } catch (e, stackTrace) {
-      developer.log('Error fetching forms: $e',
-          error: e, stackTrace: stackTrace);
+      developer.log('Error fetching forms: $e', error: e, stackTrace: stackTrace);
       change(null, status: RxStatus.error('Failed to fetch forms: ${e.toString()}'));
     }
   }
@@ -92,5 +82,55 @@ class PreviewController extends GetxController with StateMixin<List<CountingLand
   // Get count of forms by status
   int getCountByStatus(String status) {
     return getFormsByStatus(status).length;
+  }
+
+  // ============ File Helper Methods ============
+
+  /// Get file name from path
+  String getFileName(String path) {
+    return path.split('/').last;
+  }
+
+  /// Check if file is an image
+  bool isImageFile(String fileName) {
+    final extension = fileName.toLowerCase().split('.').last;
+    return ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].contains(extension);
+  }
+
+  /// Check if file is a PDF
+  bool isPdfFile(String fileName) {
+    return fileName.toLowerCase().endsWith('.pdf');
+  }
+
+  /// Check if file is a Word document
+  bool isWordFile(String fileName) {
+    final extension = fileName.toLowerCase().split('.').last;
+    return ['doc', 'docx'].contains(extension);
+  }
+
+  /// Get file type icon color
+  Color getFileIconColor(String fileName) {
+    if (isImageFile(fileName)) {
+      return Colors.blue;
+    } else if (isPdfFile(fileName)) {
+      return Colors.red;
+    } else if (isWordFile(fileName)) {
+      return Colors.blue.shade800;
+    } else {
+      return Colors.grey;
+    }
+  }
+
+  /// Get file type icon
+  IconData getFileIcon(String fileName) {
+    if (isImageFile(fileName)) {
+      return Icons.image;
+    } else if (isPdfFile(fileName)) {
+      return Icons.picture_as_pdf;
+    } else if (isWordFile(fileName)) {
+      return Icons.description;
+    } else {
+      return Icons.insert_drive_file;
+    }
   }
 }

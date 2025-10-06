@@ -130,17 +130,17 @@ class DashboardView extends StatelessWidget {
         'title': 'My Application',
         'color': SetuColors.success,
       },
-      {
-        'icon': PhosphorIcons
-            .clockCountdown, // Represents something pending or waiting
-        'title': 'Pending Application',
-        'color': SetuColors.warning,
-      },
-      {
-        'icon': PhosphorIcons.headset, // Better suited for support
-        'title': 'Contact Support',
-        'color': SetuColors.skyBlue,
-      },
+      // {
+      //   'icon': PhosphorIcons
+      //       .clockCountdown, // Represents something pending or waiting
+      //   'title': 'Pending Application',
+      //   'color': SetuColors.warning,
+      // },
+      // {
+      //   'icon': PhosphorIcons.headset, // Better suited for support
+      //   'title': 'Contact Support',
+      //   'color': SetuColors.skyBlue,
+      // },
       {
         'icon': PhosphorIcons.link, // Represents something verified
         'title': 'Government Link ',

@@ -1736,7 +1736,7 @@ class MainSurveyController extends GetxController {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
-        // Get.offAllNamed(AppRoutes.mainDashboard);
+        Get.offAllNamed(AppRoutes.mainDashboard);
 
         // Show success animation
         update(); // Update UI

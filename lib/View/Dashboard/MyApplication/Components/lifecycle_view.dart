@@ -498,15 +498,15 @@ import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../Constants/color_constant.dart';
-import '../../../Controller/my_application_controller.dart';
-import 'Components/life_five.dart';
-import 'Components/life_four.dart';
-import 'Components/life_one.dart';
-import 'Components/life_seventh.dart';
-import 'Components/life_six.dart';
-import 'Components/life_three.dart';
-import 'Components/life_two.dart';
+import '../../../../Constants/color_constant.dart';
+import '../../../../Controller/my_application_controller.dart';
+import 'life_five.dart';
+import 'life_four.dart';
+import 'life_one.dart';
+import 'life_seventh.dart';
+import 'life_six.dart';
+import 'life_three.dart';
+import 'life_two.dart';
 
 class MyApplication extends StatelessWidget {
   const MyApplication({super.key});
