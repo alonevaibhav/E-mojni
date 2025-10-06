@@ -8,11 +8,15 @@ import '../Components/LandAcquisitionView/main_view.dart';
 import '../Components/LandSurveyView/land_survey_view.dart';
 import '../Components/join_as_site_lead.dart';
 import '../View/Dashboard/GovLink/gov_link.dart';
+import '../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle/bhusampadan_detail_page.dart';
+import '../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle/counting_land_detail_page.dart';
+import '../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle/court_land_detail_page.dart';
+import '../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle/court_vatap_detail_page.dart';
+import '../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle/shaskiya_detail_page.dart';
 import '../View/Dashboard/MyApplication/AllPagesLifecycle/bhusampadan_page.dart';
 import '../View/Dashboard/MyApplication/AllPagesLifecycle/court_land_page.dart';
 import '../View/Dashboard/MyApplication/AllPagesLifecycle/court_vatap_page.dart';
 import '../View/Dashboard/MyApplication/AllPagesLifecycle/shaskiya_page.dart';
-import '../View/Dashboard/MyApplication/Components/lifecycle_view.dart';
 import '../View/Dashboard/MyApplication/my_all_application.dart';
 import '../View/Dashboard/MyApplication/AllPagesLifecycle/counting_land.dart';
 import '../View/bottum_nevigation_bar.dart';
@@ -42,6 +46,13 @@ class AppRoutes {
   static const courtLandPage = '/dashboardMyApplication/courtLandPage';
   static const courtVatapPage = '/dashboardMyApplication/courtVatapPage';
   static const shaskiyaPage = '/dashboardMyApplication/shaskiyaPage';
+
+
+  static const countingLandDetailPage = '/dashboardMyApplication/countingLand/countingLandDetailPage';
+  static const bhusampadanDetailPage = '/dashboardMyApplication/bhusampadanPage/bhusampadanDetailPage';
+  static const courtLandDetailPage = '/dashboardMyApplication/courtLandPage/courtLandDetailPage';
+  static const courtVatapDetailPage = '/dashboardMyApplication/courtVatapPage/courtVatapDetailPage';
+  static const shaskiyaDetailPage = '/dashboardMyApplication/shaskiyaPage/shaskiyaDetailPage';
 
 
   static const cleaner = '/cleaner/dashboard';
@@ -128,6 +139,31 @@ class AppRoutes {
     GetPage(
       name: shaskiyaPage,
       page: () => ShaskiyaPage(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: countingLandDetailPage,
+      page: () => CountingLandDetailPage(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: bhusampadanDetailPage,
+      page: () => BhusampadanDetailPage(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: courtLandDetailPage,
+      page: () => CourtLandDetailPage(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: courtVatapDetailPage,
+      page: () => CourtVatapDetailPage(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: shaskiyaDetailPage,
+      page: () => ShaskiyaDetailPage(),
       binding: AppBindings(),
     ),
   ];
