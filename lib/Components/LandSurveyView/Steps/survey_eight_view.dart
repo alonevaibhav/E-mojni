@@ -516,7 +516,7 @@ class SurveyEightView extends StatelessWidget {
           ),
           Gap(16.h),
           ImagePickerUtil.buildFileUploadField(
-            label: 'Scheme Sheet Uttrakhand/ 9(3)-9(4) *',
+            label: 'Scheme Sheet Utara/ 9(3)-9(4) *',
             hint: 'Upload scheme sheet document',
             icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
             uploadedFiles: docController.schemeSheetFiles,

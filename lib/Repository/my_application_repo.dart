@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import '../API Service/api_service.dart';
 import '../Constants/api_constant.dart';
 import '../Models/my_application_model.dart';
-import '../Models/user_profile_details.dart' hide UserProfileResponse;
 
 class UserFormsRepository {
 

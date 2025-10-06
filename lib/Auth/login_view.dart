@@ -1,3 +1,4 @@
+import 'package:emojni/Auth/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,7 @@ import 'login_view_controller.dart';
 import '../Route Manager/app_routes.dart';
 
 class NewLoginView extends StatelessWidget {
-  const NewLoginView({Key? key}) : super(key: key);
+  const NewLoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +46,8 @@ class NewLoginView extends StatelessWidget {
                       .slideY(begin: 0.3, end: 0)
                       .scale(begin: const Offset(0.9, 0.9)),
                   Gap(10.h * 0.8),
-                  _buildForgotPassword(controller)
-                      .animate()
-                      .fadeIn(duration: 800.ms, delay: 600.ms),
+                  _buildForgotPassword(controller).animate().fadeIn(duration: 800.ms, delay: 600.ms),
+                  _buildSignUpNavigation().animate().fadeIn(duration: 800.ms, delay: 600.ms),
                   Gap(20.h * 0.8),
                   // _buildSiteLeadButton()
                   //     .animate()
@@ -96,7 +96,7 @@ class NewLoginView extends StatelessWidget {
         ),
         Gap(20.h * 0.8),
         Text(
-          'Setu-App',
+          'Emojni',
           style: GoogleFonts.poppins(
             fontSize: 25.sp * 0.8,
             fontWeight: FontWeight.bold,
@@ -171,10 +171,7 @@ class NewLoginView extends StatelessWidget {
                 ),
               ),
               Gap(20.h * 0.8),
-              _buildUsernameField(controller)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 100.ms)
-                  .slideX(begin: -0.2, end: 0),
+              _buildUsernameField(controller).animate().fadeIn(duration: 600.ms, delay: 100.ms).slideX(begin: -0.2, end: 0),
               Gap(16.h * 0.8),
               _buildPasswordField(controller)
                   .animate()
@@ -406,6 +403,25 @@ class NewLoginView extends StatelessWidget {
         },
         child: Text(
           'Forgot Password?',
+          style: GoogleFonts.inter(
+            fontSize: 16.sp * 0.8,
+            color: SetuColors.primaryGreen,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignUpNavigation() {
+    return Center(
+      child: TextButton(
+        onPressed: () {
+          // Get.toNamed(AppRoutes.signUp);
+          Get.to(() => SignUpView()); // Replace with your actual SignUpView widget
+        },
+        child: Text(
+          'Don\'t have an account? Sign Up',
           style: GoogleFonts.inter(
             fontSize: 16.sp * 0.8,
             color: SetuColors.primaryGreen,

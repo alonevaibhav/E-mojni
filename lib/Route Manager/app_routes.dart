@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../Auth/login_page.dart';
 import '../Auth/login_view.dart';
+import '../Auth/sign_up.dart';
 import '../Components/CourtAllocationCaseView/main_view.dart';
 import '../Components/CourtCommissionCaseView/main_view.dart';
 import '../Components/GovernmentCensusView/main_view.dart';
@@ -21,6 +21,7 @@ import 'app_bindings.dart';
 class AppRoutes {
   // Route names
   static const login = '/login';
+  static const signUp = '/signUpView';
 
   static const siteLeadApplication = '/siteLeadApplication';
   static const mainDashboard = '/mainDashboard';
@@ -50,6 +51,11 @@ class AppRoutes {
     GetPage(
       name: login,
       page: () => const NewLoginView(),
+      binding: AppBindings(),
+    ),
+    GetPage(
+      name: signUp,
+      page: () => const SignUpView(),
       binding: AppBindings(),
     ),
     GetPage(

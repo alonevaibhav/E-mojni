@@ -179,8 +179,7 @@ class LoginViewController extends GetxController {
       }
 
       // Make API call
-      ApiResponse<Map<String, dynamic>> response =
-          await ApiService.post<Map<String, dynamic>>(
+      ApiResponse<Map<String, dynamic>> response = await ApiService.post<Map<String, dynamic>>(
         endpoint:loginUrl,
         body: {
           'username': username,

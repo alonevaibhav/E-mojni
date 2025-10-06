@@ -401,14 +401,10 @@ class MainSurveyController extends GetxController {
       // Fallback: manually collect data from SurveyCTSController
       return {
         'survey_cts': {
-          'survey_number':
-              surveyCTSController.surveyNumberController.text.trim(),
           'department': surveyCTSController.selectedDepartment.value,
-          'district': surveyCTSController.selectedDistrict.value,
-          'taluka': surveyCTSController.selectedTaluka.value,
-          'village': surveyCTSController.selectedVillage.value,
-          'office': surveyCTSController.selectedOffice.value,
-          'Number': surveyCTSController.selectedSurveyNo.value,
+          'district': surveyCTSController.districtController.text.trim(),
+          'taluka': surveyCTSController.talukaController.text.trim(),
+          'village': surveyCTSController.villageController.text.trim(),
         }
       };
     } catch (e) {
@@ -691,8 +687,7 @@ class MainSurveyController extends GetxController {
         'partitionFiles': surveyEightController.partitionFiles.toList(),
         'schemeSheetFiles': surveyEightController.schemeSheetFiles.toList(),
         'oldCensusMapFiles': surveyEightController.oldCensusMapFiles.toList(),
-        'demarcationCertificateFiles':
-            surveyEightController.demarcationCertificateFiles.toList(),
+        'demarcationCertificateFiles': surveyEightController.demarcationCertificateFiles.toList(),
       };
     } catch (e) {
       print('Error getting Documents data: $e');
@@ -767,18 +762,18 @@ class MainSurveyController extends GetxController {
 // === SURVEY INFO DEBUG ===
     developer.log('=== SURVEY INFO DEBUG ===', name: 'DebugInfo');
 
-    developer.log(
-        'survey_number: "${surveyCTSController.surveyCtsNumber.text.trim()}"',
-        name: 'SurveyInfo');
-    developer.log(
-        'department: "${surveyCTSController.selectedDepartment.value}"',
-        name: 'SurveyInfo');
-    developer.log('district: "${surveyCTSController.selectedDistrict.value}"',
-        name: 'SurveyInfo');
-    developer.log('taluka: "${surveyCTSController.selectedTaluka.value}"',
-        name: 'SurveyInfo');
-    developer.log('village: "${surveyCTSController.selectedVillage.value}"',
-        name: 'SurveyInfo');
+    // developer.log(
+    //     'survey_number: "${surveyCTSController.surveyCtsNumber.text.trim()}"',
+    //     name: 'SurveyInfo');
+    // developer.log(
+    //     'department: "${surveyCTSController.selectedDepartment.value}"',
+    //     name: 'SurveyInfo');
+    // developer.log('district: "${surveyCTSController.selectedDistrict.value}"',
+    //     name: 'SurveyInfo');
+    // developer.log('taluka: "${surveyCTSController.selectedTaluka.value}"',
+    //     name: 'SurveyInfo');
+    // developer.log('village: "${surveyCTSController.selectedVillage.value}"',
+    //     name: 'SurveyInfo');
 
     // === CALCULATION INFO ===
     developer.log('=== CALCULATION INFO ===', name: 'DebugInfo');
@@ -1216,21 +1211,18 @@ class MainSurveyController extends GetxController {
       // === SURVEY INFO ===
       "survey_number": surveyCTSController.surveyCtsNumber.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
-      "division_id": "1", // Hardcoded as per your example
-      "district_id": "26", // Hardcoded as per your example
-      "taluka_id": "5", // Hardcoded as per your example
-      "village_id": "3", // Hardcoded as per your example
+      "district": surveyCTSController.districtController.text.trim(),
+      "taluka": surveyCTSController.talukaController.text.trim(),
+      "village": surveyCTSController.villageController.text.trim(),
 
       // === CALCULATION INFO ===
       "operation_type": calculationController.getOperationType(),
 
       // === STEP FOUR INFO ===
-      "selected_calculation_type":
-          stepFourController.selectedCalculationType.value ?? "",
+      "selected_calculation_type": stepFourController.selectedCalculationType.value ?? "",
       "selected_duration": stepFourController.selectedDuration.value ?? "",
       "selected_holder_type": stepFourController.selectedHolderType.value ?? "",
-      "selected_location_category":
-          stepFourController.selectedLocationCategory.value ?? "",
+      "selected_location_category": stepFourController.selectedLocationCategory.value ?? "",
       // "calculation_fee": stepFourController.calculationFeeController.text.trim(),
       // "calculation_fee_numeric": stepFourData['calculation_fee_numeric']?.toString() ?? "0",
     };

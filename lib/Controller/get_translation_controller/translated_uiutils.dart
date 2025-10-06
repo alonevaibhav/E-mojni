@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
@@ -101,13 +102,18 @@ class TranslatedUIUtils {
     required String hint,
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
+    TextInputAction? textInputAction,
     int maxLines = 1,
     int? maxLength,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    List<TextInputFormatter>? inputFormatters, // Add inputFormatters parameter
     String? Function(String?)? validator,
     String sourceLanguage = 'en',
-    String? errorText, // Add errorText parameter
-    ValueChanged<String>? onChanged, // Add onChanged parameter
-    GestureTapCallback? onTap, // Add onTap parameter
+    String? errorText,
+    ValueChanged<String>? onChanged,
+    ValueChanged<String>? onFieldSubmitted,
+    GestureTapCallback? onTap,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,17 +139,22 @@ class TranslatedUIUtils {
                 return TextFormField(
                   controller: controller,
                   keyboardType: keyboardType,
+                  textInputAction: textInputAction,
                   maxLines: maxLines,
                   maxLength: maxLength,
+                  obscureText: obscureText,
+                  inputFormatters: inputFormatters, // Pass inputFormatters
                   style: GoogleFonts.poppins(fontSize: 16.sp * sizeFactor),
                   validator: validator,
-                  onChanged: onChanged, // Pass onChanged to TextFormField
-                  onTap: onTap, // Pass onTap to TextFormField
+                  onChanged: onChanged,
+                  onFieldSubmitted: onFieldSubmitted,
+                  onTap: onTap,
                   decoration: InputDecoration(
                     hintText: translatedHint,
                     prefixIcon: Icon(icon,
                         color: SetuColors.primaryGreen,
                         size: 20.w * sizeFactor),
+                    suffixIcon: suffixIcon,
                     filled: true,
                     fillColor: SetuColors.background,
                     border: OutlineInputBorder(
@@ -172,7 +183,7 @@ class TranslatedUIUtils {
                     contentPadding: EdgeInsets.symmetric(
                         horizontal: 16.w * sizeFactor,
                         vertical: 16.h * sizeFactor),
-                    errorText: errorText, // Pass errorText to InputDecoration
+                    errorText: errorText,
                   ),
                 );
               },
@@ -182,7 +193,6 @@ class TranslatedUIUtils {
       ],
     );
   }
-
   static Widget buildQuestionCard({
     required String question,
     required bool? selectedValue,

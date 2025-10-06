@@ -12,14 +12,15 @@ import '../Controller/main_controller.dart';
 import '../Controller/personal_info_controller.dart';
 
 class PersonalInfoStep extends StatelessWidget {
+
   final int currentSubStep;
   final MainSurveyController mainController;
 
   const PersonalInfoStep({
-    Key? key,
+    super.key,
     required this.currentSubStep,
     required this.mainController,
-  }) : super(key: key);
+  });
 
   // Get the PersonalInfoController
   PersonalInfoController get controller =>
@@ -96,25 +97,6 @@ class PersonalInfoStep extends StatelessWidget {
 
             Gap(16.h),
 
-            // Conditional Question 2: Authority on behalf
-            // if (controller.shouldShowAuthorityQuestion) ...[
-            //   SurveyUIUtils.buildQuestionCard(
-            //     question:
-            //         'Note: Are you holding the authority on behalf of the applicant?/or are you applying as a competent Gunthewari Regularization/Gunthewari Planning Authority?',
-            //     selectedValue: controller.hasAuthorityOnBehalf.value,
-            //     onChanged: (value) async {
-            //       controller.updateAuthorityOnBehalf(value);
-            //
-            //       if (value == true) {
-            //         // Show dialog when user selects Yes
-            //         await _showAuthorityConfirmationDialog();
-            //       }
-            //     },
-            //   ),
-            //   Gap(16.h),
-            // ],
-
-            // Additional fields when has authority on behalf
             if (controller.shouldShowAuthorityQuestion) ...[
               _buildAdditionalFields(),
               Gap(16.h),
@@ -261,19 +243,4 @@ class PersonalInfoStep extends StatelessWidget {
     );
   }
 
-  Future<void> _showAuthorityConfirmationDialog() async {
-    await SurveyUIUtils.showTranslatableDialog(
-      context: Get.context!,
-      title: 'Authority Confirmation',
-      message:
-          'You are applying for the enumeration as the holder of the Power of Attorney/Authority Letter or as the competent Gunthewari Regularization/Gunthewari Planning Authority on behalf of the holder of the Group No./Survey No./C. T. Survey No. for which you are applying. Fill in the necessary information.',
-      primaryButtonText: 'Understood',
-      icon: PhosphorIcons.warning(PhosphorIconsStyle.regular),
-      iconColor: SetuColors.primaryGreen,
-      onPrimaryPressed: () {
-        Navigator.of(Get.context!).pop();
-      },
-      barrierDismissible: false,
-    );
-  }
 }
