@@ -23,7 +23,7 @@ class CountingLandDetailPage extends StatelessWidget {
     final sizeFactor = 0.85;
 
     final form = Get.arguments as CountingLandForm;
-    final controller = Get.put(LifeCountingController(formId: form.id), tag: 'payment_${form.id}',);
+    final controller = Get.put(LifeCountingController(formId: form.id), tag: 'payment_${form.id}');
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -47,20 +47,43 @@ class CountingLandDetailPage extends StatelessWidget {
               controller: controller,
             ),
 
-
-
-
-
-
-
-
-
             Gap(20.h * sizeFactor),
           ],
         ),
       ),
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // PREVIEW BANNER-----------------------------------
   Widget _buildPreviewBanner(double sizeFactor, CountingLandForm form) {

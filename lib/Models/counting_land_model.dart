@@ -225,10 +225,11 @@ class CountingLandForm {
     );
   }
 
-  // Helper methods
+// Helper methods
   bool get isVerified => status.toLowerCase() == 'verified';
   bool get isPending => status.toLowerCase() == 'pending';
-  bool get isPaymentDone => paymentStatus == 1;
+  bool get isPaymentDone => status.toLowerCase() == 'payment done' || paymentStatus == 1;
+  bool get isRejected => status.toLowerCase() == 'rejected';
 
   String get formattedCreatedDate {
     try {
@@ -241,18 +242,23 @@ class CountingLandForm {
 
   Color get statusColor {
     switch (status.toLowerCase()) {
+      case 'payment done':
+        return const Color(0xFF4CAF50); // Green
       case 'verified':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF4CAF50); // Green
       case 'pending':
-        return const Color(0xFFFF9800);
+        return const Color(0xFFFF9800); // Orange
       case 'rejected':
-        return const Color(0xFFF44336);
+        return const Color(0xFFF44336); // Red
       default:
-        return const Color(0xFF9E9E9E);
+        return const Color(0xFF9E9E9E); // Grey
     }
   }
 
   String get statusDisplayText {
+    if (status.toLowerCase() == 'payment done') {
+      return 'Payment Done';
+    }
     return status.charAt(0).toUpperCase() + status.substring(1);
   }
 }
