@@ -288,19 +288,46 @@ class MainSurveyController extends GetxController {
       }
     }
   }
-
   void _showValidationError() {
     final stepController = currentStepController;
     String error = 'This field is required';
     if (stepController is StepValidationMixin) {
       error = stepController.getFieldError(currentSubStepField);
     }
+
+    // Close any existing snackbar before showing new one
+    if (Get.isSnackbarOpen) {
+      Get.closeCurrentSnackbar();
+    }
+
     Get.snackbar(
       'Validation Error',
       error,
+      snackPosition: SnackPosition.TOP,
       backgroundColor: Color(0xFFDC3545),
       colorText: Colors.white,
-      duration: Duration(milliseconds: 1200),
+      borderRadius: 8,
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      duration: Duration(seconds: 4),
+      icon: Icon(
+        Icons.error_outline,
+        color: Colors.white,
+        size: 28,
+      ),
+      shouldIconPulse: false, // Disable pulsing for faster appearance
+      boxShadows: [
+        BoxShadow(
+          color: Colors.black26,
+          offset: Offset(0, 2),
+          blurRadius: 8,
+        )
+      ],
+      maxWidth: 500,
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      forwardAnimationCurve: Curves.easeOut, // Faster curve
+      animationDuration: Duration(milliseconds: 500), // Faster animation (default is 500ms)
     );
   }
 

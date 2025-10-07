@@ -35,11 +35,8 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     poaIssuerNameController.dispose();
     poaHolderNameController.dispose();
     poaHolderAddressController.dispose();
-
     // Dispose address controllers
-    applicantAddressControllers.values
-        .forEach((controller) => controller.dispose());
-
+    applicantAddressControllers.values.forEach((controller) => controller.dispose());
     super.onClose();
   }
 
@@ -58,17 +55,18 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     poaIssuerNameController.clear();
     poaHolderNameController.clear();
     poaHolderAddressController.clear();
+    poaDocument.clear();
   }
 
   // Handle holder themselves selection
   void updateHolderThemselves(bool? value) {
     isHolderThemselves.value = value;
     if (value == true) {
-      resetAuthorityFields();
+      clearPOAFields(); // Clear POA fields when user is holder themselves
     }
   }
 
-  // Handle authority on behalf selection
+  // Handle authority on behalf selection (keeping for backward compatibility)
   void updateAuthorityOnBehalf(bool? value) {
     hasAuthorityOnBehalf.value = value;
     if (value != true) {
@@ -81,8 +79,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     hasBeenCountedBefore.value = value;
   }
 
-  //------------------------Address  ------------------------//
-
+  //------------------------Address------------------------//
   // Applicant address data storage
   final applicantAddressData = <String, String>{
     'plotNo': '',
@@ -112,7 +109,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   // Address popup functionality
   String getFormattedApplicantAddress() {
-    final parts = <String>[];
+    final parts = <String> [];
     // Plot No
     if (applicantAddressData['plotNo']?.isNotEmpty == true) {
       parts.add('Plot No: ${applicantAddressData['plotNo']}');
@@ -145,11 +142,8 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     if (applicantAddressData['email']?.isNotEmpty == true) {
       parts.add('Email: ${applicantAddressData['email']}');
     }
-
     return parts.isEmpty ? 'Click to add address' : parts.join(', ');
   }
-
-
 
   // Check if detailed address is available
   bool hasDetailedApplicantAddress() {
@@ -160,28 +154,18 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   void showApplicantAddressPopup(BuildContext context) {
     // Populate controllers with current data
-    applicantAddressControllers['plotNoController']!.text =
-        applicantAddressData['plotNo'] ?? '';
-    applicantAddressControllers['addressController']!.text =
-        applicantAddressData['address'] ?? '';
-    applicantAddressControllers['mobileNumberController']!.text =
-        applicantAddressData['mobileNumber'] ?? '';
-    applicantAddressControllers['emailController']!.text =
-        applicantAddressData['email'] ?? '';
-    applicantAddressControllers['pincodeController']!.text =
-        applicantAddressData['pincode'] ?? '';
-    applicantAddressControllers['districtController']!.text =
-        applicantAddressData['district'] ?? '';
-    applicantAddressControllers['villageController']!.text =
-        applicantAddressData['village'] ?? '';
-    applicantAddressControllers['postOfficeController']!.text =
-        applicantAddressData['postOffice'] ?? '';
-
+    applicantAddressControllers['plotNoController']!.text = applicantAddressData['plotNo'] ?? '';
+    applicantAddressControllers['addressController']!.text = applicantAddressData['address'] ?? '';
+    applicantAddressControllers['mobileNumberController']!.text = applicantAddressData['mobileNumber'] ?? '';
+    applicantAddressControllers['emailController']!.text = applicantAddressData['email'] ?? '';
+    applicantAddressControllers['pincodeController']!.text = applicantAddressData['pincode'] ?? '';
+    applicantAddressControllers['districtController']!.text = applicantAddressData['district'] ?? '';
+    applicantAddressControllers['villageController']!.text = applicantAddressData['village'] ?? '';
+    applicantAddressControllers['postOfficeController']!.text = applicantAddressData['postOffice'] ?? '';
     showDialog(
       context: context,
       builder: (context) => AddressPopup(
-        entryIndex:
-            0, // Use 0 as a placeholder since we're not dealing with multiple entries
+        entryIndex: 0,
         controllers: applicantAddressControllers,
         onSave: () => _saveApplicantAddressFromPopup(),
       ),
@@ -199,89 +183,111 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
       'village': applicantAddressControllers['villageController']!.text,
       'postOffice': applicantAddressControllers['postOfficeController']!.text,
     };
-
     updateApplicantAddress(newAddressData);
-    Get.back(); // Close the popup
+    Get.back();
   }
 
   void updateApplicantAddress(Map<String, String> newAddressData) {
     applicantAddressData.assignAll(newAddressData);
-
-    // Update the old controller for backward compatibility
     applicantAddressController.text = getFormattedApplicantAddress();
-
-    // Clear validation errors
     applicantAddressValidationErrors.clear();
-
-    // Validate address fields
     _validateApplicantAddressFields(newAddressData);
-
-    update(); // Trigger UI update
+    update();
   }
 
   void _validateApplicantAddressFields(Map<String, String> addressData) {
+    applicantAddressValidationErrors.clear();
+
+    // Check if address field is not empty
     if (addressData['address']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['address'] = 'Address is required';
     }
+
+    // Check if pincode field is not empty
     if (addressData['pincode']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['pincode'] = 'Pincode is required';
     }
+
+    // Check if village field is not empty
     if (addressData['village']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['village'] = 'Village is required';
     }
+
+    // Check if postOffice field is not empty
     if (addressData['postOffice']?.trim().isEmpty ?? true) {
-      applicantAddressValidationErrors['postOffice'] =
-          'Post Office is required';
+      applicantAddressValidationErrors['postOffice'] = 'Post Office is required';
     }
   }
 
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'holder_verification':
+      // Basic fields validation with isNotEmpty check
+        if (applicantNameController.text.trim().isEmpty || applicantNameController.text.trim().length < 3) {
+          return false;
+        }
+
+        // Address validation
+        _validateApplicantAddressFields(applicantAddressData);
+        if (applicantAddressValidationErrors.isNotEmpty) return false;
+
+        // Holder verification question
+        if (isHolderThemselves.value == null) return false;
+
+        // If not holder themselves, validate POA fields directly (no authority question in view)
+        if (isHolderThemselves.value == false) {
+          return _validatePOAFields();
+        }
+
+        return true;
+
+      case 'enumeration_check':
+        return hasBeenCountedBefore.value != null;
+
       default:
         return true;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'holder_verification':
-  //       // Validate applicant name
-  //       if (applicantNameController.text.trim().length < 3) return false;
-  //
-  //       // Validate applicant address
-  //       _validateApplicantAddressFields(applicantAddressData);
-  //       if (applicantAddressValidationErrors.isNotEmpty) return false;
-  //
-  //       // Check if holder themselves is selected
-  //       if (isHolderThemselves.value == null) return false;
-  //
-  //       // If not holder themselves, check authority
-  //       if (isHolderThemselves.value == false) {
-  //         if (hasAuthorityOnBehalf.value == null) return false;
-  //
-  //         // If has authority, validate POA fields
-  //         if (hasAuthorityOnBehalf.value == true) {
-  //           return _validatePOAFields();
-  //         }
-  //       }
-  //       return true;
-  //
-  //     case 'enumeration_check':
-  //       return hasBeenCountedBefore.value != null;
-  //
-  //     default:
-  //       return true;
-  //   }
-  // }
 
   bool _validatePOAFields() {
-    return poaRegistrationNumberController.text.trim().length >= 3 &&
-        poaRegistrationDateController.text.trim().isNotEmpty &&
-        poaIssuerNameController.text.trim().length >= 2 &&
-        poaHolderNameController.text.trim().length >= 2 &&
-        poaHolderAddressController.text.trim().length >= 5;
+    // Validate all POA fields with isNotEmpty checks
+    // Registration Number validation
+    if (poaRegistrationNumberController.text.trim().isEmpty ||
+        poaRegistrationNumberController.text.trim().length < 3) {
+      return false;
+    }
+
+    // Registration Date validation
+    if (poaRegistrationDateController.text.trim().isEmpty) {
+      return false;
+    }
+
+    // Issuer Name validation
+    if (poaIssuerNameController.text.trim().isEmpty ||
+        poaIssuerNameController.text.trim().length < 2) {
+      return false;
+    }
+
+    // Holder Name validation
+    if (poaHolderNameController.text.trim().isEmpty ||
+        poaHolderNameController.text.trim().length < 2) {
+      return false;
+    }
+
+    // Holder Address validation
+    if (poaHolderAddressController.text.trim().isEmpty ||
+        poaHolderAddressController.text.trim().length < 5) {
+      return false;
+    }
+
+    // Document validation
+    if (poaDocument.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
   @override
@@ -296,23 +302,29 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   String getFieldError(String field) {
     switch (field) {
       case 'holder_verification':
-        if (applicantNameController.text.trim().length < 3) {
-          return 'Please enter a valid applicant name';
+      // Applicant name validation with isNotEmpty
+        if (applicantNameController.text.trim().isEmpty) {
+          return 'Applicant name is required';
         }
+        if (applicantNameController.text.trim().length < 3) {
+          return 'Applicant name must be at least 3 characters';
+        }
+
+        // Address validation
         if (applicantAddressValidationErrors.isNotEmpty) {
           return 'Please complete the applicant address';
         }
+
+        // Holder verification question
         if (isHolderThemselves.value == null) {
           return 'Please select if you are the holder';
         }
-        if (isHolderThemselves.value == false &&
-            hasAuthorityOnBehalf.value == null) {
-          return 'Please select if you have authority on behalf';
-        }
-        if (isHolderThemselves.value == false &&
-            hasAuthorityOnBehalf.value == true) {
+
+        // Direct POA validation when not holder themselves (no authority question)
+        if (isHolderThemselves.value == false) {
           return _getPOAValidationError();
         }
+
         return 'Please complete holder verification';
 
       case 'enumeration_check':
@@ -324,24 +336,52 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   }
 
   String _getPOAValidationError() {
+    // Registration Number validation with isNotEmpty
+    if (poaRegistrationNumberController.text.trim().isEmpty) {
+      return 'Registration number is required';
+    }
     if (poaRegistrationNumberController.text.trim().length < 3) {
       return 'Registration number must be at least 3 characters';
     }
+
+    // Registration Date validation with isNotEmpty
     if (poaRegistrationDateController.text.trim().isEmpty) {
       return 'Registration date is required';
+    }
+
+    // Issuer Name validation with isNotEmpty
+    if (poaIssuerNameController.text.trim().isEmpty) {
+      return 'Issuer name is required';
     }
     if (poaIssuerNameController.text.trim().length < 2) {
       return 'Issuer name must be at least 2 characters';
     }
+
+    // Holder Name validation with isNotEmpty
+    if (poaHolderNameController.text.trim().isEmpty) {
+      return 'Holder name is required';
+    }
     if (poaHolderNameController.text.trim().length < 2) {
       return 'Holder name must be at least 2 characters';
     }
-    if (poaHolderAddressController.text.trim().length < 5) {
-      return 'Address must be at least 5 characters';
+
+    // Holder Address validation with isNotEmpty
+    if (poaHolderAddressController.text.trim().isEmpty) {
+      return 'Holder address is required';
     }
+    if (poaHolderAddressController.text.trim().length < 5) {
+      return 'Holder address must be at least 5 characters';
+    }
+
+    // Document validation with isNotEmpty
+    if (poaDocument.isEmpty) {
+      return 'POA document is required';
+    }
+
     return 'Please complete all Power of Attorney fields';
   }
 
+  //------------------------Data------------------------//
   @override
   Map<String, dynamic> getStepData() {
     return {
@@ -360,17 +400,17 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
         'poa_issuer_name': poaIssuerNameController.text.trim(),
         'poa_holder_name': poaHolderNameController.text.trim(),
         'poa_holder_address': poaHolderAddressController.text.trim(),
+        'poa_document': poaDocument.toList(),
       }
     };
   }
 
-  // Utility method to check if POA fields should be shown
+  //------------------------Utilities------------------------//
   bool get shouldShowPOAFields {
-    return isHolderThemselves.value == false &&
-        hasAuthorityOnBehalf.value == true;
+    // Simplified - show POA fields directly when not holder themselves
+    return isHolderThemselves.value == false;
   }
 
-  // Utility method to check if authority question should be shown
   bool get shouldShowAuthorityQuestion {
     return isHolderThemselves.value == false;
   }

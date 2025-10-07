@@ -448,11 +448,12 @@ class SurveyFifthController extends GetxController with StepValidationMixin, Ste
     update(); // Trigger UI update
   }
 
-  // NEW: Validate address fields (following PersonalInfoController pattern)
+  // NEW: Validate address fields with isEmpty checks
   void _validateApplicantAddressFields(int entryIndex, Map<String, String> addressData) {
     final entry = applicantEntries[entryIndex];
     final addressValidationErrors = entry['addressValidationErrors'] as RxMap<String, String>;
 
+    // Use isEmpty validation for address fields
     if (addressData['address']?.trim().isEmpty ?? true) {
       addressValidationErrors['address'] = 'Address is required';
     }
@@ -523,27 +524,97 @@ class SurveyFifthController extends GetxController with StepValidationMixin, Ste
     addressControllers.values.forEach((controller) => controller.clear());
   }
 
-  // Validation methods (unchanged)
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'applicant':
+        return _validateAllApplicantEntries();
       default:
         return true;
     }
   }
 
+  // NEW: Validate all applicant entries with isEmpty checks
+  bool _validateAllApplicantEntries() {
+    validationErrors.clear();
+    bool isValid = true;
+
+    for (int i = 0; i < applicantEntries.length; i++) {
+      final entry = applicantEntries[i];
+
+      // Account Holder Name validation (required field with isEmpty check)
+      final accountHolderName = (entry['accountHolderNameController'] as TextEditingController).text.trim();
+      if (accountHolderName.isEmpty) {
+        validationErrors['${i}_accountHolderName'] = 'Account holder name is required';
+        isValid = false;
+      }
+
+      // Mobile Number validation (required field with isEmpty check)
+      final mobileNumber = (entry['mobileNumberController'] as TextEditingController).text.trim();
+      if (mobileNumber.isEmpty) {
+        validationErrors['${i}_mobileNumber'] = 'Mobile number is required';
+        isValid = false;
+      }
+
+      // Address validation - validate using the address validation errors
+      final addressData = entry['addressData'] as RxMap<String, String>;
+      _validateApplicantAddressFields(i, Map<String, String>.from(addressData));
+
+      final addressValidationErrors = entry['addressValidationErrors'] as RxMap<String, String>;
+      if (addressValidationErrors.isNotEmpty) {
+        validationErrors['${i}_address'] = 'Complete address information is required';
+        isValid = false;
+      }
+
+      // Total Area validation (optional - only validate if not empty)
+      final totalArea = (entry['totalAreaController'] as TextEditingController).text.trim();
+      if (totalArea.isNotEmpty) {
+        // Optional: You can add numeric validation here if needed
+        final parsedArea = double.tryParse(totalArea);
+        if (parsedArea == null) {
+          validationErrors['${i}_totalArea'] = 'Please enter a valid number for total area';
+          isValid = false;
+        }
+      }
+    }
+
+    return isValid;
+  }
+
   @override
   bool isStepCompleted(List<String> fields) {
-    return validateCurrentSubStep('');
+    for (String field in fields) {
+      if (!validateCurrentSubStep(field)) return false;
+    }
+    return true;
   }
 
   @override
   String getFieldError(String field) {
-    return validationErrors[field] ?? 'This field is required';
+    switch (field) {
+      case 'applicant':
+      // Return first validation error found
+        if (validationErrors.isNotEmpty) {
+          return validationErrors.values.first;
+        }
+        return 'Please complete all required applicant information';
+      default:
+        return validationErrors[field] ?? 'This field is required';
+    }
   }
 
+  // NEW: Get specific field error for an entry
+  String getEntryFieldError(int entryIndex, String fieldName) {
+    final errorKey = '${entryIndex}_$fieldName';
+    return validationErrors[errorKey] ?? '';
+  }
+
+  // NEW: Check if entry has validation errors
+  bool hasEntryValidationError(int entryIndex, String fieldName) {
+    final errorKey = '${entryIndex}_$fieldName';
+    return validationErrors.containsKey(errorKey);
+  }
   // OVERRIDDEN: Updated to include new address structure in data export
   @override
   Map<String, dynamic> getStepData() {

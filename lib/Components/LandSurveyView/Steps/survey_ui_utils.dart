@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
@@ -316,19 +317,114 @@ class SurveyUIUtils {
     );
   }
 
+  // static Widget buildTextFormField({
+  //   required TextEditingController controller,
+  //   required String label,
+  //   required String hint,
+  //   required IconData icon,
+  //   TextInputType keyboardType =
+  //       TextInputType.text ?? TextInputType.text, // Provide a default value,
+  //   int maxLines = 1,
+  //   int? maxLength,
+  //   String? Function(String?)? validator,
+  //   String sourceLanguage = 'en',
+  //   String? errorText, // Add errorText parameter
+  //   ValueChanged<String>? onChanged, // Add onChanged parameter
+  //   GestureTapCallback? onTap,
+  //   bool readOnly = false, // default to false
+  // }) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       buildTranslatableText(
+  //         text: label,
+  //         style: GoogleFonts.poppins(
+  //           fontSize: 16.sp * sizeFactor,
+  //           fontWeight: FontWeight.w600,
+  //           color: SetuColors.textPrimary,
+  //         ),
+  //         sourceLanguage: sourceLanguage,
+  //       ),
+  //       Gap(8.h * sizeFactor),
+  //       GetBuilder<TranslationController>(
+  //         builder: (translationController) {
+  //           // Translate hint text reactively
+  //           return FutureBuilder<String>(
+  //             future: _getTranslatedText(hint, sourceLanguage),
+  //             builder: (context, snapshot) {
+  //               final translatedHint = snapshot.data ?? hint;
+  //
+  //               return TextFormField(
+  //                 controller: controller,
+  //                 keyboardType: keyboardType,
+  //                 maxLines: maxLines,
+  //                 maxLength: maxLength,
+  //                 style: GoogleFonts.poppins(fontSize: 16.sp * sizeFactor),
+  //                 validator: validator,
+  //                 onChanged: onChanged, // Pass onChanged to TextFormField
+  //                 onTap: onTap, // Pass onTap to TextFormField
+  //                   readOnly: readOnly, // ✅ FIX: pass readOnly here
+  //                 decoration: InputDecoration(
+  //                   hintText: translatedHint,
+  //                   prefixIcon: Icon(icon,
+  //                       color: SetuColors.primaryGreen,
+  //                       size: 20.w * sizeFactor),
+  //                   filled: true,
+  //                   fillColor: SetuColors.background,
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(12.r * sizeFactor),
+  //                     borderSide: BorderSide(
+  //                         color: SetuColors.lightGreen.withOpacity(0.3)),
+  //                   ),
+  //                   enabledBorder: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(12.r * sizeFactor),
+  //                     borderSide: BorderSide(
+  //                         color: SetuColors.lightGreen.withOpacity(0.3)),
+  //                   ),
+  //                   focusedBorder: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(12.r * sizeFactor),
+  //                     borderSide:
+  //                         BorderSide(color: SetuColors.primaryGreen, width: 2),
+  //                   ),
+  //                   errorBorder: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(12.r * sizeFactor),
+  //                     borderSide: BorderSide(color: SetuColors.error, width: 1),
+  //                   ),
+  //                   focusedErrorBorder: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(12.r * sizeFactor),
+  //                     borderSide: BorderSide(color: SetuColors.error, width: 2),
+  //                   ),
+  //                   contentPadding: EdgeInsets.symmetric(
+  //                       horizontal: 16.w * sizeFactor,
+  //                       vertical: 16.h * sizeFactor),
+  //                   errorText: errorText, // Pass errorText to InputDecoration
+  //                 ),
+  //               );
+  //             },
+  //           );
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
+
   static Widget buildTextFormField({
     required TextEditingController controller,
     required String label,
     required String hint,
     required IconData icon,
-    TextInputType keyboardType =
-        TextInputType.text ?? TextInputType.text, // Provide a default value,
+    TextInputType keyboardType = TextInputType.text,
+    TextInputAction? textInputAction,
     int maxLines = 1,
     int? maxLength,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    List<TextInputFormatter>? inputFormatters, // Add inputFormatters parameter
     String? Function(String?)? validator,
     String sourceLanguage = 'en',
-    String? errorText, // Add errorText parameter
-    ValueChanged<String>? onChanged, // Add onChanged parameter
+    String? errorText,
+    ValueChanged<String>? onChanged,
+    ValueChanged<String>? onFieldSubmitted,
     GestureTapCallback? onTap,
     bool readOnly = false, // default to false
   }) {
@@ -356,18 +452,23 @@ class SurveyUIUtils {
                 return TextFormField(
                   controller: controller,
                   keyboardType: keyboardType,
+                  textInputAction: textInputAction,
                   maxLines: maxLines,
                   maxLength: maxLength,
+                  obscureText: obscureText,
+                  inputFormatters: inputFormatters, // Pass inputFormatters
                   style: GoogleFonts.poppins(fontSize: 16.sp * sizeFactor),
                   validator: validator,
-                  onChanged: onChanged, // Pass onChanged to TextFormField
-                  onTap: onTap, // Pass onTap to TextFormField
-                    readOnly: readOnly, // ✅ FIX: pass readOnly here
+                  onChanged: onChanged,
+                  onFieldSubmitted: onFieldSubmitted,
+                  onTap: onTap,
+                  readOnly: readOnly, // ✅ FIX: pass readOnly here
                   decoration: InputDecoration(
                     hintText: translatedHint,
                     prefixIcon: Icon(icon,
                         color: SetuColors.primaryGreen,
                         size: 20.w * sizeFactor),
+                    suffixIcon: suffixIcon,
                     filled: true,
                     fillColor: SetuColors.background,
                     border: OutlineInputBorder(
@@ -383,7 +484,7 @@ class SurveyUIUtils {
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r * sizeFactor),
                       borderSide:
-                          BorderSide(color: SetuColors.primaryGreen, width: 2),
+                      BorderSide(color: SetuColors.primaryGreen, width: 2),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r * sizeFactor),
@@ -396,7 +497,7 @@ class SurveyUIUtils {
                     contentPadding: EdgeInsets.symmetric(
                         horizontal: 16.w * sizeFactor,
                         vertical: 16.h * sizeFactor),
-                    errorText: errorText, // Pass errorText to InputDecoration
+                    errorText: errorText,
                   ),
                 );
               },

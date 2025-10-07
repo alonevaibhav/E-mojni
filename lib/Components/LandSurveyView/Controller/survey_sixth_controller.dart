@@ -135,8 +135,6 @@ class SurveySixthController extends GetxController with StepValidationMixin, Ste
       case 'mobileNumber':
         if (value.trim().isEmpty) {
           validationErrors['${index}_$field'] = 'Mobile number is required';
-        } else if (value.length != 10 || !RegExp(r'^[0-9]+$').hasMatch(value)) {
-          validationErrors['${index}_$field'] = 'Enter valid 10-digit mobile number';
         }
         break;
       case 'consent':
@@ -148,6 +146,7 @@ class SurveySixthController extends GetxController with StepValidationMixin, Ste
   }
 
   void _validateAddressFields(int index, Map<String, String> addressData) {
+    // Use isEmpty validation for address fields
     if (addressData['address']?.trim().isEmpty ?? true) {
       validationErrors['${index}_address'] = 'Address is required';
     }
@@ -227,55 +226,96 @@ class SurveySixthController extends GetxController with StepValidationMixin, Ste
     Get.back(); // Close the popup
   }
 
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'coowner':
+        return _validateAllCoownerEntries();
       default:
         return true;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   clearValidationErrors();
-  //   bool isValid = true;
-  //
-  //   for (int i = 0; i < coownerEntries.length; i++) {
-  //     final entry = coownerEntries[i];
-  //
-  //     // Validate required fields
-  //     final name = (entry['nameController'] as TextEditingController).text;
-  //     final mobileNumber = (entry['mobileNumberController'] as TextEditingController).text;
-  //     final consent = (entry['consentController'] as TextEditingController).text;
-  //     final address = entry['address'] as Map<String, String>;
-  //
-  //     _validateField(i, 'name', name);
-  //     _validateField(i, 'mobileNumber', mobileNumber);
-  //     _validateField(i, 'consent', consent);
-  //     _validateAddressFields(i, address);
-  //
-  //     // Update the entry data
-  //     entry['name'] = name;
-  //     entry['mobileNumber'] = mobileNumber;
-  //     entry['consent'] = consent;
-  //     entry['serverNumber'] = (entry['serverNumberController'] as TextEditingController).text;
-  //   }
-  //
-  //   isValid = validationErrors.isEmpty;
-  //   return isValid;
-  // }
+
+  // NEW: Validate all co-owner entries with isEmpty checks
+  bool _validateAllCoownerEntries() {
+    clearValidationErrors();
+    bool isValid = true;
+
+    for (int i = 0; i < coownerEntries.length; i++) {
+      final entry = coownerEntries[i];
+
+      // Co-owner Name validation (required field with isEmpty check)
+      final coownerName = (entry['nameController'] as TextEditingController).text.trim();
+      if (coownerName.isEmpty) {
+        validationErrors['${i}_name'] = 'Co-owner name is required';
+        isValid = false;
+      }
+
+      // Mobile Number validation (required field with isEmpty check)
+      final mobileNumber = (entry['mobileNumberController'] as TextEditingController).text.trim();
+      if (mobileNumber.isEmpty) {
+        validationErrors['${i}_mobileNumber'] = 'Mobile number is required';
+        isValid = false;
+      }
+
+      // Address validation - validate using the address data
+      final addressData = entry['address'] as Map<String, String>;
+      _validateAddressFields(i, addressData);
+
+      // Check if address validation errors exist
+      final hasAddressErrors = validationErrors.keys.any((key) =>
+      key.startsWith('${i}_address') ||
+          key.startsWith('${i}_pincode') ||
+          key.startsWith('${i}_village') ||
+          key.startsWith('${i}_postOffice'));
+
+      if (hasAddressErrors) {
+        isValid = false;
+      }
+
+      // Update entry data for getStepData()
+      entry['name'] = coownerName;
+      entry['mobileNumber'] = mobileNumber;
+      entry['serverNumber'] = (entry['serverNumberController'] as TextEditingController).text.trim();
+      entry['consent'] = (entry['consentController'] as TextEditingController).text.trim();
+    }
+
+    return isValid;
+  }
 
   @override
   bool isStepCompleted(List<String> fields) {
-    return validateCurrentSubStep('');
+    for (String field in fields) {
+      if (!validateCurrentSubStep(field)) return false;
+    }
+    return true;
   }
 
   @override
   String getFieldError(String field) {
-    if (validationErrors.isNotEmpty) {
-      return validationErrors.values.first;
+    switch (field) {
+      case 'coowner':
+      // Return first validation error found
+        if (validationErrors.isNotEmpty) {
+          return validationErrors.values.first;
+        }
+        return 'Please complete all required co-owner information';
+      default:
+        return validationErrors[field] ?? 'This field is required';
     }
-    return 'Please complete all required fields';
+  }
+
+  // NEW: Get specific field error for an entry
+  String getEntryFieldError(int entryIndex, String fieldName) {
+    final errorKey = '${entryIndex}_$fieldName';
+    return validationErrors[errorKey] ?? '';
+  }
+
+  // NEW: Check if entry has validation errors
+  bool hasEntryValidationError(int entryIndex, String fieldName) {
+    final errorKey = '${entryIndex}_$fieldName';
+    return validationErrors.containsKey(errorKey);
   }
 
   // StepDataMixin implementation
@@ -291,6 +331,7 @@ class SurveySixthController extends GetxController with StepValidationMixin, Ste
         'serverNumber': entry['serverNumber'] ?? '',
         'consent': entry['consent'] ?? '',
         'address': Map<String, String>.from(entry['address'] as Map? ?? {}),
+        'formattedAddress': getFormattedAddress(i),
       });
     }
 
@@ -300,4 +341,3 @@ class SurveySixthController extends GetxController with StepValidationMixin, Ste
     };
   }
 }
-

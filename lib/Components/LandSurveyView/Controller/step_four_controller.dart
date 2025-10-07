@@ -440,24 +440,24 @@ class StepFourController extends GetxController
 
   // StepValidationMixin implementation
   @override
-  bool validateCurrentSubStep(String field) {
-    switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
-      default:
-        return true;
-    }
-  }
   // bool validateCurrentSubStep(String field) {
   //   switch (field) {
-  //     case 'calculation':
-  //       return _validateCalculationFields();
   //     case 'government_survey':
-  //       return true;
+  //       return true; // Temporarily return true to bypass validation
   //     default:
   //       return true;
   //   }
   // }
+  bool validateCurrentSubStep(String field) {
+    switch (field) {
+      case 'calculation':
+        return _validateCalculationFields();
+      case 'government_survey':
+        return true;
+      default:
+        return true;
+    }
+  }
 
   bool _validateCalculationFields() {
     if (selectedCalculationType.value == null ||

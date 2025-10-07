@@ -23,12 +23,11 @@ class PersonalInfoStep extends StatelessWidget {
   });
 
   // Get the PersonalInfoController
-  PersonalInfoController get controller =>
-      Get.find<PersonalInfoController>(tag: 'personal_info');
+  PersonalInfoController get controller => Get.find<PersonalInfoController>(tag: 'personal_info');
 
   @override
   Widget build(BuildContext context) {
-    // Get the substeps from main controller configuration
+
     final subSteps =
         mainController.stepConfigurations[0] ?? ['holder_verification'];
 

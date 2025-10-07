@@ -1,4 +1,3 @@
-
 import 'dart:developer' as Developer;
 import 'package:get/get.dart';
 import 'dart:io';
@@ -25,7 +24,6 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
   final nakashaFiles = <String>[].obs;
   final bhandhakamParvanaFiles = <String>[].obs;
   final nonAgriculturalZoneCertificateFiles = <String>[].obs;
-
 
   // Stomach specific documents
   final pratisaKarayaycheNakshaFiles = <String>[].obs;
@@ -99,107 +97,109 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       return false;
     }
   }
+
   bool get isIntegrationCalculation {
     try {
       final calculationController = Get.find<CalculationController>(tag: 'calculation');
       bool result = calculationController.selectedCalculationType.value == 'Integration calculation';
 
-      Developer.log('isStomach check: ${calculationController.selectedCalculationType.value} -> $result', name: 'SurveyEightController');
+      Developer.log('isIntegrationCalculation check: ${calculationController.selectedCalculationType.value} -> $result', name: 'SurveyEightController');
 
       return result;
     } catch (e) {
-      print('Error in isStomach: $e');
+      print('Error in isIntegrationCalculation: $e');
       return false;
     }
   }
 
-  // Validation Methods
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'documents':
+        return _validateDocuments();
       default:
         return true;
     }
   }
 
-  //   bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'documents':
-  //       return _validateDocuments();
-  //     case 'status':
-  //       return true; // Status is always valid for this step
-  //     default:
-  //       return true;
-  //   }
-  // }
-
   bool _validateDocuments() {
     validationErrors.clear();
     bool isValid = true;
 
-    // Identity card validation
-    if (selectedIdentityType.value.isEmpty) {
+    // Identity card validation with isEmpty checks
+    if (selectedIdentityType.value.trim().isEmpty) {
       validationErrors['identityType'] = 'Please select identity card type';
       isValid = false;
     }
 
     if (identityCardFiles.isEmpty) {
-      validationErrors['identityCard'] = 'Please upload identity card';
+      validationErrors['identityCard'] = 'Please upload identity card document';
       isValid = false;
     }
 
-    // Required documents validation
+    // Required documents validation with isEmpty checks
     if (sevenTwelveFiles.isEmpty) {
-      validationErrors['sevenTwelve'] = 'Please upload 7/12 document';
+      validationErrors['sevenTwelve'] = 'Please upload Latest 7/12 Of The 3 Month document';
       isValid = false;
     }
 
-    if (noteFiles.isEmpty) {
-      validationErrors['note'] = 'Please upload note document';
-      isValid = false;
-    }
+    // if (noteFiles.isEmpty) {
+    //   validationErrors['note'] = 'Please upload Note document';
+    //   isValid = false;
+    // }
 
-    if (partitionFiles.isEmpty) {
-      validationErrors['partition'] = 'Please upload partition document';
-      isValid = false;
-    }
+    // if (partitionFiles.isEmpty) {
+    //   validationErrors['partition'] = 'Please upload Partition document';
+    //   isValid = false;
+    // }
 
     if (schemeSheetFiles.isEmpty) {
-      validationErrors['schemeSheet'] = 'Please upload scheme sheet document';
+      validationErrors['schemeSheet'] = 'Please upload Scheme Sheet Utara/Utara Akharband document';
       isValid = false;
     }
 
     if (oldCensusMapFiles.isEmpty) {
-      validationErrors['oldCensusMap'] = 'Please upload old census map';
+      validationErrors['oldCensusMap'] = 'Please upload Old census map';
       isValid = false;
     }
 
     if (demarcationCertificateFiles.isEmpty) {
-      validationErrors['demarcationCertificate'] = 'Please upload demarcation certificate';
+      validationErrors['demarcationCertificate'] = 'Please upload Demarcation certificate';
       isValid = false;
     }
 
-    // Non-agricultural specific validation
+    // if (adhikarPatra.isEmpty) {
+    //   validationErrors['adhikarPatra'] = 'Please upload Adhikar Patra document';
+    //   isValid = false;
+    // }
+
+    // Note: otherDocument is optional, so no validation required
+
+    // Non-agricultural specific validation with isEmpty checks
     if (isNonAgricultural) {
       if (sakshamPradikaranAdeshFiles.isEmpty) {
-        validationErrors['sakshamPradikaranAdesh'] = 'Please upload Saksham Pradikaran Adesh document';
+        validationErrors['sakshamPradikaranAdesh'] = 'Please upload Saksham Pradikaran Adesh/N/A Order document';
         isValid = false;
       }
 
       if (nakashaFiles.isEmpty) {
-        validationErrors['nakasha'] = 'Please upload Nakasha document';
+        validationErrors['nakasha'] = 'Please upload Nakasha/Layout Blueprint document';
+        isValid = false;
+      }
+
+      if (nonAgriculturalZoneCertificateFiles.isEmpty) {
+        validationErrors['nonAgriculturalZoneCertificate'] = 'Please upload Zone Certificate for Non-Agricultural';
         isValid = false;
       }
 
       if (bhandhakamParvanaFiles.isEmpty) {
-        validationErrors['bhandhakamParvana'] = 'Please upload Bhandhakam Parvana document';
+        validationErrors['bhandhakamParvana'] = 'Please upload Bhandhakam Parvangi document';
         isValid = false;
       }
     }
 
-    // Stomach specific validation
+    // Stomach specific validation with isEmpty checks
     if (isStomach) {
       if (pratisaKarayaycheNakshaFiles.isEmpty) {
         validationErrors['pratisaKarayaycheNaksha'] = 'Please upload Pratisa Karayayche Naksha document';
@@ -207,12 +207,17 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       }
 
       if (bandPhotoFiles.isEmpty) {
-        validationErrors['bandPhoto'] = 'Please upload Band Photo';
+        validationErrors['bandPhoto'] = 'Please upload Mojni karawayacha Jagecha Photo';
+        isValid = false;
+      }
+
+      if (stomachZoneCertificateFiles.isEmpty) {
+        validationErrors['stomachZoneCertificate'] = 'Please upload Zone Certificate for Stomach';
         isValid = false;
       }
 
       if (sammatiPatraFiles.isEmpty) {
-        validationErrors['sammatiPatra'] = 'Please upload Sammati Patra document';
+        validationErrors['sammatiPatra'] = 'Please upload Sammati Patra/Pratidnya Patra document';
         isValid = false;
       }
     }
@@ -232,13 +237,73 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
 
   @override
   String getFieldError(String field) {
-    return validationErrors[field] ?? 'This field is required';
+    switch (field) {
+      case 'documents':
+      // Return first validation error found with specific message
+        if (validationErrors.isNotEmpty) {
+          return validationErrors.values.first;
+        }
+        return 'Please upload all required documents';
+
+    // Return specific field errors
+      case 'identityType':
+        return validationErrors['identityType'] ?? 'Please select identity card type';
+      case 'identityCard':
+        return validationErrors['identityCard'] ?? 'Please upload identity card document';
+      case 'sevenTwelve':
+        return validationErrors['sevenTwelve'] ?? 'Please upload Latest 7/12 document';
+      case 'note':
+        return validationErrors['note'] ?? 'Please upload Note document';
+      case 'partition':
+        return validationErrors['partition'] ?? 'Please upload Partition document';
+      case 'schemeSheet':
+        return validationErrors['schemeSheet'] ?? 'Please upload Scheme Sheet document';
+      case 'oldCensusMap':
+        return validationErrors['oldCensusMap'] ?? 'Please upload Old census map';
+      case 'demarcationCertificate':
+        return validationErrors['demarcationCertificate'] ?? 'Please upload Demarcation certificate';
+      case 'adhikarPatra':
+        return validationErrors['adhikarPatra'] ?? 'Please upload Adhikar Patra document';
+
+    // Non-agricultural specific errors
+      case 'sakshamPradikaranAdesh':
+        return validationErrors['sakshamPradikaranAdesh'] ?? 'Please upload Saksham Pradikaran Adesh document';
+      case 'nakasha':
+        return validationErrors['nakasha'] ?? 'Please upload Nakasha document';
+      case 'nonAgriculturalZoneCertificate':
+        return validationErrors['nonAgriculturalZoneCertificate'] ?? 'Please upload Zone Certificate';
+      case 'bhandhakamParvana':
+        return validationErrors['bhandhakamParvana'] ?? 'Please upload Bhandhakam Parvangi document';
+
+    // Stomach specific errors
+      case 'pratisaKarayaycheNaksha':
+        return validationErrors['pratisaKarayaycheNaksha'] ?? 'Please upload Pratisa Karayayche Naksha document';
+      case 'bandPhoto':
+        return validationErrors['bandPhoto'] ?? 'Please upload Mojni karawayacha Jagecha Photo';
+      case 'stomachZoneCertificate':
+        return validationErrors['stomachZoneCertificate'] ?? 'Please upload Zone Certificate for Stomach';
+      case 'sammatiPatra':
+        return validationErrors['sammatiPatra'] ?? 'Please upload Sammati Patra document';
+
+      default:
+        return validationErrors[field] ?? 'This field is required';
+    }
+  }
+
+  // NEW: Get specific validation error for a document type
+  String getDocumentError(String documentType) {
+    return validationErrors[documentType] ?? '';
+  }
+
+  // NEW: Check if a specific document has validation error
+  bool hasDocumentError(String documentType) {
+    return validationErrors.containsKey(documentType);
   }
 
   @override
   Map<String, dynamic> getStepData() {
     Map<String, dynamic> data = {
-      'identityCardType': selectedIdentityType.value,
+      'identityCardType': selectedIdentityType.value.trim(),
       'identityCardFiles': identityCardFiles.toList(),
       'sevenTwelveFiles': sevenTwelveFiles.toList(),
       'noteFiles': noteFiles.toList(),
@@ -246,6 +311,8 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       'schemeSheetFiles': schemeSheetFiles.toList(),
       'oldCensusMapFiles': oldCensusMapFiles.toList(),
       'demarcationCertificateFiles': demarcationCertificateFiles.toList(),
+      'adhikarPatraFiles': adhikarPatra.toList(),
+      'otherDocumentFiles': otherDocument.toList(),
     };
 
     // Add non-agricultural specific data
@@ -253,6 +320,7 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       data.addAll({
         'sakshamPradikaranAdeshFiles': sakshamPradikaranAdeshFiles.toList(),
         'nakashaFiles': nakashaFiles.toList(),
+        'nonAgriculturalZoneCertificateFiles': nonAgriculturalZoneCertificateFiles.toList(),
         'bhandhakamParvanaFiles': bhandhakamParvanaFiles.toList(),
       });
     }
@@ -262,6 +330,7 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       data.addAll({
         'pratisaKarayaycheNakshaFiles': pratisaKarayaycheNakshaFiles.toList(),
         'bandPhotoFiles': bandPhotoFiles.toList(),
+        'stomachZoneCertificateFiles': stomachZoneCertificateFiles.toList(),
         'sammatiPatraFiles': sammatiPatraFiles.toList(),
       });
     }
@@ -279,6 +348,8 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
     schemeSheetFiles.assignAll(List<String>.from(data['schemeSheetFiles'] ?? []));
     oldCensusMapFiles.assignAll(List<String>.from(data['oldCensusMapFiles'] ?? []));
     demarcationCertificateFiles.assignAll(List<String>.from(data['demarcationCertificateFiles'] ?? []));
+    adhikarPatra.assignAll(List<String>.from(data['adhikarPatraFiles'] ?? []));
+    otherDocument.assignAll(List<String>.from(data['otherDocumentFiles'] ?? []));
 
     // Load non-agricultural specific data
     if (data.containsKey('sakshamPradikaranAdeshFiles')) {
@@ -286,6 +357,9 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
     }
     if (data.containsKey('nakashaFiles')) {
       nakashaFiles.assignAll(List<String>.from(data['nakashaFiles'] ?? []));
+    }
+    if (data.containsKey('nonAgriculturalZoneCertificateFiles')) {
+      nonAgriculturalZoneCertificateFiles.assignAll(List<String>.from(data['nonAgriculturalZoneCertificateFiles'] ?? []));
     }
     if (data.containsKey('bhandhakamParvanaFiles')) {
       bhandhakamParvanaFiles.assignAll(List<String>.from(data['bhandhakamParvanaFiles'] ?? []));
@@ -297,6 +371,9 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
     }
     if (data.containsKey('bandPhotoFiles')) {
       bandPhotoFiles.assignAll(List<String>.from(data['bandPhotoFiles'] ?? []));
+    }
+    if (data.containsKey('stomachZoneCertificateFiles')) {
+      stomachZoneCertificateFiles.assignAll(List<String>.from(data['stomachZoneCertificateFiles'] ?? []));
     }
     if (data.containsKey('sammatiPatraFiles')) {
       sammatiPatraFiles.assignAll(List<String>.from(data['sammatiPatraFiles'] ?? []));
@@ -312,12 +389,14 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
         partitionFiles.isNotEmpty &&
         schemeSheetFiles.isNotEmpty &&
         oldCensusMapFiles.isNotEmpty &&
-        demarcationCertificateFiles.isNotEmpty;
+        demarcationCertificateFiles.isNotEmpty &&
+        adhikarPatra.isNotEmpty;
 
     if (isNonAgricultural) {
       return basicDocsUploaded &&
           sakshamPradikaranAdeshFiles.isNotEmpty &&
           nakashaFiles.isNotEmpty &&
+          nonAgriculturalZoneCertificateFiles.isNotEmpty &&
           bhandhakamParvanaFiles.isNotEmpty;
     }
 
@@ -325,6 +404,7 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
       return basicDocsUploaded &&
           pratisaKarayaycheNakshaFiles.isNotEmpty &&
           bandPhotoFiles.isNotEmpty &&
+          stomachZoneCertificateFiles.isNotEmpty &&
           sammatiPatraFiles.isNotEmpty;
     }
 
@@ -334,14 +414,14 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
   // Get upload progress for UI
   String get uploadProgressText {
     int uploadedCount = 0;
-    int totalRequired = 7; // Basic documents
+    int totalRequired = 8; // Basic documents (including adhikarPatra)
 
     if (isNonAgricultural) {
-      totalRequired += 3; // Add non-agricultural documents
+      totalRequired += 4; // Add non-agricultural documents
     }
 
     if (isStomach) {
-      totalRequired += 3; // Add stomach documents
+      totalRequired += 4; // Add stomach documents
     }
 
     if (selectedIdentityType.value.isNotEmpty && identityCardFiles.isNotEmpty) uploadedCount++;
@@ -351,16 +431,19 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
     if (schemeSheetFiles.isNotEmpty) uploadedCount++;
     if (oldCensusMapFiles.isNotEmpty) uploadedCount++;
     if (demarcationCertificateFiles.isNotEmpty) uploadedCount++;
+    if (adhikarPatra.isNotEmpty) uploadedCount++;
 
     if (isNonAgricultural) {
       if (sakshamPradikaranAdeshFiles.isNotEmpty) uploadedCount++;
       if (nakashaFiles.isNotEmpty) uploadedCount++;
+      if (nonAgriculturalZoneCertificateFiles.isNotEmpty) uploadedCount++;
       if (bhandhakamParvanaFiles.isNotEmpty) uploadedCount++;
     }
 
     if (isStomach) {
       if (pratisaKarayaycheNakshaFiles.isNotEmpty) uploadedCount++;
       if (bandPhotoFiles.isNotEmpty) uploadedCount++;
+      if (stomachZoneCertificateFiles.isNotEmpty) uploadedCount++;
       if (sammatiPatraFiles.isNotEmpty) uploadedCount++;
     }
 
@@ -375,15 +458,19 @@ class SurveyEightController extends GetxController with StepValidationMixin, Ste
   List<String> get schemeSheetFileNames => schemeSheetFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get oldCensusMapFileNames => oldCensusMapFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get demarcationCertificateFileNames => demarcationCertificateFiles.map((filePath) => filePath.split('/').last).toList();
+  List<String> get adhikarPatraFileNames => adhikarPatra.map((filePath) => filePath.split('/').last).toList();
+  List<String> get otherDocumentFileNames => otherDocument.map((filePath) => filePath.split('/').last).toList();
 
   // Non-agricultural specific file names
   List<String> get sakshamPradikaranAdeshFileNames => sakshamPradikaranAdeshFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get nakashaFileNames => nakashaFiles.map((filePath) => filePath.split('/').last).toList();
+  List<String> get nonAgriculturalZoneCertificateFileNames => nonAgriculturalZoneCertificateFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get bhandhakamParvanaFileNames => bhandhakamParvanaFiles.map((filePath) => filePath.split('/').last).toList();
 
   // Stomach specific file names
   List<String> get pratisaKarayaycheNakshaFileNames => pratisaKarayaycheNakshaFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get bandPhotoFileNames => bandPhotoFiles.map((filePath) => filePath.split('/').last).toList();
+  List<String> get stomachZoneCertificateFileNames => stomachZoneCertificateFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get sammatiPatraFileNames => sammatiPatraFiles.map((filePath) => filePath.split('/').last).toList();
 
   // Helper methods to convert between File and String if needed elsewhere
