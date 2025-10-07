@@ -6,10 +6,12 @@ import 'package:gap/gap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../Constants/color_constant.dart';
+import '../../../../../Controller/Dashboard/MyApplication/LifecycleController/life_counting_controller.dart';
 import '../../../../../Controller/Dashboard/MyApplication/counting_land_controller.dart';
 import '../../../../../Controller/get_translation_controller/get_text_form.dart';
 import '../../../../../Models/counting_land_model.dart';
 import '../../../../../Utils/file_full_screen_view.dart';
+import 'components/payment_widget.dart';
 
 class CountingLandDetailPage extends StatelessWidget {
   const CountingLandDetailPage({
@@ -21,6 +23,7 @@ class CountingLandDetailPage extends StatelessWidget {
     final sizeFactor = 0.85;
 
     final form = Get.arguments as CountingLandForm;
+    final controller = Get.put(LifeCountingController(formId: form.id), tag: 'payment_${form.id}',);
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -39,49 +42,18 @@ class CountingLandDetailPage extends StatelessWidget {
             // PREVIEW BANNER (Clickable to open bottom sheet)
             _buildPreviewBanner(sizeFactor, form),
 
-            // TODO: Add Payment Section Here
-            Container(
-              margin: EdgeInsets.all(16.w * sizeFactor),
-              padding: EdgeInsets.all(20.w * sizeFactor),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.r * sizeFactor),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    PhosphorIcons.wallet(PhosphorIconsStyle.regular),
-                    size: 48.sp * sizeFactor,
-                    color: Colors.grey[400],
-                  ),
-                  Gap(12.h * sizeFactor),
-                  GetTranslatableText(
-                    'Payment & Actions',
-                    style: TextStyle(
-                      fontSize: 16.sp * sizeFactor,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  Gap(8.h * sizeFactor),
-                  GetTranslatableText(
-                    'Add your payment and form actions here',
-                    style: TextStyle(
-                      fontSize: 12.sp * sizeFactor,
-                      color: Colors.grey[500],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+            PaymentWidget(
+              sizeFactor: sizeFactor,
+              controller: controller,
             ),
+
+
+
+
+
+
+
+
 
             Gap(20.h * sizeFactor),
           ],
@@ -90,6 +62,7 @@ class CountingLandDetailPage extends StatelessWidget {
     );
   }
 
+  // PREVIEW BANNER-----------------------------------
   Widget _buildPreviewBanner(double sizeFactor, CountingLandForm form) {
     return GestureDetector(
       onTap: () => _showFormPreviewBottomSheet(form),
@@ -271,7 +244,7 @@ class CountingLandDetailPage extends StatelessWidget {
                         buildDetailsSection(
                           title: 'Adjacent Owner Information',
                           icon:
-                          PhosphorIcons.houseLine(PhosphorIconsStyle.fill),
+                              PhosphorIcons.houseLine(PhosphorIconsStyle.fill),
                           children: [
                             buildDetailItem(
                                 'Name', form.adjacentOwnerName!, sizeFactor),
@@ -550,12 +523,12 @@ class CountingLandDetailPage extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 final allPaths =
-                documents.map((d) => d['path'] as String).toList();
+                    documents.map((d) => d['path'] as String).toList();
                 Get.to(() => FileFullScreenView(
-                  filePath: doc['path'],
-                  allFiles: allPaths,
-                  initialIndex: index,
-                ));
+                      filePath: doc['path'],
+                      allFiles: allPaths,
+                      initialIndex: index,
+                    ));
               },
               child: Container(
                 width: 80.w * sizeFactor,
@@ -572,21 +545,21 @@ class CountingLandDetailPage extends StatelessWidget {
                       isImage
                           ? PhosphorIcons.image(PhosphorIconsStyle.regular)
                           : isPdf
-                          ? PhosphorIcons.filePdf(
-                          PhosphorIconsStyle.regular)
-                          : isWord
-                          ? PhosphorIcons.fileDoc(
-                          PhosphorIconsStyle.regular)
-                          : PhosphorIcons.file(
-                          PhosphorIconsStyle.regular),
+                              ? PhosphorIcons.filePdf(
+                                  PhosphorIconsStyle.regular)
+                              : isWord
+                                  ? PhosphorIcons.fileDoc(
+                                      PhosphorIconsStyle.regular)
+                                  : PhosphorIcons.file(
+                                      PhosphorIconsStyle.regular),
                       size: 24.w * sizeFactor,
                       color: isImage
                           ? Colors.blue
                           : isPdf
-                          ? Colors.red
-                          : isWord
-                          ? Colors.blue.shade800
-                          : Colors.grey,
+                              ? Colors.red
+                              : isWord
+                                  ? Colors.blue.shade800
+                                  : Colors.grey,
                     ),
                     Gap(4.h * sizeFactor),
                     Text(
