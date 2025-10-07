@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'main_controller.dart';
 
-class SurveySeventhController extends GetxController
-    with StepValidationMixin, StepDataMixin {
+class SurveySeventhController extends GetxController with StepValidationMixin, StepDataMixin {
   // Observable list for next of kin entries
   final nextOfKinEntries = <Map<String, dynamic>>[].obs;
 

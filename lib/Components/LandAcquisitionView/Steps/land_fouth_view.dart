@@ -23,8 +23,7 @@ class LandFouthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get the substeps from main controller configuration
-    final subSteps =
-        mainController.stepConfigurations[3] ?? ['land_fouth_step'];
+    final subSteps = mainController.stepConfigurations[3] ?? ['land_fouth_step'];
 
     // Ensure currentSubStep is within bounds
     if (currentSubStep >= subSteps.length) {
@@ -74,17 +73,6 @@ class LandFouthView extends StatelessWidget {
                   onChanged: controller.updateDuration,
                   icon: PhosphorIcons.clock(PhosphorIconsStyle.regular),
                 ),
-                if (controller.durationError.value.isNotEmpty)
-                  Padding(
-                    padding: EdgeInsets.only(top: 4.h, left: 12.w),
-                    child: Text(
-                      controller.durationError.value,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
               ],
             )),
         Gap(16.h),
@@ -102,17 +90,6 @@ class LandFouthView extends StatelessWidget {
                   onChanged: controller.updateHolderType,
                   icon: PhosphorIcons.users(PhosphorIconsStyle.regular),
                 ),
-                if (controller.holderTypeError.value.isNotEmpty)
-                  Padding(
-                    padding: EdgeInsets.only(top: 4.h, left: 12.w),
-                    child: Text(
-                      controller.holderTypeError.value,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
               ],
             )),
         Gap(16.h),

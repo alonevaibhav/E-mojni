@@ -124,44 +124,44 @@ class LandFifthController extends GetxController with StepValidationMixin, StepD
 
   @override
   bool validateCurrentSubStep(String field) {
-    switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
-      default:
-        return true;
+    // Validate all holder entries
+    for (int i = 0; i < holderEntries.length; i++) {
+      final entry = holderEntries[i];
+
+      // Only validate fields that are actually in the UI
+      if (entry['holderName']?.isEmpty ?? true) return false;
+      if (entry['area']?.isEmpty ?? true) return false;
+
+      // Address fields from popup
+      if (entry['plotNo']?.isEmpty ?? true) return false;
+      if (entry['address']?.isEmpty ?? true) return false;
+      if (entry['village']?.isEmpty ?? true) return false;
+      if (entry['district']?.isEmpty ?? true) return false;
+      if (entry['pincode']?.isEmpty ?? true) return false;
+      if (entry['postOffice']?.isEmpty ?? true) return false;
+      if (entry['mobileNumber']?.isEmpty ?? true) return false;
+
+      // Validate mobile number format (10 digits)
+      final mobileNumber = entry['mobileNumber'] ?? '';
+      if (mobileNumber.length != 10 ||
+          !RegExp(r'^\d{10}$').hasMatch(mobileNumber)) {
+        return false;
+      }
+
+      final pincode = entry['pincode'] ?? '';
+      if (pincode.isEmpty) {
+        return false;
+      }
+
+
     }
+    return holderEntries.isNotEmpty;
   }
-  // bool validateCurrentSubStep(String field) {
-  //   // Validate all holder entries
-  //   for (int i = 0; i < holderEntries.length; i++) {
-  //     final entry = holderEntries[i];
-  //     if (entry['holderName']?.isEmpty ?? true) return false;
-  //     if (entry['address']?.isEmpty ?? true) return false;
-  //     if (entry['accountNumber']?.isEmpty ?? true) return false;
-  //     if (entry['mobileNumber']?.isEmpty ?? true) return false;
-  //     if (entry['serverNumber']?.isEmpty ?? true) return false;
-  //     if (entry['area']?.isEmpty ?? true) return false;
-  //     if (entry['potKharabaArea']?.isEmpty ?? true) return false;
-  //     if (entry['totalArea']?.isEmpty ?? true) return false;
-  //     if (entry['village']?.isEmpty ?? true) return false;
-  //     if (entry['pincode']?.isEmpty ?? true) return false;
-  //     if (entry['postOffice']?.isEmpty ?? true) return false;
-  //
-  //     // Validate mobile number format (10 digits)
-  //     final mobileNumber = entry['mobileNumber'] ?? '';
-  //     if (mobileNumber.length != 10 ||
-  //         !RegExp(r'^\d{10}$').hasMatch(mobileNumber)) {
-  //       return false;
-  //     }
-  //   }
-  //   return holderEntries.isNotEmpty;
-  // }
 
   @override
   bool isStepCompleted(List<String> fields) {
     return validateCurrentSubStep('');
   }
-
   @override
   String getFieldError(String field) {
     if (holderEntries.isEmpty) {
@@ -170,45 +170,52 @@ class LandFifthController extends GetxController with StepValidationMixin, StepD
 
     for (int i = 0; i < holderEntries.length; i++) {
       final entry = holderEntries[i];
+
       if (entry['holderName']?.isEmpty ?? true) {
         return 'Holder name is required in entry ${i + 1}';
+      }
+      if (entry['area']?.isEmpty ?? true) {
+        return 'Area is required in entry ${i + 1}';
+      }
+
+      // Address validation
+      if (entry['plotNo']?.isEmpty ?? true) {
+        return 'Plot number is required in entry ${i + 1}';
       }
       if (entry['address']?.isEmpty ?? true) {
         return 'Address is required in entry ${i + 1}';
       }
-      if (entry['accountNumber']?.isEmpty ?? true) {
-        return 'Account number is required in entry ${i + 1}';
+      if (entry['village']?.isEmpty ?? true) {
+        return 'Village is required in entry ${i + 1}';
+      }
+      if (entry['district']?.isEmpty ?? true) {
+        return 'District is required in entry ${i + 1}';
+      }
+      if (entry['pincode']?.isEmpty ?? true) {
+        return 'Pincode is required in entry ${i + 1}';
+      }
+
+      // Validate pincode format
+      final pincode = entry['pincode'] ?? '';
+      if (pincode.length != 6 || !RegExp(r'^\d{6}$').hasMatch(pincode)) {
+        return 'Please enter a valid 6-digit pincode in entry ${i + 1}';
+      }
+
+      if (entry['postOffice']?.isEmpty ?? true) {
+        return 'Post Office is required in entry ${i + 1}';
       }
       if (entry['mobileNumber']?.isEmpty ?? true) {
         return 'Mobile number is required in entry ${i + 1}';
       }
+
+      // Validate mobile number format
       final mobileNumber = entry['mobileNumber'] ?? '';
       if (mobileNumber.length != 10 ||
           !RegExp(r'^\d{10}$').hasMatch(mobileNumber)) {
         return 'Please enter a valid 10-digit mobile number in entry ${i + 1}';
       }
-      if (entry['serverNumber']?.isEmpty ?? true) {
-        return 'Server number is required in entry ${i + 1}';
-      }
-      if (entry['area']?.isEmpty ?? true) {
-        return 'Area is required in entry ${i + 1}';
-      }
-      if (entry['potKharabaArea']?.isEmpty ?? true) {
-        return 'Pot Kharaba area is required in entry ${i + 1}';
-      }
-      if (entry['totalArea']?.isEmpty ?? true) {
-        return 'Total area is required in entry ${i + 1}';
-      }
-      if (entry['village']?.isEmpty ?? true) {
-        return 'Village is required in entry ${i + 1}';
-      }
-      if (entry['pincode']?.isEmpty ?? true) {
-        return 'Pincode is required in entry ${i + 1}';
-      }
-      if (entry['postOffice']?.isEmpty ?? true) {
-        return 'Post Office is required in entry ${i + 1}';
-      }
     }
+
     return 'Please fill all required fields';
   }
 
