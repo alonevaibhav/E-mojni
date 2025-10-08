@@ -107,22 +107,12 @@ class CourtFourthController extends GetxController with StepValidationMixin, Ste
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'calculation':
+        return _validateCalculationFields();
       default:
-        return true;
+        return false;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'calculation':
-  //       return _validateCalculationFields();
-  //     case 'status':
-  //       return true; // Status field validation if needed
-  //     default:
-  //       return false;
-  //   }
-  // }
 
   bool _validateCalculationFields() {
     return selectedCalculationType.value != null &&

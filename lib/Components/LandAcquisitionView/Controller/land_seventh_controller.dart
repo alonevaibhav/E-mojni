@@ -5,9 +5,9 @@ import '../Controller/main_controller.dart';
 class LandSeventhController extends GetxController with StepValidationMixin, StepDataMixin {
   // Identity Card
   final selectedIdentityType = 'Aadhar Card'.obs;
-  final identityCardFiles = <String>[].obs; // Changed from File to String
+  final identityCardFiles = <String>[].obs;
 
-  // Document Files - Changed from List<File> to List<String>
+  // Document Files
   final sevenTwelveFiles = <String>[].obs;
   final noteFiles = <String>[].obs;
   final partitionFiles = <String>[].obs;
@@ -54,72 +54,84 @@ class LandSeventhController extends GetxController with StepValidationMixin, Ste
     }
   }
 
-  // Validation Methods
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
+      case 'documents':
+        return _validateDocuments();
       case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+        return _validateGovernmentSurveyFields();
       default:
         return true;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'documents':
-  //       return _validateDocuments();
-  //     case 'status':
-  //       return true; // Status is always valid for this step
-  //     default:
-  //       return true;
-  //   }
-  // }
+
+  // NEW: Validate government survey fields
+  bool _validateGovernmentSurveyFields() {
+    validationErrors.clear();
+
+    // Basic validation for government survey
+    if (selectedIdentityType.value.trim().isEmpty) {
+      validationErrors['identityType'] = 'Please select identity card type';
+      return false;
+    }
+
+    return true;
+  }
 
   bool _validateDocuments() {
     validationErrors.clear();
     bool isValid = true;
 
-    // Identity card validation
-    if (selectedIdentityType.value.isEmpty) {
+    // Identity card validation with isEmpty check
+    if (selectedIdentityType.value.trim().isEmpty) {
       validationErrors['identityType'] = 'Please select identity card type';
       isValid = false;
     }
 
     if (identityCardFiles.isEmpty) {
-      validationErrors['identityCard'] = 'Please upload identity card';
+      validationErrors['identityCard'] = 'Please upload identity card document';
       isValid = false;
     }
 
-    // Required documents validation
+    // Required documents validation with isEmpty checks
     if (sevenTwelveFiles.isEmpty) {
-      validationErrors['sevenTwelve'] = 'Please upload 7/12 document';
+      validationErrors['sevenTwelve'] = 'Please upload Latest 7/12 Of The 3 Month document';
       isValid = false;
     }
 
-    if (noteFiles.isEmpty) {
-      validationErrors['note'] = 'Please upload note document';
-      isValid = false;
-    }
-
-    if (partitionFiles.isEmpty) {
-      validationErrors['partition'] = 'Please upload partition document';
-      isValid = false;
-    }
+    // if (noteFiles.isEmpty) {
+    //   validationErrors['note'] = 'Please upload Note document';
+    //   isValid = false;
+    // }
+    //
+    // if (partitionFiles.isEmpty) {
+    //   validationErrors['partition'] = 'Please upload Partition document';
+    //   isValid = false;
+    // }
 
     if (schemeSheetFiles.isEmpty) {
-      validationErrors['schemeSheet'] = 'Please upload scheme sheet document';
+      validationErrors['schemeSheet'] = 'Please upload Scheme Sheet Utara/Utara Akharband document';
       isValid = false;
     }
 
-    if (oldCensusMapFiles.isEmpty) {
-      validationErrors['oldCensusMap'] = 'Please upload old census map';
-      isValid = false;
-    }
+    // if (oldCensusMapFiles.isEmpty) {
+    //   validationErrors['oldCensusMap'] = 'Please upload Old census map';
+    //   isValid = false;
+    // }
+    //
+    // if (demarcationCertificateFiles.isEmpty) {
+    //   validationErrors['demarcationCertificate'] = 'Please upload Demarcation certificate';
+    //   isValid = false;
+    // }
+    //
+    // if (adhikarPatra.isEmpty) {
+    //   validationErrors['adhikarPatra'] = 'Please upload Adhikar Patra document';
+    //   isValid = false;
+    // }
 
-    if (demarcationCertificateFiles.isEmpty) {
-      validationErrors['demarcationCertificate'] = 'Please upload demarcation certificate';
-      isValid = false;
-    }
+    // Note: otherDocument is optional, so no validation required
 
     return isValid;
   }
@@ -136,47 +148,105 @@ class LandSeventhController extends GetxController with StepValidationMixin, Ste
 
   @override
   String getFieldError(String field) {
-    return validationErrors[field] ?? 'This field is required';
+    switch (field) {
+      case 'documents':
+      // Return first validation error found with specific message
+        if (validationErrors.isNotEmpty) {
+          return validationErrors.values.first;
+        }
+        return 'Please upload all required documents';
+
+      case 'government_survey':
+        return _getGovernmentSurveyError();
+
+    // Return specific field errors
+      case 'identityType':
+        return validationErrors['identityType'] ?? 'Please select identity card type';
+      case 'identityCard':
+        return validationErrors['identityCard'] ?? 'Please upload identity card document';
+      case 'sevenTwelve':
+        return validationErrors['sevenTwelve'] ?? 'Please upload Latest 7/12 document';
+      case 'note':
+        return validationErrors['note'] ?? 'Please upload Note document';
+      case 'partition':
+        return validationErrors['partition'] ?? 'Please upload Partition document';
+      case 'schemeSheet':
+        return validationErrors['schemeSheet'] ?? 'Please upload Scheme Sheet document';
+      case 'oldCensusMap':
+        return validationErrors['oldCensusMap'] ?? 'Please upload Old census map';
+      case 'demarcationCertificate':
+        return validationErrors['demarcationCertificate'] ?? 'Please upload Demarcation certificate';
+      case 'adhikarPatra':
+        return validationErrors['adhikarPatra'] ?? 'Please upload Adhikar Patra document';
+
+      default:
+        return validationErrors[field] ?? 'This field is required';
+    }
+  }
+
+  // NEW: Government survey validation errors
+  String _getGovernmentSurveyError() {
+    if (selectedIdentityType.value.trim().isEmpty) {
+      return 'Please select identity card type';
+    }
+
+    return 'Please complete government survey information';
+  }
+
+  // NEW: Get specific validation error for a document type
+  String getDocumentError(String documentType) {
+    return validationErrors[documentType] ?? '';
+  }
+
+  // NEW: Check if a specific document has validation error
+  bool hasDocumentError(String documentType) {
+    return validationErrors.containsKey(documentType);
   }
 
   @override
   Map<String, dynamic> getStepData() {
     return {
-      'identityCardType': selectedIdentityType.value,
-      'identityCardFiles': identityCardFiles.toList(), // Already strings
+      'identityCardType': selectedIdentityType.value.trim(),
+      'identityCardFiles': identityCardFiles.toList(),
       'sevenTwelveFiles': sevenTwelveFiles.toList(),
       'noteFiles': noteFiles.toList(),
       'partitionFiles': partitionFiles.toList(),
       'schemeSheetFiles': schemeSheetFiles.toList(),
       'oldCensusMapFiles': oldCensusMapFiles.toList(),
       'demarcationCertificateFiles': demarcationCertificateFiles.toList(),
+      'adhikarPatraFiles': adhikarPatra.toList(),
+      'otherDocumentFiles': otherDocument.toList(),
+      'isStepCompleted': _validateDocuments(),
+      'timestamp': DateTime.now().toIso8601String(),
     };
   }
 
   // Check if all required documents are uploaded
   bool get areAllDocumentsUploaded {
-    return selectedIdentityType.value.isNotEmpty &&
+    return selectedIdentityType.value.trim().isNotEmpty &&
         identityCardFiles.isNotEmpty &&
         sevenTwelveFiles.isNotEmpty &&
         noteFiles.isNotEmpty &&
         partitionFiles.isNotEmpty &&
         schemeSheetFiles.isNotEmpty &&
         oldCensusMapFiles.isNotEmpty &&
-        demarcationCertificateFiles.isNotEmpty;
+        demarcationCertificateFiles.isNotEmpty &&
+        adhikarPatra.isNotEmpty;
   }
 
   // Get upload progress for UI
   String get uploadProgressText {
     int uploadedCount = 0;
-    int totalRequired = 7;
+    int totalRequired = 8; // Including adhikarPatra
 
-    if (selectedIdentityType.value.isNotEmpty && identityCardFiles.isNotEmpty) uploadedCount++;
+    if (selectedIdentityType.value.trim().isNotEmpty && identityCardFiles.isNotEmpty) uploadedCount++;
     if (sevenTwelveFiles.isNotEmpty) uploadedCount++;
     if (noteFiles.isNotEmpty) uploadedCount++;
     if (partitionFiles.isNotEmpty) uploadedCount++;
     if (schemeSheetFiles.isNotEmpty) uploadedCount++;
     if (oldCensusMapFiles.isNotEmpty) uploadedCount++;
     if (demarcationCertificateFiles.isNotEmpty) uploadedCount++;
+    if (adhikarPatra.isNotEmpty) uploadedCount++;
 
     return '$uploadedCount / $totalRequired documents uploaded';
   }
@@ -189,6 +259,8 @@ class LandSeventhController extends GetxController with StepValidationMixin, Ste
   List<String> get schemeSheetFileNames => schemeSheetFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get oldCensusMapFileNames => oldCensusMapFiles.map((filePath) => filePath.split('/').last).toList();
   List<String> get demarcationCertificateFileNames => demarcationCertificateFiles.map((filePath) => filePath.split('/').last).toList();
+  List<String> get adhikarPatraFileNames => adhikarPatra.map((filePath) => filePath.split('/').last).toList();
+  List<String> get otherDocumentFileNames => otherDocument.map((filePath) => filePath.split('/').last).toList();
 
   // Helper methods to convert between File and String if needed elsewhere
   List<File> getFilesFromPaths(List<String> paths) {
@@ -198,5 +270,18 @@ class LandSeventhController extends GetxController with StepValidationMixin, Ste
   List<String> getPathsFromFiles(List<File> files) {
     return files.map((file) => file.path).toList();
   }
-}
 
+  // NEW: Load step data
+  void loadStepData(Map<String, dynamic> data) {
+    selectedIdentityType.value = data['identityCardType'] ?? 'Aadhar Card';
+    identityCardFiles.assignAll(List<String>.from(data['identityCardFiles'] ?? []));
+    sevenTwelveFiles.assignAll(List<String>.from(data['sevenTwelveFiles'] ?? []));
+    noteFiles.assignAll(List<String>.from(data['noteFiles'] ?? []));
+    partitionFiles.assignAll(List<String>.from(data['partitionFiles'] ?? []));
+    schemeSheetFiles.assignAll(List<String>.from(data['schemeSheetFiles'] ?? []));
+    oldCensusMapFiles.assignAll(List<String>.from(data['oldCensusMapFiles'] ?? []));
+    demarcationCertificateFiles.assignAll(List<String>.from(data['demarcationCertificateFiles'] ?? []));
+    adhikarPatra.assignAll(List<String>.from(data['adhikarPatraFiles'] ?? []));
+    otherDocument.assignAll(List<String>.from(data['otherDocumentFiles'] ?? []));
+  }
+}

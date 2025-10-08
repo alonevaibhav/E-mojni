@@ -64,7 +64,6 @@
 
 import 'package:get/get.dart';
 import 'dart:developer' as developer;
-import 'dart:io';
 import '../../../../API Service/api_service.dart';
 import '../../../../Constants/api_constant.dart';
 import '../../../../Models/payment_model.dart';
@@ -80,13 +79,6 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
   final measurementChalanFiles = <String>[].obs;
   final convenienceChalanFiles = <String>[].obs;
 
-  // Loading states for each upload
-  final isMeasurementUploading = false.obs;
-  final isConvenienceUploading = false.obs;
-
-  // Success states
-  final measurementUploadSuccess = false.obs;
-  final convenienceUploadSuccess = false.obs;
 
   @override
   void onInit() {
@@ -138,7 +130,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
     }
 
     try {
-      isMeasurementUploading.value = true;
+      // isMeasurementUploading.value = true;
 
       final response = await ApiService.multipartPost(
         endpoint: lifeCycleCountingLandChalanSubmission(state!.id),
@@ -156,7 +148,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
       developer.log('Measurement Chalan Upload Response: ${response.data}');
 
       if (response.success) {
-        measurementUploadSuccess.value = true;
+        // measurementUploadSuccess.value = true;
         Get.snackbar(
           'Success',
           'Measurement chalan uploaded successfully',
@@ -175,7 +167,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
         snackPosition: SnackPosition.TOP,
       );
     } finally {
-      isMeasurementUploading.value = false;
+      // isMeasurementUploading.value = false;
     }
   }
 
@@ -191,7 +183,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
     }
 
     try {
-      isConvenienceUploading.value = true;
+      // isConvenienceUploading.value = true;
 
       final response = await ApiService.multipartPost(
         endpoint: lifeCycleCountingLandConvenienceSubmission(state!.id),
@@ -209,7 +201,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
       developer.log('Convenience Chalan Upload Response: ${response.data}');
 
       if (response.success) {
-        convenienceUploadSuccess.value = true;
+        // convenienceUploadSuccess.value = true;
         Get.snackbar(
           'Success',
           'Convenience chalan uploaded successfully',
@@ -228,7 +220,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
-      isConvenienceUploading.value = false;
+      // isConvenienceUploading.value = false;
     }
   }
 

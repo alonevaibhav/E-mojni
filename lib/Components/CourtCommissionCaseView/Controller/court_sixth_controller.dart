@@ -35,24 +35,22 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
       'addressController': TextEditingController(),
       'mobileController': TextEditingController(),
       'surveyNoController': TextEditingController(),
-      'direction': '', // Initialize as empty string, not null
-      'naturalResources': '', // Initialize as empty string, not null
+      'direction': '',
+      'naturalResources': '',
       'address': '',
       'mobile': '',
       'surveyNo': '',
-      'subEntries': <Map<String, dynamic>>[].obs, // For Name/Other sub-entries
+      'subEntries': <Map<String, dynamic>>[].obs,
     });
   }
 
   void removeNextOfKinEntry(int index) {
     if (nextOfKinEntries.length > 1 && index < nextOfKinEntries.length) {
-      // Dispose controllers
       final entry = nextOfKinEntries[index];
       (entry['addressController'] as TextEditingController?)?.dispose();
       (entry['mobileController'] as TextEditingController?)?.dispose();
       (entry['surveyNoController'] as TextEditingController?)?.dispose();
 
-      // Dispose sub-entry controllers
       final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
       if (subEntries != null) {
         for (final subEntry in subEntries) {
@@ -85,7 +83,6 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
     if (index < nextOfKinEntries.length) {
       nextOfKinEntries[index]['naturalResources'] = naturalResources;
 
-      // Clear sub-entries when changing natural resources
       final subEntries =
       nextOfKinEntries[index]['subEntries'] as RxList<Map<String, dynamic>>;
       for (final subEntry in subEntries) {
@@ -96,7 +93,6 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
       }
       subEntries.clear();
 
-      // Add initial sub-entry for Name or Other
       if (naturalResources == 'Name' || naturalResources == 'Other') {
         addSubEntry(index);
       }
@@ -127,7 +123,6 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
       final subEntries = nextOfKinEntries[parentIndex]['subEntries']
       as RxList<Map<String, dynamic>>;
       if (subEntries.length > 1 && subIndex < subEntries.length) {
-        // Dispose controllers
         final subEntry = subEntries[subIndex];
         (subEntry['nameController'] as TextEditingController?)?.dispose();
         (subEntry['addressController'] as TextEditingController?)?.dispose();
@@ -160,26 +155,31 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
     return false;
   }
 
+  // ✅ New helper: Ensure all four directions are selected
+  bool _validateAllDirectionsSelected() {
+    final usedDirections = <String>{};
+
+    for (final entry in nextOfKinEntries) {
+      final direction = entry['direction'] as String? ?? '';
+      if (direction.trim().isNotEmpty) {
+        usedDirections.add(direction);
+      }
+    }
+
+    return usedDirections.containsAll(['East', 'West', 'North', 'South']);
+  }
+
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
+      case 'next_of_kin':
+        return _validateNextOfKinEntries();
       case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+        return true;
       default:
         return true;
     }
   }
-
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'next_of_kin':
-  //       return _validateNextOfKinEntries();
-  //     case 'government_survey':
-  //       return true; // Temporarily return true to bypass validation
-  //     default:
-  //       return true;
-  //   }
-  // }
 
   bool _validateNextOfKinEntries() {
     if (nextOfKinEntries.isEmpty) return false;
@@ -188,17 +188,13 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
       final naturalResources = entry['naturalResources'] as String? ?? '';
       final direction = entry['direction'] as String? ?? '';
 
-      // Always validate natural resources and direction
       if (naturalResources.trim().isEmpty || direction.trim().isEmpty) {
         return false;
       }
 
       if (naturalResources == 'Name' || naturalResources == 'Other') {
-        // Validate sub-entries
         final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
-        if (subEntries == null || subEntries.isEmpty) {
-          return false;
-        }
+        if (subEntries == null || subEntries.isEmpty) return false;
 
         for (final subEntry in subEntries) {
           if ((subEntry['name'] as String? ?? '').trim().isEmpty ||
@@ -208,7 +204,6 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
             return false;
           }
 
-          // Validate mobile number
           final mobile = (subEntry['mobile'] as String? ?? '').trim();
           if (mobile.length < 10 || !RegExp(r'^\d+$').hasMatch(mobile)) {
             return false;
@@ -216,7 +211,9 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
         }
       }
     }
-    return true;
+
+    // Validate all four directions are selected
+    return _validateAllDirectionsSelected();
   }
 
   @override
@@ -236,6 +233,11 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
         if (nextOfKinEntries.isEmpty) {
           return 'At least one next of kin entry is required';
         }
+
+        if (!_validateAllDirectionsSelected()) {
+          return 'All four directions (East, West, North, South) must be selected';
+        }
+
         for (int i = 0; i < nextOfKinEntries.length; i++) {
           final entry = nextOfKinEntries[i];
           final naturalResources = entry['naturalResources'] as String? ?? '';
@@ -250,11 +252,10 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
           }
 
           if (naturalResources == 'Name' || naturalResources == 'Other') {
-            // Validate sub-entries
             final subEntries =
             entry['subEntries'] as RxList<Map<String, dynamic>>?;
             if (subEntries == null || subEntries.isEmpty) {
-              return 'At least one sub-entry is required for ${naturalResources} in entry ${i + 1}';
+              return 'At least one sub-entry is required for $naturalResources in entry ${i + 1}';
             }
 
             for (int j = 0; j < subEntries.length; j++) {
@@ -294,7 +295,6 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
       final direction = entry['direction'] as String? ?? '';
 
       if (naturalResources == 'Name' || naturalResources == 'Other') {
-        // Export sub-entries data
         final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
         final List<Map<String, dynamic>> subEntriesData = [];
 
@@ -311,12 +311,11 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
 
         entriesData.add({
           'naturalResources': naturalResources,
-          'direction': direction, // Always include direction
+          'direction': direction,
           'subEntries': subEntriesData,
           'totalSubEntries': subEntriesData.length,
         });
       } else {
-        // Export basic data for other natural resources
         entriesData.add({
           'direction': direction,
           'naturalResources': naturalResources,
@@ -332,13 +331,11 @@ class CourtSixthController extends GetxController with StepValidationMixin, Step
 
   @override
   void onClose() {
-    // Dispose all controllers
     for (final entry in nextOfKinEntries) {
       (entry['addressController'] as TextEditingController?)?.dispose();
       (entry['mobileController'] as TextEditingController?)?.dispose();
       (entry['surveyNoController'] as TextEditingController?)?.dispose();
 
-      // Dispose sub-entry controllers
       final subEntries = entry['subEntries'] as RxList<Map<String, dynamic>>?;
       if (subEntries != null) {
         for (final subEntry in subEntries) {

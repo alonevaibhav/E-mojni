@@ -51,9 +51,12 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtCommissionCaseUIUtils.buildStepHeader(
           'Group No./ Survey No./ C. T. Survey No./T. P. No. Information',
-          'Enter Survey No./Gat No./CTS No.',
+          // 'Enter Survey No./Gat No./CTS No.',
         ),
         Gap(24.h),
+
+
+
         CourtCommissionCaseUIUtils.buildTextFormField(
           controller: controller.surveyCtsNumber,
           label: 'Survey No./Gat No./CTS No.*',
@@ -67,6 +70,7 @@ class SurveyCTSStep extends StatelessWidget {
             return null;
           },
         ),
+
         Gap(32.h),
         CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -83,12 +87,12 @@ class SurveyCTSStep extends StatelessWidget {
         ),
         Gap(24.h),
         Obx(() => CourtCommissionCaseUIUtils.buildDropdownField(
-              label: 'Department*',
-              value: controller.selectedDepartment.value,
-              items: controller.departmentOptions,
-              onChanged: controller.updateDepartment,
-              icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
-            )),
+          label: 'Department*',
+          value: controller.selectedDepartment.value,
+          items: controller.departmentOptions,
+          onChanged: controller.updateDepartment,
+          icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
+        )),
         Gap(32.h),
         CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -101,16 +105,22 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtCommissionCaseUIUtils.buildStepHeader(
           'Location Details',
-          'Select your district',
+          'Enter your district',
         ),
         Gap(24.h),
-        Obx(() => CourtCommissionCaseUIUtils.buildDropdownField(
-              label: 'District*',
-              value: controller.selectedDistrict.value,
-              items: controller.districtOptions,
-              onChanged: controller.updateDistrict,
-              icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-            )),
+        CourtCommissionCaseUIUtils.buildTextFormField(
+          controller: controller.districtController,
+          label: 'District*',
+          hint: 'Enter district name',
+          icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the district';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -123,16 +133,22 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtCommissionCaseUIUtils.buildStepHeader(
           'Location Details',
-          'Select your taluka',
+          'Enter your taluka',
         ),
         Gap(24.h),
-        Obx(() => CourtCommissionCaseUIUtils.buildDropdownField(
-              label: 'Taluka*',
-              value: controller.selectedTaluka.value,
-              items: controller.getTalukaOptions(),
-              onChanged: controller.updateTaluka,
-              icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-            )),
+        CourtCommissionCaseUIUtils.buildTextFormField(
+          controller: controller.talukaController,
+          label: 'Taluka*',
+          hint: 'Enter taluka name',
+          icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the taluka';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -145,16 +161,22 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtCommissionCaseUIUtils.buildStepHeader(
           'Location Details',
-          'Select your village',
+          'Enter your village',
         ),
         Gap(24.h),
-        Obx(() => CourtCommissionCaseUIUtils.buildDropdownField(
-              label: 'Village*',
-              value: controller.selectedVillage.value,
-              items: controller.getVillageOptions(),
-              onChanged: controller.updateVillage,
-              icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
-            )),
+        CourtCommissionCaseUIUtils.buildTextFormField(
+          controller: controller.villageController,
+          label: 'Village*',
+          hint: 'Enter village name',
+          icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the village';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
       ],

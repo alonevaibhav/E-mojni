@@ -14,10 +14,10 @@ class LandSeventhView extends StatelessWidget {
   final MainLandAcquisitionController mainController;
 
   const LandSeventhView({
-    Key? key,
+    super.key,
     required this.currentSubStep,
     required this.mainController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,59 +76,13 @@ class LandSeventhView extends StatelessWidget {
           ),
 
           Gap(24.h),
-
-          // Progress
-          // Obx(() => Container(
-          //   padding: EdgeInsets.all(16.w),
-          //   decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: BorderRadius.circular(12.r),
-          //     border: Border.all(color: Colors.grey.shade200),
-          //   ),
-          //   child: Row(
-          //     children: [
-          //       CircularProgressIndicator(
-          //         value: _getUploadProgress(docController),
-          //         backgroundColor: Colors.grey.shade200,
-          //         valueColor: AlwaysStoppedAnimation<Color>(
-          //             SetuColors.primaryGreen),
-          //       ),
-          //       Gap(16.w),
-          //       Expanded(
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             Text(
-          //               'Upload Progress',
-          //               style: TextStyle(
-          //                 fontSize: 16.sp,
-          //                 fontWeight: FontWeight.w600,
-          //               ),
-          //             ),
-          //             Text(
-          //               '${_getUploadedCount(docController)} of 7 documents uploaded',
-          //               style: TextStyle(
-          //                 fontSize: 14.sp,
-          //                 color: Colors.grey.shade600,
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // )),
-
-          // Gap(24.h),
-
-          // Identity Card Section
           _buildSection(
             title: 'Identity Card',
             child: Column(
               children: [
                 // Dropdown
                 LandAcquisitionUIUtils.buildDropdownField(
-                  label: 'Select Identity Card Type',
+                  label: 'Select Identity Card Type *',
                   value: docController.selectedIdentityType.value,
                   items: docController.identityCardOptions,
                   onChanged: docController.updateSelectedIdentityType,
@@ -170,7 +124,7 @@ class LandSeventhView extends StatelessWidget {
 
                 // Note
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Note *',
+                  label: 'Note',
                   hint: 'Upload note document',
                   icon: PhosphorIcons.note(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.noteFiles,
@@ -181,7 +135,7 @@ class LandSeventhView extends StatelessWidget {
 
                 // Partition
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Partition *',
+                  label: 'Partition ',
                   hint: 'Upload partition document',
                   icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.partitionFiles,
@@ -192,7 +146,7 @@ class LandSeventhView extends StatelessWidget {
 
                 // Scheme Sheet
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Scheme Sheet Uttrakhand/ 9(3)-9(4) *',
+                  label: 'Scheme Sheet Utara/ Akharband *',
                   hint: 'Upload scheme sheet document',
                   icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.schemeSheetFiles,
@@ -203,7 +157,7 @@ class LandSeventhView extends StatelessWidget {
 
                 // Old Census Map
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Old census map *',
+                  label: 'Old census map ',
                   hint: 'Upload census map',
                   icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.oldCensusMapFiles,
@@ -214,7 +168,7 @@ class LandSeventhView extends StatelessWidget {
 
                 // Demarcation Certificate
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Demarcation certificate *',
+                  label: 'Demarcation certificate ',
                   hint: 'Upload demarcation certificate',
                   icon: PhosphorIcons.certificate(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.demarcationCertificateFiles,
@@ -224,7 +178,7 @@ class LandSeventhView extends StatelessWidget {
                 ),
                 Gap(16.h),
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Adhikar Patra *',
+                  label: 'Adhikar Patra ',
                   hint: 'Upload demarcation certificate',
                   icon: PhosphorIcons.certificate(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.adhikarPatra,
@@ -232,7 +186,7 @@ class LandSeventhView extends StatelessWidget {
                 ),
                 Gap(16.h),
                 ImagePickerUtil.buildFileUploadField(
-                  label: 'Other Document  *',
+                  label: 'Other Document',
                   hint: 'Upload Other document If You Have Any',
                   icon: PhosphorIcons.certificate(PhosphorIconsStyle.regular),
                   uploadedFiles: docController.otherDocument,
@@ -287,70 +241,6 @@ class LandSeventhView extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdownField({
-    required String label,
-    required String value,
-    required List<String> items,
-    required Function(String) onChanged,
-    String? error,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
-        ),
-        Gap(8.h),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(
-              color: error != null ? Colors.red : Colors.grey.shade300,
-            ),
-            color: Colors.grey.shade50,
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: value.isEmpty ? null : value,
-              hint: Text('Select option'),
-              isExpanded: true,
-              items: items
-                  .map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(item),
-              ))
-                  .toList(),
-              onChanged: (newValue) {
-                if (newValue != null) onChanged(newValue);
-              },
-            ),
-          ),
-        ),
-        if (error != null)
-          Padding(
-            padding: EdgeInsets.only(top: 4.h),
-            child: Text(
-              error,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.red,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  double _getUploadProgress(LandSeventhController docController) {
-    return _getUploadedCount(docController) / 7.0;
-  }
 
   int _getUploadedCount(LandSeventhController docController) {
     int count = 0;

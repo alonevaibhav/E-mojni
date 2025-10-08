@@ -279,9 +279,31 @@ class CourtCommissionCaseController extends GetxController {
     Get.snackbar(
       'Validation Error',
       error,
+      snackPosition: SnackPosition.TOP,
       backgroundColor: Color(0xFFDC3545),
       colorText: Colors.white,
-      duration: Duration(milliseconds: 1200),
+      borderRadius: 8,
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      duration: Duration(seconds: 4),
+      icon: Icon(
+        Icons.error_outline,
+        color: Colors.white,
+        size: 28,
+      ),
+      shouldIconPulse: false, // Disable pulsing for faster appearance
+      boxShadows: [
+        BoxShadow(
+          color: Colors.black26,
+          offset: Offset(0, 2),
+          blurRadius: 8,
+        )
+      ],
+      maxWidth: 500,
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      forwardAnimationCurve: Curves.easeOut, // Faster curve
+      animationDuration: Duration(milliseconds: 500), // Faster animation (default is 500ms)
     );
   }
 
@@ -356,12 +378,12 @@ class CourtCommissionCaseController extends GetxController {
 
     developer.log('=== SURVEY CTS DATA DEBUG ===', name: 'DebugInfo');
 
-    developer.log('Survey number: "${surveyCTSController.surveyNumberController.text.trim()}"', name: 'SurveyCTS');
-    developer.log('Department: "${surveyCTSController.selectedDepartment.value}"', name: 'SurveyCTS');
-    developer.log('District: "${surveyCTSController.selectedDistrict.value}"', name: 'SurveyCTS');
-    developer.log('Taluka: "${surveyCTSController.selectedTaluka.value}"', name: 'SurveyCTS');
-    developer.log('Village: "${surveyCTSController.selectedVillage.value}"', name: 'SurveyCTS');
-    developer.log('Office: "${surveyCTSController.selectedOffice.value}"', name: 'SurveyCTS');
+    // developer.log('Survey number: "${surveyCTSController.surveyNumberController.text.trim()}"', name: 'SurveyCTS');
+    // developer.log('Department: "${surveyCTSController.selectedDepartment.value}"', name: 'SurveyCTS');
+    // developer.log('District: "${surveyCTSController.selectedDistrict.value}"', name: 'SurveyCTS');
+    // developer.log('Taluka: "${surveyCTSController.selectedTaluka.value}"', name: 'SurveyCTS');
+    // developer.log('Village: "${surveyCTSController.selectedVillage.value}"', name: 'SurveyCTS');
+    // developer.log('Office: "${surveyCTSController.selectedOffice.value}"', name: 'SurveyCTS');
 
     developer.log('=== END SURVEY CTS DATA DEBUG ===', name: 'DebugInfo');
 
@@ -464,12 +486,11 @@ class CourtCommissionCaseController extends GetxController {
       "court_office_name": personalInfoController.issuingOfficeController.text.trim(),
 
       // === SURVEY CTS INFO ===
-      // "survey_number": surveyCTSController.selectedSurveyNo.value,
-      // "department": surveyCTSController.selectedDepartment.value,
-      // "district": surveyCTSController.selectedDistrict.value,
-      // "taluka": surveyCTSController.selectedTaluka.value,
-      // "village": surveyCTSController.selectedVillage.value,
-      // "office": surveyCTSController.selectedOffice.value,
+      // "survey_number": surveyCTSController.surveyCtsNumber.text,
+      // "department": surveyCTSController.selectedDepartment.value.toString(),
+      // "district": surveyCTSController.districtController.text.trim(),
+      // "taluka": surveyCTSController.talukaController.text.trim(),
+      // "village": surveyCTSController.villageController.text.trim(),
 
 
       "survey_number": surveyCTSController.surveyCtsNumber.text.trim(),
@@ -478,7 +499,6 @@ class CourtCommissionCaseController extends GetxController {
       "district": "26",
       "taluka": "5",
       "village": "3",
-      // "office_name": surveyCTSController.selectedOffice.value,
 
 
       // === COURT FOURTH INFO === // there is change in UI as per the conditions we have to manage that in controller

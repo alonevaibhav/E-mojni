@@ -172,7 +172,6 @@ class PersonalInfoStep extends StatelessWidget {
           hint: 'Enter issuing office name and address',
           icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
           maxLines: 3,
-          errorText: controller.getFieldValidationError('issuing_office'),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Issuing office details are required';

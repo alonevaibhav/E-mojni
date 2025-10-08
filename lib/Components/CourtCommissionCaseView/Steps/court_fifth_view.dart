@@ -250,8 +250,7 @@ class CourtFifthView extends StatelessWidget {
             hint: 'Enter 10-digit mobile number',
             icon: PhosphorIcons.phone(PhosphorIconsStyle.regular),
             keyboardType: TextInputType.phone,
-            onChanged: (value) => courtFifthController
-                .updatePlaintiffDefendantEntry(index, 'mobile', value),
+            // onChanged: (value) => courtFifthController.updatePlaintiffDefendantEntry(index, 'mobile', value),
           ),
 
           Gap(16.h * CourtCommissionCaseUIUtils.sizeFactor),
@@ -267,41 +266,6 @@ class CourtFifthView extends StatelessWidget {
           ),
 
           Gap(16.h * CourtCommissionCaseUIUtils.sizeFactor),
-
-          // Summary Row
-          // Container(
-          //   padding:
-          //       EdgeInsets.all(12.w * CourtCommissionCaseUIUtils.sizeFactor),
-          //   decoration: BoxDecoration(
-          //     color: SetuColors.primaryGreen.withOpacity(0.05),
-          //     borderRadius: BorderRadius.circular(8.r),
-          //     border: Border.all(
-          //       color: SetuColors.primaryGreen.withOpacity(0.2),
-          //       width: 1,
-          //     ),
-          //   ),
-          //   child: Row(
-          //     children: [
-          //       Icon(
-          //         PhosphorIcons.info(PhosphorIconsStyle.regular),
-          //         color: SetuColors.primaryGreen,
-          //         size: 16.sp * CourtCommissionCaseUIUtils.sizeFactor,
-          //       ),
-          //       Gap(8.w * CourtCommissionCaseUIUtils.sizeFactor),
-          //       Expanded(
-          //         child: Obx(() => Text(
-          //               'Entry ${index + 1} - ${entry['selectedType'].value.isEmpty ? 'Type not selected' : entry['selectedType'].value}: ${entry['nameController']?.text?.isEmpty ?? true ? 'Name not entered' : entry['nameController']?.text}',
-          //               style: TextStyle(
-          //                 fontSize:
-          //                     12.sp * CourtCommissionCaseUIUtils.sizeFactor,
-          //                 color: SetuColors.primaryGreen,
-          //                 fontWeight: FontWeight.w500,
-          //               ),
-          //             )),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );

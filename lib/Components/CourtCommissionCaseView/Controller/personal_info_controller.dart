@@ -1,194 +1,3 @@
-// import 'package:get/get.dart';
-// import 'package:flutter/material.dart';
-//
-// import '../../CourtCommissionCaseView/Controller/main_controller.dart';
-//
-// class PersonalInfoController extends GetxController with StepValidationMixin, StepDataMixin {
-//   // Text Controllers
-//   final courtNameController = TextEditingController();
-//   final courtAddressController = TextEditingController();
-//   final commissionOrderNoController = TextEditingController();
-//   final commissionDateController = TextEditingController();
-//   final civilClaimController = TextEditingController();
-//   final issuingOfficeController = TextEditingController();
-//   final applicantNameController = TextEditingController();
-//   final applicantAddressController = TextEditingController();
-//
-//   // Date selection
-//   final selectedCommissionDate = Rxn<DateTime>();
-//
-//   // File upload
-//   final commissionOrderFiles = <String>[].obs;
-//
-//   // Validation states
-//   final validationErrors = <String, String>{}.obs;
-//
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     _initializeValidation();
-//   }
-//
-//   @override
-//   void onClose() {
-//     courtNameController.dispose();
-//     courtAddressController.dispose();
-//     commissionOrderNoController.dispose();
-//     commissionDateController.dispose();
-//     civilClaimController.dispose();
-//     issuingOfficeController.dispose();
-//     super.onClose();
-//   }
-//
-//   void _initializeValidation() {
-//     // Initialize validation states
-//     validationErrors.clear();
-//   }
-//
-//   // Update commission date
-//   void updateCommissionDate(DateTime date) {
-//     selectedCommissionDate.value = date;
-//     commissionDateController.text = _formatDate(date);
-//     _clearFieldError('commission_date');
-//   }
-//
-//   String _formatDate(DateTime date) {
-//     return '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
-//   }
-//
-//   void _clearFieldError(String field) {
-//     validationErrors.remove(field);
-//   }
-//
-//   // Validation Methods
-//   @override
-//   bool validateCurrentSubStep(String field) {
-//     switch (field) {
-//       case 'government_survey':
-//         return true; // Temporarily return true to bypass validation
-//       default:
-//         return true;
-//     }
-//   }
-//   // bool validateCurrentSubStep(String field) {
-//   //   switch (field) {
-//   //     case 'court_commission_details':
-//   //       return _validateCourtCommissionDetails();
-//   //     default:
-//   //       return true;
-//   //   }
-//   // }
-//
-//   bool _validateCourtCommissionDetails() {
-//     validationErrors.clear();
-//     bool isValid = true;
-//
-//     // Validate court name
-//     if (courtNameController.text.trim().isEmpty) {
-//       validationErrors['court_name'] = 'Court name is required';
-//       isValid = false;
-//     } else if (courtNameController.text.trim().length < 3) {
-//       validationErrors['court_name'] = 'Court name must be at least 3 characters';
-//       isValid = false;
-//     }
-//
-//     // Validate court address
-//     if (courtAddressController.text.trim().isEmpty) {
-//       validationErrors['court_address'] = 'Court address is required';
-//       isValid = false;
-//     } else if (courtAddressController.text.trim().length < 10) {
-//       validationErrors['court_address'] = 'Address must be at least 10 characters';
-//       isValid = false;
-//     }
-//
-//     // Validate commission order number
-//     if (commissionOrderNoController.text.trim().isEmpty) {
-//       validationErrors['commission_order_no'] = 'Commission order number is required';
-//       isValid = false;
-//     } else if (commissionOrderNoController.text.trim().length < 3) {
-//       validationErrors['commission_order_no'] = 'Order number must be at least 3 characters';
-//       isValid = false;
-//     }
-//
-//     // Validate commission date
-//     if (selectedCommissionDate.value == null) {
-//       validationErrors['commission_date'] = 'Commission date is required';
-//       isValid = false;
-//     }
-//
-//     // Validate civil claim
-//     if (civilClaimController.text.trim().isEmpty) {
-//       validationErrors['civil_claim'] = 'Civil claim details are required';
-//       isValid = false;
-//     } else if (civilClaimController.text.trim().length < 5) {
-//       validationErrors['civil_claim'] = 'Civil claim must be at least 5 characters';
-//       isValid = false;
-//     }
-//
-//     // Validate issuing office
-//     if (issuingOfficeController.text.trim().isEmpty) {
-//       validationErrors['issuing_office'] = 'Issuing office details are required';
-//       isValid = false;
-//     } else if (issuingOfficeController.text.trim().length < 5) {
-//       validationErrors['issuing_office'] = 'Office details must be at least 5 characters';
-//       isValid = false;
-//     }
-//
-//     // Validate file upload
-//     if (commissionOrderFiles.isEmpty) {
-//       validationErrors['commission_order_file'] = 'Commission order document is required';
-//       isValid = false;
-//     }
-//
-//     return isValid;
-//   }
-//
-//   @override
-//   bool isStepCompleted(List<String> fields) {
-//     for (String field in fields) {
-//       if (!validateCurrentSubStep(field)) {
-//         return false;
-//       }
-//     }
-//     return true;
-//   }
-//
-//   @override
-//   String getFieldError(String field) {
-//     switch (field) {
-//       case 'court_commission_details':
-//         if (validationErrors.isNotEmpty) {
-//           return validationErrors.values.first;
-//         }
-//         return 'Please fill all required fields';
-//       default:
-//         return 'This field is required';
-//     }
-//   }
-//
-//   @override
-//   Map<String, dynamic> getStepData() {
-//     return {
-//       'court_name': courtNameController.text.trim(),
-//       'court_address': courtAddressController.text.trim(),
-//       'commission_order_no': commissionOrderNoController.text.trim(),
-//       'commission_date': selectedCommissionDate.value?.toIso8601String(),
-//       'civil_claim': civilClaimController.text.trim(),
-//       'issuing_office': issuingOfficeController.text.trim(),
-//       'commission_order_files': commissionOrderFiles.toList(),
-//       'step_completed_at': DateTime.now().toIso8601String(),
-//     };
-//   }
-//
-//   // Helper methods for UI
-//   String? getFieldValidationError(String field) {
-//     return validationErrors[field];
-//   }
-//
-//   bool hasFieldError(String field) {
-//     return validationErrors.containsKey(field);
-//   }
-// }
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../CourtCommissionCaseView/Controller/main_controller.dart';
@@ -327,8 +136,6 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     return parts.isEmpty ? 'Click to add address' : parts.join(', ');
   }
 
-
-
   // Check if detailed applicant address is available
   bool hasDetailedApplicantAddress() {
     return applicantAddressData.isNotEmpty &&
@@ -391,7 +198,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     update(); // Trigger UI update
   }
 
-  // Validate applicant address fields
+  // Validate applicant address fields with isEmpty checks
   void _validateApplicantAddressFields(Map<String, String> addressData) {
     if (addressData['address']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['address'] = 'Applicant address is required';
@@ -415,97 +222,88 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     applicantAddressController.clear();
   }
 
-  // Validation Methods
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
+      case 'court_commission_details':
+        return _validateCourtCommissionDetails();
       case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+        return _validateGovernmentSurveyFields();
       default:
         return true;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'court_commission_details':
-  //       return _validateCourtCommissionDetails();
-  //     default:
-  //       return true;
-  //   }
-  // }
 
+  // NEW: Validate government survey fields
+  bool _validateGovernmentSurveyFields() {
+    validationErrors.clear();
+    bool isValid = true;
+
+    // Basic validation for government survey
+    if (courtNameController.text.trim().isEmpty) {
+      validationErrors['court_name'] = 'Court name is required';
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  // Enhanced validation with isEmpty checks only
   bool _validateCourtCommissionDetails() {
     validationErrors.clear();
     bool isValid = true;
 
-    // Validate court name
+    // Court name validation with isEmpty check only
     if (courtNameController.text.trim().isEmpty) {
       validationErrors['court_name'] = 'Court name is required';
       isValid = false;
-    } else if (courtNameController.text.trim().length < 3) {
-      validationErrors['court_name'] = 'Court name must be at least 3 characters';
-      isValid = false;
     }
 
-    // Validate court address
+    // Court address validation with isEmpty check only
     if (courtAddressController.text.trim().isEmpty) {
       validationErrors['court_address'] = 'Court address is required';
       isValid = false;
-    } else if (courtAddressController.text.trim().length < 10) {
-      validationErrors['court_address'] = 'Address must be at least 10 characters';
-      isValid = false;
     }
 
-    // Validate commission order number
+    // Commission order number validation with isEmpty check only
     if (commissionOrderNoController.text.trim().isEmpty) {
       validationErrors['commission_order_no'] = 'Commission order number is required';
       isValid = false;
-    } else if (commissionOrderNoController.text.trim().length < 3) {
-      validationErrors['commission_order_no'] = 'Order number must be at least 3 characters';
-      isValid = false;
     }
 
-    // Validate commission date
+    // Commission date validation with isEmpty check
     if (selectedCommissionDate.value == null) {
       validationErrors['commission_date'] = 'Commission date is required';
       isValid = false;
     }
 
-    // Validate civil claim
+    // Civil claim validation with isEmpty check only
     if (civilClaimController.text.trim().isEmpty) {
       validationErrors['civil_claim'] = 'Civil claim details are required';
       isValid = false;
-    } else if (civilClaimController.text.trim().length < 5) {
-      validationErrors['civil_claim'] = 'Civil claim must be at least 5 characters';
-      isValid = false;
     }
 
-    // Validate issuing office
+    // Issuing office validation with isEmpty check only
     if (issuingOfficeController.text.trim().isEmpty) {
       validationErrors['issuing_office'] = 'Issuing office details are required';
       isValid = false;
-    } else if (issuingOfficeController.text.trim().length < 5) {
-      validationErrors['issuing_office'] = 'Office details must be at least 5 characters';
-      isValid = false;
     }
 
-    // Validate applicant name
+    // Applicant name validation with isEmpty check only
     if (applicantNameController.text.trim().isEmpty) {
       validationErrors['applicant_name'] = 'Applicant name is required';
       isValid = false;
-    } else if (applicantNameController.text.trim().length < 3) {
-      validationErrors['applicant_name'] = 'Applicant name must be at least 3 characters';
-      isValid = false;
     }
 
-    // Validate applicant address using new validation
+    // Applicant address validation using new validation
     _validateApplicantAddressFields(applicantAddressData);
     if (applicantAddressValidationErrors.isNotEmpty) {
       validationErrors['applicant_address'] = 'Please complete the applicant address details';
       isValid = false;
     }
 
-    // Validate file upload
+    // File upload validation with isEmpty check
     if (commissionOrderFiles.isEmpty) {
       validationErrors['commission_order_file'] = 'Commission order document is required';
       isValid = false;
@@ -528,13 +326,110 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   String getFieldError(String field) {
     switch (field) {
       case 'court_commission_details':
-        if (validationErrors.isNotEmpty) {
-          return validationErrors.values.first;
-        }
-        return 'Please fill all required fields';
+        return _getCourtCommissionDetailsError();
+      case 'government_survey':
+        return _getGovernmentSurveyError();
+
+    // Specific field errors
+      case 'court_name':
+        return validationErrors['court_name'] ?? 'Court name is required';
+      case 'court_address':
+        return validationErrors['court_address'] ?? 'Court address is required';
+      case 'commission_order_no':
+        return validationErrors['commission_order_no'] ?? 'Commission order number is required';
+      case 'commission_date':
+        return validationErrors['commission_date'] ?? 'Commission date is required';
+      case 'civil_claim':
+        return validationErrors['civil_claim'] ?? 'Civil claim details are required';
+      case 'issuing_office':
+        return validationErrors['issuing_office'] ?? 'Issuing office details are required';
+      case 'applicant_name':
+        return validationErrors['applicant_name'] ?? 'Applicant name is required';
+      case 'applicant_address':
+        return validationErrors['applicant_address'] ?? 'Applicant address is required';
+      case 'commission_order_file':
+        return validationErrors['commission_order_file'] ?? 'Commission order document is required';
+
       default:
-        return 'This field is required';
+        return validationErrors[field] ?? 'This field is required';
     }
+  }
+
+  // NEW: Government survey validation errors
+  String _getGovernmentSurveyError() {
+    if (courtNameController.text.trim().isEmpty) {
+      return 'Court name is required';
+    }
+
+    return 'Please complete government survey information';
+  }
+
+  // Enhanced error messages with isEmpty validation
+  String _getCourtCommissionDetailsError() {
+    // Return first validation error found with specific message
+    if (validationErrors.isNotEmpty) {
+      return validationErrors.values.first;
+    }
+
+    return 'Please fill all required fields';
+  }
+
+  // NEW: Get specific field error
+  String getSpecificFieldError(String fieldType) {
+    switch (fieldType) {
+      case 'applicantName':
+        if (applicantNameController.text.trim().isEmpty) {
+          return 'Applicant name is required';
+        }
+        break;
+      case 'applicantAddress':
+        if (applicantAddressValidationErrors.isNotEmpty) {
+          return 'Please complete the applicant address details';
+        }
+        break;
+      case 'courtName':
+        if (courtNameController.text.trim().isEmpty) {
+          return 'Court name is required';
+        }
+        break;
+      case 'courtAddress':
+        if (courtAddressController.text.trim().isEmpty) {
+          return 'Court address is required';
+        }
+        break;
+      case 'commissionOrderNo':
+        if (commissionOrderNoController.text.trim().isEmpty) {
+          return 'Commission order number is required';
+        }
+        break;
+      case 'commissionDate':
+        if (selectedCommissionDate.value == null) {
+          return 'Commission date is required';
+        }
+        break;
+      case 'civilClaim':
+        if (civilClaimController.text.trim().isEmpty) {
+          return 'Civil claim details are required';
+        }
+        break;
+      case 'issuingOffice':
+        if (issuingOfficeController.text.trim().isEmpty) {
+          return 'Issuing office details are required';
+        }
+        break;
+
+      case 'commissionOrderFile':
+        if (commissionOrderFiles.isEmpty) {
+          return 'Commission order document is required';
+        }
+        break;
+    }
+    return '';
+  }
+
+  // NEW: Check if specific field has validation error
+  bool hasSpecificFieldError(String fieldType) {
+    return getSpecificFieldError(fieldType).isNotEmpty;
   }
 
   @override
@@ -550,11 +445,12 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
       'applicant_address': getFormattedApplicantAddress(),
       'applicant_address_details': Map<String, String>.from(applicantAddressData),
       'commission_order_files': commissionOrderFiles.toList(),
+      'is_step_completed': _validateCourtCommissionDetails(),
       'step_completed_at': DateTime.now().toIso8601String(),
     };
   }
 
-  // Helper methods for UI
+  // Helper methods for UI (kept for backward compatibility)
   String? getFieldValidationError(String field) {
     return validationErrors[field];
   }
@@ -572,19 +468,19 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     civilClaimController.clear();
     issuingOfficeController.clear();
     applicantNameController.clear();
-    clearApplicantAddressFields(); // Use new address clearing method
+    clearApplicantAddressFields();
     commissionOrderFiles.clear();
     selectedCommissionDate.value = null;
     validationErrors.clear();
   }
 
   void loadStepData(Map<String, dynamic> data) {
-    courtNameController.text = data['court_name'] ?? '';
-    courtAddressController.text = data['court_address'] ?? '';
-    commissionOrderNoController.text = data['commission_order_no'] ?? '';
-    civilClaimController.text = data['civil_claim'] ?? '';
-    issuingOfficeController.text = data['issuing_office'] ?? '';
-    applicantNameController.text = data['applicant_name'] ?? '';
+    courtNameController.text = (data['court_name'] ?? '').toString().trim();
+    courtAddressController.text = (data['court_address'] ?? '').toString().trim();
+    commissionOrderNoController.text = (data['commission_order_no'] ?? '').toString().trim();
+    civilClaimController.text = (data['civil_claim'] ?? '').toString().trim();
+    issuingOfficeController.text = (data['issuing_office'] ?? '').toString().trim();
+    applicantNameController.text = (data['applicant_name'] ?? '').toString().trim();
 
     // Load applicant address data
     if (data['applicant_address_details'] != null) {
