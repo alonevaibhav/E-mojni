@@ -3,6 +3,8 @@
 
 String loginUrl = "/api/user/login";
 
+String signUp = "/api/user/login";
+
 
 
 String haddakayamPost = "/api/user/counting-land/create/counting-land";

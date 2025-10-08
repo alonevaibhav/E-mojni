@@ -332,12 +332,12 @@ class GovernmentCensusPreviewController extends GetxController {
   List<String> get governmentCountingOrderFiles => mainController.personalInfoController.governmentCountingOrderFiles.map((e) => e.toString()).toList();
 
   // Survey CTS Info getters - DIRECT CONTROLLER ACCESS
-  String get surveyNumber => mainController.surveyCTSController.surveyNumberController.text.trim();
-  String get department => mainController.surveyCTSController.selectedDepartment.value;
-  String get district => mainController.surveyCTSController.selectedDistrict.value;
-  String get taluka => mainController.surveyCTSController.selectedTaluka.value;
-  String get village => mainController.surveyCTSController.selectedVillage.value;
-  String get office => mainController.surveyCTSController.selectedOffice.value;
+  // String get surveyNumber => mainController.surveyCTSController.surveyNumberController.text.trim();
+  // String get department => mainController.surveyCTSController.selectedDepartment.value;
+  // String get district => mainController.surveyCTSController.selectedDistrict.value;
+  // String get taluka => mainController.surveyCTSController.selectedTaluka.value;
+  // String get village => mainController.surveyCTSController.selectedVillage.value;
+  // String get office => mainController.surveyCTSController.selectedOffice.value;
 
   // Government Survey Info getters - DIRECT CONTROLLER ACCESS
   List<Map<String, dynamic>> get governmentSurveyEntries {

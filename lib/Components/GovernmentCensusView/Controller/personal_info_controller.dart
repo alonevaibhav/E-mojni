@@ -8,7 +8,6 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   final applicantNameController = TextEditingController();
   final applicantAddressController = TextEditingController();
 
-
   final governmentCountingOfficerController = TextEditingController();
   final governmentCountingOfficerAddressController = TextEditingController();
   final governmentCountingOrderNumberController = TextEditingController();
@@ -25,6 +24,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   // Validation states
   final formKey = GlobalKey<FormState>();
+  final validationErrors = <String, String>{}.obs;
 
   //------------------------Applicant Address Validation Implementation ------------------------//
 
@@ -81,18 +81,20 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   void _initializeListeners() {
     // Add listeners if needed for real-time validation
+    validationErrors.clear();
   }
 
   // Date update methods
   void updateGovernmentCountingOrderDate(DateTime date) {
     governmentCountingOrderDate.value = date;
     governmentCountingOrderDateController.text =
-        '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
+    '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
+
+    // Clear validation error
+    validationErrors.remove('orderDate');
   }
 
   //------------------------Applicant Address Methods ------------------------//
-
-
 
   String getFormattedApplicantAddress() {
     final parts = <String>[];
@@ -175,7 +177,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
       'plotNo': applicantAddressControllers['plotNoController']!.text,
       'address': applicantAddressControllers['addressController']!.text,
       'mobileNumber':
-          applicantAddressControllers['mobileNumberController']!.text,
+      applicantAddressControllers['mobileNumberController']!.text,
       'email': applicantAddressControllers['emailController']!.text,
       'pincode': applicantAddressControllers['pincodeController']!.text,
       'district': applicantAddressControllers['districtController']!.text,
@@ -196,6 +198,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
     // Clear validation errors
     applicantAddressValidationErrors.clear();
+    validationErrors.remove('applicantAddress');
 
     // Validate address fields
     _validateApplicantAddressFields(newAddressData);
@@ -203,11 +206,11 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     update(); // Trigger UI update
   }
 
-  // Validate applicant address fields
+  // Validate applicant address fields with isEmpty checks
   void _validateApplicantAddressFields(Map<String, String> addressData) {
     if (addressData['address']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['address'] =
-          'Applicant address is required';
+      'Applicant address is required';
     }
     if (addressData['pincode']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['pincode'] = 'Pincode is required';
@@ -217,7 +220,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     }
     if (addressData['postOffice']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['postOffice'] =
-          'Post Office is required';
+      'Post Office is required';
     }
   }
 
@@ -230,50 +233,81 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     countingApplicantAddressController.clear();
   }
 
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
+      case 'government_counting_details':
+        return _validateGovernmentCountingDetails();
       case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+        return _validateGovernmentSurveyFields();
       default:
         return true;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'government_counting_details':
-  //       return _validateGovernmentCountingDetails();
-  //     default:
-  //       return true;
-  //   }
-  // }
 
+  // NEW: Validate government survey fields
+  bool _validateGovernmentSurveyFields() {
+    validationErrors.clear();
+    bool isValid = true;
+
+    if (governmentCountingOfficerController.text.trim().isEmpty) {
+      validationErrors['officer'] = 'Officer name is required';
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  // Enhanced validation with isEmpty checks only
   bool _validateGovernmentCountingDetails() {
-    // Validate required fields
-    if (governmentCountingOfficerController.text.trim().isEmpty) return false;
-    if (governmentCountingOfficerAddressController.text.trim().isEmpty)
-      return false;
-    if (governmentCountingOrderNumberController.text.trim().isEmpty)
-      return false;
-    if (governmentCountingOrderDateController.text.trim().isEmpty) return false;
-    if (governmentCountingDetailsController.text.trim().isEmpty) return false;
-    if (governmentCountingOrderFiles.isEmpty) return false;
+    validationErrors.clear();
+    bool isValid = true;
 
-    // Additional validation
-    if (governmentCountingOfficerController.text.trim().length < 2)
-      return false;
-    if (governmentCountingOfficerAddressController.text.trim().length < 5)
-      return false;
-    if (governmentCountingOrderNumberController.text.trim().length < 3)
-      return false;
-    if (governmentCountingDetailsController.text.trim().length < 10)
-      return false;
+    // Officer name validation with isEmpty check only
+    if (governmentCountingOfficerController.text.trim().isEmpty) {
+      validationErrors['officer'] = 'Government counting officer name is required';
+      isValid = false;
+    }
 
-    // Validate applicant address
+    // Officer address validation with isEmpty check only
+    if (governmentCountingOfficerAddressController.text.trim().isEmpty) {
+      validationErrors['officerAddress'] = 'Officer address is required';
+      isValid = false;
+    }
+
+    // Order number validation with isEmpty check only
+    if (governmentCountingOrderNumberController.text.trim().isEmpty) {
+      validationErrors['orderNumber'] = 'Order number is required';
+      isValid = false;
+    }
+
+    // Order date validation with isEmpty check
+    if (governmentCountingOrderDateController.text.trim().isEmpty) {
+      validationErrors['orderDate'] = 'Order date is required';
+      isValid = false;
+    }
+
+    // Government counting details validation with isEmpty check only
+    if (governmentCountingDetailsController.text.trim().isEmpty) {
+      validationErrors['details'] = 'Government counting details are required';
+      isValid = false;
+    }
+
+    // Applicant address validation
     _validateApplicantAddressFields(applicantAddressData);
-    if (applicantAddressValidationErrors.isNotEmpty) return false;
+    if (applicantAddressValidationErrors.isNotEmpty) {
+      validationErrors['applicantAddress'] = 'Please complete the applicant address details';
+      isValid = false;
+    }
 
-    return true;
+    // File upload validation with isEmpty check
+    if (governmentCountingOrderFiles.isEmpty) {
+      validationErrors['orderFiles'] = 'Government counting order document is required';
+      isValid = false;
+    }
+
+    return isValid;
   }
 
   @override
@@ -291,46 +325,94 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     switch (field) {
       case 'government_counting_details':
         return _getGovernmentCountingDetailsError();
+      case 'government_survey':
+        return _getGovernmentSurveyError();
+
+    // Specific field errors
+      case 'officer':
+        return validationErrors['officer'] ?? 'Officer name is required';
+      case 'officerAddress':
+        return validationErrors['officerAddress'] ?? 'Officer address is required';
+      case 'orderNumber':
+        return validationErrors['orderNumber'] ?? 'Order number is required';
+      case 'orderDate':
+        return validationErrors['orderDate'] ?? 'Order date is required';
+      case 'details':
+        return validationErrors['details'] ?? 'Government counting details are required';
+      case 'applicantAddress':
+        return validationErrors['applicantAddress'] ?? 'Applicant address is required';
+      case 'orderFiles':
+        return validationErrors['orderFiles'] ?? 'Order document is required';
+
       default:
-        return 'This field is required';
+        return validationErrors[field] ?? 'This field is required';
     }
   }
 
-  String _getGovernmentCountingDetailsError() {
+  // NEW: Government survey validation errors
+  String _getGovernmentSurveyError() {
     if (governmentCountingOfficerController.text.trim().isEmpty) {
-      return 'Officer name is required';
+      return 'Government counting officer name is required';
     }
-    if (governmentCountingOfficerController.text.trim().length < 2) {
-      return 'Officer name must be at least 2 characters';
+
+    return 'Please complete government survey information';
+  }
+
+  // Enhanced error messages with isEmpty validation
+  String _getGovernmentCountingDetailsError() {
+    // Return first validation error found with specific message
+    if (validationErrors.isNotEmpty) {
+      return validationErrors.values.first;
     }
-    if (governmentCountingOfficerAddressController.text.trim().isEmpty) {
-      return 'Officer address is required';
-    }
-    if (governmentCountingOfficerAddressController.text.trim().length < 5) {
-      return 'Officer address must be at least 5 characters';
-    }
-    if (governmentCountingOrderNumberController.text.trim().isEmpty) {
-      return 'Order number is required';
-    }
-    if (governmentCountingOrderNumberController.text.trim().length < 3) {
-      return 'Order number must be at least 3 characters';
-    }
-    if (governmentCountingOrderDateController.text.trim().isEmpty) {
-      return 'Order date is required';
-    }
-    if (governmentCountingDetailsController.text.trim().isEmpty) {
-      return 'Government counting details are required';
-    }
-    if (governmentCountingDetailsController.text.trim().length < 10) {
-      return 'Details must be at least 10 characters';
-    }
-    if (applicantAddressValidationErrors.isNotEmpty) {
-      return 'Please complete the applicant address details';
-    }
-    if (governmentCountingOrderFiles.isEmpty) {
-      return 'Government counting order document is required';
-    }
+
     return 'Please complete all required fields';
+  }
+
+  // NEW: Get specific field error
+  String getSpecificFieldError(String fieldType) {
+    switch (fieldType) {
+      case 'officer':
+        if (governmentCountingOfficerController.text.trim().isEmpty) {
+          return 'Government counting officer name is required';
+        }
+        break;
+      case 'officerAddress':
+        if (governmentCountingOfficerAddressController.text.trim().isEmpty) {
+          return 'Officer address is required';
+        }
+        break;
+      case 'orderNumber':
+        if (governmentCountingOrderNumberController.text.trim().isEmpty) {
+          return 'Order number is required';
+        }
+        break;
+      case 'orderDate':
+        if (governmentCountingOrderDateController.text.trim().isEmpty) {
+          return 'Order date is required';
+        }
+        break;
+      case 'details':
+        if (governmentCountingDetailsController.text.trim().isEmpty) {
+          return 'Government counting details are required';
+        }
+        break;
+      case 'applicantAddress':
+        if (applicantAddressValidationErrors.isNotEmpty) {
+          return 'Please complete the applicant address details';
+        }
+        break;
+      case 'orderFiles':
+        if (governmentCountingOrderFiles.isEmpty) {
+          return 'Government counting order document is required';
+        }
+        break;
+    }
+    return '';
+  }
+
+  // NEW: Check if specific field has validation error
+  bool hasSpecificFieldError(String fieldType) {
+    return getSpecificFieldError(fieldType).isNotEmpty;
   }
 
   // Data Methods (StepDataMixin implementation)
@@ -338,22 +420,24 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   Map<String, dynamic> getStepData() {
     return {
       'government_counting_officer':
-          governmentCountingOfficerController.text.trim(),
+      governmentCountingOfficerController.text.trim(),
       'government_counting_officer_address':
-          governmentCountingOfficerAddressController.text.trim(),
+      governmentCountingOfficerAddressController.text.trim(),
       'government_counting_order_number':
-          governmentCountingOrderNumberController.text.trim(),
+      governmentCountingOrderNumberController.text.trim(),
       'government_counting_order_date':
-          governmentCountingOrderDateController.text.trim(),
+      governmentCountingOrderDateController.text.trim(),
       'government_counting_order_date_object':
-          governmentCountingOrderDate.value?.toIso8601String(),
+      governmentCountingOrderDate.value?.toIso8601String(),
       'counting_applicant_name': countingApplicantNameController.text.trim(),
       'counting_applicant_address': getFormattedApplicantAddress(),
       'counting_applicant_address_details':
-          Map<String, String>.from(applicantAddressData),
+      Map<String, String>.from(applicantAddressData),
       'government_counting_details':
-          governmentCountingDetailsController.text.trim(),
+      governmentCountingDetailsController.text.trim(),
       'government_counting_order_files': governmentCountingOrderFiles.toList(),
+      'isStepCompleted': _validateGovernmentCountingDetails(),
+      'timestamp': DateTime.now().toIso8601String(),
     };
   }
 
@@ -364,34 +448,35 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     governmentCountingOrderNumberController.clear();
     governmentCountingOrderDateController.clear();
     countingApplicantNameController.clear();
-    clearApplicantAddressFields(); // Use new address clearing method
+    clearApplicantAddressFields();
     governmentCountingDetailsController.clear();
     governmentCountingOrderDate.value = null;
     governmentCountingOrderFiles.clear();
+    validationErrors.clear();
   }
 
   void loadData(Map<String, dynamic> data) {
     governmentCountingOfficerController.text =
-        data['government_counting_officer'] ?? '';
+        (data['government_counting_officer'] ?? '').toString().trim();
     governmentCountingOfficerAddressController.text =
-        data['government_counting_officer_address'] ?? '';
+        (data['government_counting_officer_address'] ?? '').toString().trim();
     governmentCountingOrderNumberController.text =
-        data['government_counting_order_number'] ?? '';
+        (data['government_counting_order_number'] ?? '').toString().trim();
     governmentCountingOrderDateController.text =
-        data['government_counting_order_date'] ?? '';
+        (data['government_counting_order_date'] ?? '').toString().trim();
     countingApplicantNameController.text =
-        data['counting_applicant_name'] ?? '';
+        (data['counting_applicant_name'] ?? '').toString().trim();
     governmentCountingDetailsController.text =
-        data['government_counting_details'] ?? '';
+        (data['government_counting_details'] ?? '').toString().trim();
 
     // Load applicant address data
     if (data['counting_applicant_address_details'] != null) {
       final addressDetails =
-          Map<String, String>.from(data['counting_applicant_address_details']);
+      Map<String, String>.from(data['counting_applicant_address_details']);
       updateApplicantAddress(addressDetails);
     } else if (data['counting_applicant_address'] != null) {
       countingApplicantAddressController.text =
-          data['counting_applicant_address'];
+      data['counting_applicant_address'];
     }
 
     // Load date object if exists

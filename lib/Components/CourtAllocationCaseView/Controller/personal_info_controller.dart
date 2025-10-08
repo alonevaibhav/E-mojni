@@ -1,215 +1,14 @@
-// import 'package:get/get.dart';
-// import 'package:flutter/material.dart';
-// import '../Controller/main_controller.dart';
-//
-// class PersonalInfoController extends GetxController with StepValidationMixin, StepDataMixin {
-//
-//   // Text Controllers
-//   final applicantNameController = TextEditingController();
-//   final applicantAddressController = TextEditingController();
-//   final courtNameController = TextEditingController();
-//   final courtAddressController = TextEditingController();
-//   final courtOrderNumberController = TextEditingController();
-//   final courtAllotmentDateController = TextEditingController();
-//   final claimNumberYearController = TextEditingController();
-//   final specialOrderCommentsController = TextEditingController();
-//
-//   // File Upload Lists
-//   final courtOrderFiles = <String>[].obs;
-//
-//   // Date Selection
-//   final courtAllotmentDate = Rxn<DateTime>();
-//
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     _initializeControllers();
-//   }
-//
-//   void _initializeControllers() {
-//     // Initialize any default values if needed
-//   }
-//
-//   @override
-//   void onClose() {
-//     // Dispose text controllers
-//     courtNameController.dispose();
-//     courtAddressController.dispose();
-//     courtOrderNumberController.dispose();
-//     courtAllotmentDateController.dispose();
-//     claimNumberYearController.dispose();
-//     specialOrderCommentsController.dispose();
-//     super.onClose();
-//   }
-//
-//   // Date Update Methods
-//   void updateCourtAllotmentDate(DateTime selectedDate) {
-//     courtAllotmentDate.value = selectedDate;
-//     courtAllotmentDateController.text =
-//     "${selectedDate.day.toString().padLeft(2, '0')}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.year}";
-//   }
-//
-//   // Field Validation Methods
-//   bool _validateCourtName() {
-//     return courtNameController.text.trim().isNotEmpty &&
-//         courtNameController.text.trim().length >= 3;
-//   }
-//
-//   bool _validateCourtAddress() {
-//     return courtAddressController.text.trim().isNotEmpty &&
-//         courtAddressController.text.trim().length >= 10;
-//   }
-//
-//   bool _validateCourtOrderNumber() {
-//     return courtOrderNumberController.text.trim().isNotEmpty &&
-//         courtOrderNumberController.text.trim().length >= 3;
-//   }
-//
-//   bool _validateCourtAllotmentDate() {
-//     return courtAllotmentDateController.text.trim().isNotEmpty &&
-//         courtAllotmentDate.value != null;
-//   }
-//
-//   bool _validateClaimNumberYear() {
-//     return claimNumberYearController.text.trim().isNotEmpty &&
-//         claimNumberYearController.text.trim().length >= 4;
-//   }
-//
-//   bool _validateCourtOrderFiles() {
-//     return courtOrderFiles.isNotEmpty;
-//   }
-//
-//   bool _validateSpecialOrderComments() {
-//     return specialOrderCommentsController.text.trim().isNotEmpty &&
-//         specialOrderCommentsController.text.trim().length >= 10;
-//   }
-//
-//   // Step Validation Mixin Implementation
-//   @override
-//   bool validateCurrentSubStep(String field) {
-//     switch (field) {
-//       case 'calculation':
-//         return true; // Temporarily return true to bypass validation
-//       default:
-//         return true;
-//     }
-//   }
-//   // bool validateCurrentSubStep(String field) {
-//   //   switch (field) {
-//   //     case 'calculation':
-//   //       return _validateCourtName() &&
-//   //           _validateCourtAddress() &&
-//   //           _validateCourtOrderNumber() &&
-//   //           _validateCourtAllotmentDate() &&
-//   //           _validateClaimNumberYear() &&
-//   //           _validateCourtOrderFiles() &&
-//   //           _validateSpecialOrderComments();
-//   //     default:
-//   //       return true;
-//   //   }
-//   // }
-//
-//   @override
-//   bool isStepCompleted(List<String> fields) {
-//     for (String field in fields) {
-//       if (!validateCurrentSubStep(field)) {
-//         return false;
-//       }
-//     }
-//     return true;
-//   }
-//
-//   @override
-//   String getFieldError(String field) {
-//     switch (field) {
-//       case 'calculation':
-//         if (!_validateCourtName()) {
-//           return 'Court name is required (minimum 3 characters)';
-//         }
-//         if (!_validateCourtAddress()) {
-//           return 'Court address is required (minimum 10 characters)';
-//         }
-//         if (!_validateCourtOrderNumber()) {
-//           return 'Court order number is required (minimum 3 characters)';
-//         }
-//         if (!_validateCourtAllotmentDate()) {
-//           return 'Court allotment date is required';
-//         }
-//         if (!_validateClaimNumberYear()) {
-//           return 'Claim number and year is required (minimum 4 characters)';
-//         }
-//         if (!_validateCourtOrderFiles()) {
-//           return 'Court allocation order document is required';
-//         }
-//         if (!_validateSpecialOrderComments()) {
-//           return 'Special order or comments are required (minimum 10 characters)';
-//         }
-//         return 'Please fill all required fields';
-//       default:
-//         return 'This field is required';
-//     }
-//   }
-//
-//   // Step Data Mixin Implementation
-//   @override
-//   Map<String, dynamic> getStepData() {
-//     return {
-//       'courtName': courtNameController.text.trim(),
-//       'courtAddress': courtAddressController.text.trim(),
-//       'courtOrderNumber': courtOrderNumberController.text.trim(),
-//       'courtAllotmentDate': courtAllotmentDateController.text.trim(),
-//       'courtAllotmentDateValue': courtAllotmentDate.value?.toIso8601String(),
-//       'claimNumberYear': claimNumberYearController.text.trim(),
-//       'courtOrderFiles': courtOrderFiles.toList(),
-//       'specialOrderComments': specialOrderCommentsController.text.trim(),
-//       'stepCompleted': isStepCompleted(['calculation']),
-//       'timestamp': DateTime.now().toIso8601String(),
-//     };
-//   }
-//
-//   // Helper Methods
-//   void clearAllFields() {
-//     courtNameController.clear();
-//     courtAddressController.clear();
-//     courtOrderNumberController.clear();
-//     courtAllotmentDateController.clear();
-//     claimNumberYearController.clear();
-//     specialOrderCommentsController.clear();
-//     courtOrderFiles.clear();
-//     courtAllotmentDate.value = null;
-//   }
-//
-//   // Load data from saved state
-//   void loadStepData(Map<String, dynamic> data) {
-//     courtNameController.text = data['courtName'] ?? '';
-//     courtAddressController.text = data['courtAddress'] ?? '';
-//     courtOrderNumberController.text = data['courtOrderNumber'] ?? '';
-//     courtAllotmentDateController.text = data['courtAllotmentDate'] ?? '';
-//     claimNumberYearController.text = data['claimNumberYear'] ?? '';
-//     specialOrderCommentsController.text = data['specialOrderComments'] ?? '';
-//
-//     if (data['courtOrderFiles'] != null) {
-//       courtOrderFiles.assignAll(List<String>.from(data['courtOrderFiles']));
-//     }
-//
-//     if (data['courtAllotmentDateValue'] != null) {
-//       courtAllotmentDate.value = DateTime.parse(data['courtAllotmentDateValue']);
-//     }
-//   }
-//
-// }
-
-
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../Controller/main_controller.dart';
 import '../../Widget/address.dart';
 
-class PersonalInfoController extends GetxController with StepValidationMixin, StepDataMixin {
-
+class PersonalInfoController extends GetxController
+    with StepValidationMixin, StepDataMixin {
   // Text Controllers
   final applicantNameController = TextEditingController();
   final applicantAddressController = TextEditingController(); // Keep for backward compatibility
+
   final courtNameController = TextEditingController();
   final courtAddressController = TextEditingController();
   final courtOrderNumberController = TextEditingController();
@@ -222,6 +21,9 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   // Date Selection
   final courtAllotmentDate = Rxn<DateTime>();
+
+  // Validation errors
+  final validationErrors = <String, String>{}.obs;
 
   //------------------------Applicant Address Validation Implementation ------------------------//
 
@@ -260,6 +62,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
   void _initializeControllers() {
     // Initialize any default values if needed
+    validationErrors.clear();
   }
 
   @override
@@ -275,7 +78,8 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     specialOrderCommentsController.dispose();
 
     // Dispose address controllers
-    applicantAddressControllers.values.forEach((controller) => controller.dispose());
+    applicantAddressControllers.values
+        .forEach((controller) => controller.dispose());
 
     super.onClose();
   }
@@ -285,10 +89,12 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     courtAllotmentDate.value = selectedDate;
     courtAllotmentDateController.text =
     "${selectedDate.day.toString().padLeft(2, '0')}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.year}";
+
+    // Clear validation error
+    validationErrors.remove('courtAllotmentDate');
   }
 
   //------------------------Applicant Address Methods ------------------------//
-
 
   String getFormattedApplicantAddress() {
     final parts = <String>[];
@@ -328,7 +134,6 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     return parts.isEmpty ? 'Click to add address' : parts.join(', ');
   }
 
-
   // Check if detailed applicant address is available
   bool hasDetailedApplicantAddress() {
     return applicantAddressData.isNotEmpty &&
@@ -339,14 +144,22 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   // Show applicant address popup
   void showApplicantAddressPopup(BuildContext context) {
     // Populate controllers with current data
-    applicantAddressControllers['plotNoController']!.text = applicantAddressData['plotNo'] ?? '';
-    applicantAddressControllers['addressController']!.text = applicantAddressData['address'] ?? '';
-    applicantAddressControllers['mobileNumberController']!.text = applicantAddressData['mobileNumber'] ?? '';
-    applicantAddressControllers['emailController']!.text = applicantAddressData['email'] ?? '';
-    applicantAddressControllers['pincodeController']!.text = applicantAddressData['pincode'] ?? '';
-    applicantAddressControllers['districtController']!.text = applicantAddressData['district'] ?? '';
-    applicantAddressControllers['villageController']!.text = applicantAddressData['village'] ?? '';
-    applicantAddressControllers['postOfficeController']!.text = applicantAddressData['postOffice'] ?? '';
+    applicantAddressControllers['plotNoController']!.text =
+        applicantAddressData['plotNo'] ?? '';
+    applicantAddressControllers['addressController']!.text =
+        applicantAddressData['address'] ?? '';
+    applicantAddressControllers['mobileNumberController']!.text =
+        applicantAddressData['mobileNumber'] ?? '';
+    applicantAddressControllers['emailController']!.text =
+        applicantAddressData['email'] ?? '';
+    applicantAddressControllers['pincodeController']!.text =
+        applicantAddressData['pincode'] ?? '';
+    applicantAddressControllers['districtController']!.text =
+        applicantAddressData['district'] ?? '';
+    applicantAddressControllers['villageController']!.text =
+        applicantAddressData['village'] ?? '';
+    applicantAddressControllers['postOfficeController']!.text =
+        applicantAddressData['postOffice'] ?? '';
 
     showDialog(
       context: context,
@@ -363,7 +176,8 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     final newAddressData = {
       'plotNo': applicantAddressControllers['plotNoController']!.text,
       'address': applicantAddressControllers['addressController']!.text,
-      'mobileNumber': applicantAddressControllers['mobileNumberController']!.text,
+      'mobileNumber':
+      applicantAddressControllers['mobileNumberController']!.text,
       'email': applicantAddressControllers['emailController']!.text,
       'pincode': applicantAddressControllers['pincodeController']!.text,
       'district': applicantAddressControllers['districtController']!.text,
@@ -384,6 +198,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
 
     // Clear validation errors
     applicantAddressValidationErrors.clear();
+    validationErrors.remove('applicantAddress');
 
     // Validate address fields
     _validateApplicantAddressFields(newAddressData);
@@ -391,10 +206,11 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     update(); // Trigger UI update
   }
 
-  // Validate applicant address fields
+  // Validate applicant address fields with isEmpty checks
   void _validateApplicantAddressFields(Map<String, String> addressData) {
     if (addressData['address']?.trim().isEmpty ?? true) {
-      applicantAddressValidationErrors['address'] = 'Applicant address is required';
+      applicantAddressValidationErrors['address'] =
+      'Applicant address is required';
     }
     if (addressData['pincode']?.trim().isEmpty ?? true) {
       applicantAddressValidationErrors['pincode'] = 'Pincode is required';
@@ -403,7 +219,8 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
       applicantAddressValidationErrors['village'] = 'Village is required';
     }
     if (addressData['postOffice']?.trim().isEmpty ?? true) {
-      applicantAddressValidationErrors['postOffice'] = 'Post Office is required';
+      applicantAddressValidationErrors['postOffice'] =
+      'Post Office is required';
     }
   }
 
@@ -411,82 +228,99 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   void clearApplicantAddressFields() {
     applicantAddressData.clear();
     applicantAddressValidationErrors.clear();
-    applicantAddressControllers.values.forEach((controller) => controller.clear());
+    applicantAddressControllers.values
+        .forEach((controller) => controller.clear());
     applicantAddressController.clear();
   }
 
-  // Field Validation Methods
-  bool _validateApplicantName() {
-    return applicantNameController.text.trim().isNotEmpty &&
-        applicantNameController.text.trim().length >= 3;
-  }
-
-  bool _validateApplicantAddress() {
-    // Validate address fields first
-    _validateApplicantAddressFields(applicantAddressData);
-    return applicantAddressValidationErrors.isEmpty;
-  }
-
-  bool _validateCourtName() {
-    return courtNameController.text.trim().isNotEmpty &&
-        courtNameController.text.trim().length >= 3;
-  }
-
-  bool _validateCourtAddress() {
-    return courtAddressController.text.trim().isNotEmpty &&
-        courtAddressController.text.trim().length >= 10;
-  }
-
-  bool _validateCourtOrderNumber() {
-    return courtOrderNumberController.text.trim().isNotEmpty &&
-        courtOrderNumberController.text.trim().length >= 3;
-  }
-
-  bool _validateCourtAllotmentDate() {
-    return courtAllotmentDateController.text.trim().isNotEmpty &&
-        courtAllotmentDate.value != null;
-  }
-
-  bool _validateClaimNumberYear() {
-    return claimNumberYearController.text.trim().isNotEmpty &&
-        claimNumberYearController.text.trim().length >= 4;
-  }
-
-  bool _validateCourtOrderFiles() {
-    return courtOrderFiles.isNotEmpty;
-  }
-
-  bool _validateSpecialOrderComments() {
-    return specialOrderCommentsController.text.trim().isNotEmpty &&
-        specialOrderCommentsController.text.trim().length >= 10;
-  }
-
-  // Step Validation Mixin Implementation
+  //------------------------Validation------------------------//
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
       case 'calculation':
-        return true; // Temporarily return true to bypass validation
+        return _validateAllFields();
+      case 'government_survey':
+        return _validateGovernmentSurveyFields();
       default:
         return true;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'calculation':
-  //       return _validateApplicantName() &&
-  //           _validateApplicantAddress() &&
-  //           _validateCourtName() &&
-  //           _validateCourtAddress() &&
-  //           _validateCourtOrderNumber() &&
-  //           _validateCourtAllotmentDate() &&
-  //           _validateClaimNumberYear() &&
-  //           _validateCourtOrderFiles() &&
-  //           _validateSpecialOrderComments();
-  //     default:
-  //       return true;
-  //   }
-  // }
+
+  // NEW: Validate government survey fields
+  bool _validateGovernmentSurveyFields() {
+    validationErrors.clear();
+    bool isValid = true;
+
+    if (applicantNameController.text.trim().isEmpty) {
+      validationErrors['applicantName'] = 'Applicant name is required';
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  // Enhanced validation with isEmpty checks only
+  bool _validateAllFields() {
+    validationErrors.clear();
+    bool isValid = true;
+
+    // Applicant name validation with isEmpty check only
+    if (applicantNameController.text.trim().isEmpty) {
+      validationErrors['applicantName'] = 'Applicant name is required';
+      isValid = false;
+    }
+
+    // Applicant address validation
+    _validateApplicantAddressFields(applicantAddressData);
+    if (applicantAddressValidationErrors.isNotEmpty) {
+      validationErrors['applicantAddress'] = 'Please complete the applicant address details';
+      isValid = false;
+    }
+
+    // Court name validation with isEmpty check only
+    if (courtNameController.text.trim().isEmpty) {
+      validationErrors['courtName'] = 'Court name is required';
+      isValid = false;
+    }
+
+    // Court address validation with isEmpty check only
+    if (courtAddressController.text.trim().isEmpty) {
+      validationErrors['courtAddress'] = 'Court address is required';
+      isValid = false;
+    }
+
+    // Court order number validation with isEmpty check only
+    if (courtOrderNumberController.text.trim().isEmpty) {
+      validationErrors['courtOrderNumber'] = 'Court order number is required';
+      isValid = false;
+    }
+
+    // Court allotment date validation with isEmpty check
+    if (courtAllotmentDateController.text.trim().isEmpty || courtAllotmentDate.value == null) {
+      validationErrors['courtAllotmentDate'] = 'Court allotment date is required';
+      isValid = false;
+    }
+
+    // Claim number and year validation with isEmpty check only
+    if (claimNumberYearController.text.trim().isEmpty) {
+      validationErrors['claimNumberYear'] = 'Claim number and year is required';
+      isValid = false;
+    }
+
+    // Court order files validation with isEmpty check
+    if (courtOrderFiles.isEmpty) {
+      validationErrors['courtOrderFiles'] = 'Court allocation order document is required';
+      isValid = false;
+    }
+
+    // Special order comments validation with isEmpty check only
+    if (specialOrderCommentsController.text.trim().isEmpty) {
+      validationErrors['specialOrderComments'] = 'Special order or comments are required';
+      isValid = false;
+    }
+
+    return isValid;
+  }
 
   @override
   bool isStepCompleted(List<String> fields) {
@@ -502,37 +336,109 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   String getFieldError(String field) {
     switch (field) {
       case 'calculation':
-        if (!_validateApplicantName()) {
-          return 'Applicant name is required (minimum 3 characters)';
+        return _getCalculationError();
+      case 'government_survey':
+        return _getGovernmentSurveyError();
+
+    // Specific field errors
+      case 'applicantName':
+        return validationErrors['applicantName'] ?? 'Applicant name is required';
+      case 'applicantAddress':
+        return validationErrors['applicantAddress'] ?? 'Applicant address is required';
+      case 'courtName':
+        return validationErrors['courtName'] ?? 'Court name is required';
+      case 'courtAddress':
+        return validationErrors['courtAddress'] ?? 'Court address is required';
+      case 'courtOrderNumber':
+        return validationErrors['courtOrderNumber'] ?? 'Court order number is required';
+      case 'courtAllotmentDate':
+        return validationErrors['courtAllotmentDate'] ?? 'Court allotment date is required';
+      case 'claimNumberYear':
+        return validationErrors['claimNumberYear'] ?? 'Claim number and year is required';
+      case 'courtOrderFiles':
+        return validationErrors['courtOrderFiles'] ?? 'Court order document is required';
+      case 'specialOrderComments':
+        return validationErrors['specialOrderComments'] ?? 'Special order or comments are required';
+
+      default:
+        return validationErrors[field] ?? 'This field is required';
+    }
+  }
+
+  // NEW: Government survey validation errors
+  String _getGovernmentSurveyError() {
+    if (applicantNameController.text.trim().isEmpty) {
+      return 'Applicant name is required';
+    }
+
+    return 'Please complete government survey information';
+  }
+
+  // Enhanced error messages with isEmpty validation
+  String _getCalculationError() {
+    // Return first validation error found with specific message
+    if (validationErrors.isNotEmpty) {
+      return validationErrors.values.first;
+    }
+
+    return 'Please fill all required fields';
+  }
+
+  // NEW: Get specific field error
+  String getSpecificFieldError(String fieldType) {
+    switch (fieldType) {
+      case 'applicantName':
+        if (applicantNameController.text.trim().isEmpty) {
+          return 'Applicant name is required';
         }
-        if (!_validateApplicantAddress()) {
+        break;
+      case 'applicantAddress':
+        if (applicantAddressValidationErrors.isNotEmpty) {
           return 'Please complete the applicant address details';
         }
-        if (!_validateCourtName()) {
-          return 'Court name is required (minimum 3 characters)';
+        break;
+      case 'courtName':
+        if (courtNameController.text.trim().isEmpty) {
+          return 'Court name is required';
         }
-        if (!_validateCourtAddress()) {
-          return 'Court address is required (minimum 10 characters)';
+        break;
+      case 'courtAddress':
+        if (courtAddressController.text.trim().isEmpty) {
+          return 'Court address is required';
         }
-        if (!_validateCourtOrderNumber()) {
-          return 'Court order number is required (minimum 3 characters)';
+        break;
+      case 'courtOrderNumber':
+        if (courtOrderNumberController.text.trim().isEmpty) {
+          return 'Court order number is required';
         }
-        if (!_validateCourtAllotmentDate()) {
+        break;
+      case 'courtAllotmentDate':
+        if (courtAllotmentDateController.text.trim().isEmpty || courtAllotmentDate.value == null) {
           return 'Court allotment date is required';
         }
-        if (!_validateClaimNumberYear()) {
-          return 'Claim number and year is required (minimum 4 characters)';
+        break;
+      case 'claimNumberYear':
+        if (claimNumberYearController.text.trim().isEmpty) {
+          return 'Claim number and year is required';
         }
-        if (!_validateCourtOrderFiles()) {
+        break;
+      case 'courtOrderFiles':
+        if (courtOrderFiles.isEmpty) {
           return 'Court allocation order document is required';
         }
-        if (!_validateSpecialOrderComments()) {
-          return 'Special order or comments are required (minimum 10 characters)';
+        break;
+      case 'specialOrderComments':
+        if (specialOrderCommentsController.text.trim().isEmpty) {
+          return 'Special order or comments are required';
         }
-        return 'Please fill all required fields';
-      default:
-        return 'This field is required';
+        break;
     }
+    return '';
+  }
+
+  // NEW: Check if specific field has validation error
+  bool hasSpecificFieldError(String fieldType) {
+    return getSpecificFieldError(fieldType).isNotEmpty;
   }
 
   // Step Data Mixin Implementation
@@ -558,7 +464,7 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
   // Helper Methods
   void clearAllFields() {
     applicantNameController.clear();
-    clearApplicantAddressFields(); // Clear address fields
+    clearApplicantAddressFields();
     courtNameController.clear();
     courtAddressController.clear();
     courtOrderNumberController.clear();
@@ -567,29 +473,35 @@ class PersonalInfoController extends GetxController with StepValidationMixin, St
     specialOrderCommentsController.clear();
     courtOrderFiles.clear();
     courtAllotmentDate.value = null;
+    validationErrors.clear();
   }
 
   // Load data from saved state
   void loadStepData(Map<String, dynamic> data) {
-    applicantNameController.text = data['applicantName'] ?? '';
-    courtNameController.text = data['courtName'] ?? '';
-    courtAddressController.text = data['courtAddress'] ?? '';
-    courtOrderNumberController.text = data['courtOrderNumber'] ?? '';
-    courtAllotmentDateController.text = data['courtAllotmentDate'] ?? '';
-    claimNumberYearController.text = data['claimNumberYear'] ?? '';
-    specialOrderCommentsController.text = data['specialOrderComments'] ?? '';
+    applicantNameController.text = (data['applicantName'] ?? '').toString().trim();
+    courtNameController.text = (data['courtName'] ?? '').toString().trim();
+    courtAddressController.text = (data['courtAddress'] ?? '').toString().trim();
+    courtOrderNumberController.text = (data['courtOrderNumber'] ?? '').toString().trim();
+    courtAllotmentDateController.text = (data['courtAllotmentDate'] ?? '').toString().trim();
+    claimNumberYearController.text = (data['claimNumberYear'] ?? '').toString().trim();
+    specialOrderCommentsController.text = (data['specialOrderComments'] ?? '').toString().trim();
 
     if (data['courtOrderFiles'] != null) {
       courtOrderFiles.assignAll(List<String>.from(data['courtOrderFiles']));
     }
 
     if (data['courtAllotmentDateValue'] != null) {
-      courtAllotmentDate.value = DateTime.parse(data['courtAllotmentDateValue']);
+      try {
+        courtAllotmentDate.value = DateTime.parse(data['courtAllotmentDateValue']);
+      } catch (e) {
+        print('Error parsing date: $e');
+      }
     }
 
     // Load applicant address data
     if (data['applicantAddressDetails'] != null) {
-      final addressDetails = Map<String, String>.from(data['applicantAddressDetails']);
+      final addressDetails =
+      Map<String, String>.from(data['applicantAddressDetails']);
       updateApplicantAddress(addressDetails);
     } else if (data['applicantAddress'] != null) {
       applicantAddressController.text = data['applicantAddress'];

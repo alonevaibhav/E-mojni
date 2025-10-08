@@ -51,28 +51,33 @@ class SurveyCTSStep extends StatelessWidget {
     }
   }
 
+
   Widget _buildSurveyNumberInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CourtAllocationCaseUIUtils.buildStepHeader(
           'Group No./ Survey No./ C. T. Survey No./T. P. No. Information',
-          'Enter Survey No./Gat No./CTS No.',
+          // 'Enter Survey No./Gat No./CTS No.',
         ),
         Gap(24.h),
+
+
+
         CourtAllocationCaseUIUtils.buildTextFormField(
-          controller: controller.surveyNumberController,
+          controller: controller.surveyCtsNumber,
           label: 'Survey No./Gat No./CTS No.*',
-          hint: 'Enter survey number',
-          icon: PhosphorIcons.listNumbers(PhosphorIconsStyle.regular),
+          hint: 'Enter Survey No./Gat No./CTS No.',
+          icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
           keyboardType: TextInputType.text,
           validator: (value) {
-            if (!controller.isSurveyNumberValid) {
-              return controller.getFieldError('survey_number');
+            if (value == null || value.trim().length < 3) {
+              return 'Please enter the name of the applicant';
             }
             return null;
           },
         ),
+
         Gap(32.h),
         CourtAllocationCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -107,16 +112,22 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtAllocationCaseUIUtils.buildStepHeader(
           'Location Details',
-          'Select your district',
+          'Enter your district',
         ),
         Gap(24.h),
-        Obx(() => CourtAllocationCaseUIUtils.buildDropdownField(
+        CourtAllocationCaseUIUtils.buildTextFormField(
+          controller: controller.districtController,
           label: 'District*',
-          value: controller.selectedDistrict.value,
-          items: controller.districtOptions,
-          onChanged: controller.updateDistrict,
+          hint: 'Enter district name',
           icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-        )),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the district';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtAllocationCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -129,16 +140,22 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtAllocationCaseUIUtils.buildStepHeader(
           'Location Details',
-          'Select your taluka',
+          'Enter your taluka',
         ),
         Gap(24.h),
-        Obx(() => CourtAllocationCaseUIUtils.buildDropdownField(
+        CourtAllocationCaseUIUtils.buildTextFormField(
+          controller: controller.talukaController,
           label: 'Taluka*',
-          value: controller.selectedTaluka.value,
-          items: controller.getTalukaOptions(),
-          onChanged: controller.updateTaluka,
+          hint: 'Enter taluka name',
           icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-        )),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the taluka';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtAllocationCaseUIUtils.buildNavigationButtons(mainController),
       ],
@@ -151,41 +168,26 @@ class SurveyCTSStep extends StatelessWidget {
       children: [
         CourtAllocationCaseUIUtils.buildStepHeader(
           'Location Details',
-          'Select your village',
+          'Enter your village',
         ),
         Gap(24.h),
-        Obx(() => CourtAllocationCaseUIUtils.buildDropdownField(
+        CourtAllocationCaseUIUtils.buildTextFormField(
+          controller: controller.villageController,
           label: 'Village*',
-          value: controller.selectedVillage.value,
-          items: controller.getVillageOptions(),
-          onChanged: controller.updateVillage,
+          hint: 'Enter village name',
           icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
-        )),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the village';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtAllocationCaseUIUtils.buildNavigationButtons(mainController),
       ],
     );
   }
 
-  // Widget _buildOfficeInput() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       CourtAllocationCaseUIUtils.buildStepHeader(
-  //         'Office Information',
-  //         'Select your office',
-  //       ),
-  //       Gap(24.h),
-  //       Obx(() => CourtAllocationCaseUIUtils.buildDropdownField(
-  //         label: 'Office*',
-  //         value: controller.selectedOffice.value,
-  //         items: controller.officeOptions,
-  //         onChanged: controller.updateOffice,
-  //         icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
-  //       )),
-  //       Gap(32.h),
-  //       CourtAllocationCaseUIUtils.buildNavigationButtons(mainController),
-  //     ],
-  //   );
-  // }
 }

@@ -26,7 +26,7 @@ class CensusFourthController extends GetxController with StepValidationMixin, St
 
   // Selected values
   final selectedCalculationType = Rxn<String>();
-  final selectedDuration = Rxn<String>();
+  final selectedDuration = Rxn<String>(); // Will remain null initially
   final selectedHolderType = Rxn<String>();
   final selectedCalculationFeeRate = Rxn<String>();
   final countingFee = 0.obs;
@@ -40,9 +40,9 @@ class CensusFourthController extends GetxController with StepValidationMixin, St
   @override
   void onInit() {
     super.onInit();
-    // Set default values
+    // Set default values - REMOVED selectedDuration default
     selectedCalculationType.value = calculationTypeOptions.first;
-    selectedDuration.value = durationOptions.first;
+    // selectedDuration.value will remain null - user must select
     selectedHolderType.value = holderTypeOptions.first;
 
     // Listen to fee rate changes to calculate counting fee
@@ -124,39 +124,19 @@ class CensusFourthController extends GetxController with StepValidationMixin, St
     return true;
   }
 
-  bool _validateCalculationFeeRate() {
-    if (selectedCalculationFeeRate.value == null || selectedCalculationFeeRate.value!.isEmpty) {
-      calculationFeeRateError.value = 'Calculation fee rate is required';
-      return false;
-    }
-    calculationFeeRateError.value = '';
-    return true;
-  }
+
 
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'calculation':
+        return _validateCalculationType() &&
+            _validateDuration() &&
+            _validateHolderType() ;
       default:
         return true;
     }
   }
-
-
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'calculation':
-  //       return _validateCalculationType() &&
-  //           _validateDuration() &&
-  //           _validateHolderType() &&
-  //           _validateCalculationFeeRate();
-  //     case 'status':
-  //       return true; // Status step is always valid for now
-  //     default:
-  //       return true;
-  //   }
-  // }
 
   @override
   bool isStepCompleted(List<String> fields) {
@@ -175,7 +155,6 @@ class CensusFourthController extends GetxController with StepValidationMixin, St
         if (!_validateCalculationType()) return calculationTypeError.value;
         if (!_validateDuration()) return durationError.value;
         if (!_validateHolderType()) return holderTypeError.value;
-        if (!_validateCalculationFeeRate()) return calculationFeeRateError.value;
         return '';
       case 'status':
         return '';

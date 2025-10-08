@@ -53,17 +53,17 @@ class CensusFourthView extends StatelessWidget {
         // Calculation Type
         Obx(() => GovernmentCensusUIUtils.buildDropdownField(
           label: 'Calculation type *',
-          value: controller.selectedCalculationType.value?? '',
+          value: controller.selectedCalculationType.value ?? '',
           items: controller.calculationTypeOptions,
           onChanged: controller.updateCalculationType,
           icon: PhosphorIcons.calculator(PhosphorIconsStyle.regular),
         )),
         Gap(16.h),
 
-        // Duration
+        // Duration - Changed to pass null instead of empty string
         Obx(() => GovernmentCensusUIUtils.buildDropdownField(
           label: 'Duration *',
-          value: controller.selectedDuration.value ?? '',
+          value: controller.selectedDuration.value ?? '' ,
           items: controller.durationOptions,
           onChanged: controller.updateDuration,
           icon: PhosphorIcons.clock(PhosphorIconsStyle.regular),

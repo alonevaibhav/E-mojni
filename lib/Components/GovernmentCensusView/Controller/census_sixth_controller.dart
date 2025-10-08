@@ -89,8 +89,7 @@ class CensusSixthController extends GetxController with StepValidationMixin, Ste
     (entry['consentController'] as TextEditingController?)?.dispose();
 
     // Dispose address controllers safely
-    final addressControllers =
-        entry['addressControllers'] as Map<String, TextEditingController>?;
+    final addressControllers = entry['addressControllers'] as Map<String, TextEditingController>?;
     addressControllers?.values.forEach((controller) => controller.dispose());
   }
 
@@ -144,12 +143,6 @@ class CensusSixthController extends GetxController with StepValidationMixin, Ste
               'Enter valid 10-digit mobile number';
         }
         break;
-      case 'consent':
-        if (value.trim().isEmpty) {
-          validationErrors['${index}_$field'] =
-              'Consent information is required';
-        }
-        break;
     }
   }
 
@@ -185,8 +178,7 @@ class CensusSixthController extends GetxController with StepValidationMixin, Ste
     if (address['plotNo']?.isNotEmpty == true) parts.add(address['plotNo']!);
     if (address['address']?.isNotEmpty == true) parts.add(address['address']!);
     if (address['village']?.isNotEmpty == true) parts.add(address['village']!);
-    if (address['postOffice']?.isNotEmpty == true)
-      parts.add(address['postOffice']!);
+    if (address['postOffice']?.isNotEmpty == true) parts.add(address['postOffice']!);
     if (address['pincode']?.isNotEmpty == true) parts.add(address['pincode']!);
 
     return parts.isEmpty ? 'Click to add address' : parts.join(', ');
@@ -258,42 +250,34 @@ class CensusSixthController extends GetxController with StepValidationMixin, Ste
 
   // StepValidationMixin implementation
   @override
-  bool validateCurrentSubStep(String field) {
-    switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
-      default:
-        return true;
+    bool validateCurrentSubStep(String field) {
+    clearValidationErrors();
+    bool isValid = true;
+
+    for (int i = 0; i < coownerEntries.length; i++) {
+      final entry = coownerEntries[i];
+
+      // Validate required fields
+      final name = (entry['nameController'] as TextEditingController).text;
+      final mobileNumber = (entry['mobileNumberController'] as TextEditingController).text;
+      final consent = (entry['consentController'] as TextEditingController).text;
+      final address = entry['address'] as Map<String, String>;
+
+      _validateField(i, 'name', name);
+      _validateField(i, 'mobileNumber', mobileNumber);
+      _validateField(i, 'consent', consent);
+      _validateAddressFields(i, address);
+
+      // Update the entry data
+      entry['name'] = name;
+      entry['mobileNumber'] = mobileNumber;
+      entry['consent'] = consent;
+      entry['serverNumber'] = (entry['serverNumberController'] as TextEditingController).text;
     }
+
+    isValid = validationErrors.isEmpty;
+    return isValid;
   }
-  //   bool validateCurrentSubStep(String field) {
-  //   clearValidationErrors();
-  //   bool isValid = true;
-  //
-  //   for (int i = 0; i < coownerEntries.length; i++) {
-  //     final entry = coownerEntries[i];
-  //
-  //     // Validate required fields
-  //     final name = (entry['nameController'] as TextEditingController).text;
-  //     final mobileNumber = (entry['mobileNumberController'] as TextEditingController).text;
-  //     final consent = (entry['consentController'] as TextEditingController).text;
-  //     final address = entry['address'] as Map<String, String>;
-  //
-  //     _validateField(i, 'name', name);
-  //     _validateField(i, 'mobileNumber', mobileNumber);
-  //     _validateField(i, 'consent', consent);
-  //     _validateAddressFields(i, address);
-  //
-  //     // Update the entry data
-  //     entry['name'] = name;
-  //     entry['mobileNumber'] = mobileNumber;
-  //     entry['consent'] = consent;
-  //     entry['serverNumber'] = (entry['serverNumberController'] as TextEditingController).text;
-  //   }
-  //
-  //   isValid = validationErrors.isEmpty;
-  //   return isValid;
-  // }
 
   // Complete validation method (commented but fixed for future use)
   bool validateAllFields() {
@@ -309,8 +293,7 @@ class CensusSixthController extends GetxController with StepValidationMixin, Ste
       final mobileNumber =
           (entry['mobileNumberController'] as TextEditingController?)?.text ??
               '';
-      final consent =
-          (entry['consentController'] as TextEditingController?)?.text ?? '';
+      final consent = (entry['consentController'] as TextEditingController?)?.text ?? '';
       final addressEntry = entry['address'];
       final address = addressEntry != null
           ? addressEntry as Map<String, String>

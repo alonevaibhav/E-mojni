@@ -120,29 +120,30 @@ class GovernmentCensusController extends GetxController {
   }
 
   // Get the appropriate step controller for current step
+// Get the appropriate step controller for current step
   GetxController get currentStepController {
     switch (currentStep.value) {
       case 0:
         return personalInfoController;
       case 1:
         return surveyCTSController;
-      case 2: // Add this case for calculation step
+      case 2:
         return calculationController;
-      case 3: // Add this case for calculation step
+      case 3:
         return censusFourthController;
-      case 4: // Add this case for calculation step
+      case 4:
         return censusFifthController;
-      case 5: // Add this case for calculation step
+      case 5:
         return censusSixthController;
-      case 6: // Add this case for calculation step
-        return censusEighthController;
-      case 7: // Add this case for calculation step
-        return censusFourthController;
-      // Add more cases as you create more controllers
+      case 6:
+        return censusSeventhController; // ✅ FIXED - was censusEighthController
+      case 7:
+        return censusEighthController;  // ✅ This should be step 7
       default:
         return this; // Fallback to main controller
     }
   }
+
 
   // Check if current sub-step is valid
   bool get isCurrentSubStepValid {
@@ -157,6 +158,7 @@ class GovernmentCensusController extends GetxController {
   bool isMainStepCompleted(int step) {
     final fields = stepConfigurations[step];
     if (fields == null) return false;
+
     GetxController? stepController;
     switch (step) {
       case 0:
@@ -165,31 +167,33 @@ class GovernmentCensusController extends GetxController {
       case 1:
         stepController = surveyCTSController;
         break;
-      case 2: // Add this case
+      case 2:
         stepController = calculationController;
         break;
-      case 3: // Add this case
+      case 3:
         stepController = censusFourthController;
         break;
-      case 4: // Add this case
+      case 4:
         stepController = censusFifthController;
         break;
-      case 5: // Add this case
+      case 5:
         stepController = censusSixthController;
         break;
-      case 6: // Add this case
-        stepController = censusSeventhController;
+      case 6:
+        stepController = censusSeventhController; // ✅ FIXED
         break;
-      case 7: // Add this case
-        stepController = censusEighthController;
+      case 7:
+        stepController = censusEighthController;  // ✅ This should be step 7
         break;
-      // Add more cases
+    // Add more cases
     }
+
     if (stepController is StepValidationMixin) {
       return stepController.isStepCompleted(fields);
     }
     return false;
   }
+
 
   // Navigation Methods
   void nextSubStep() {
@@ -269,9 +273,31 @@ class GovernmentCensusController extends GetxController {
     Get.snackbar(
       'Validation Error',
       error,
+      snackPosition: SnackPosition.TOP,
       backgroundColor: Color(0xFFDC3545),
       colorText: Colors.white,
-      duration: Duration(milliseconds: 1200),
+      borderRadius: 8,
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      duration: Duration(seconds: 4),
+      icon: Icon(
+        Icons.error_outline,
+        color: Colors.white,
+        size: 28,
+      ),
+      shouldIconPulse: false, // Disable pulsing for faster appearance
+      boxShadows: [
+        BoxShadow(
+          color: Colors.black26,
+          offset: Offset(0, 2),
+          blurRadius: 8,
+        )
+      ],
+      maxWidth: 500,
+      isDismissible: true,
+      dismissDirection: DismissDirection.horizontal,
+      forwardAnimationCurve: Curves.easeOut, // Faster curve
+      animationDuration: Duration(milliseconds: 500), // Faster animation (default is 500ms)
     );
   }
 
@@ -364,14 +390,14 @@ class GovernmentCensusController extends GetxController {
         return surveyCTSController.getStepData();
       }
       return {
-        'survey_cts': {
-          'survey_number': surveyCTSController.surveyNumberController.text.trim(),
-          'department': surveyCTSController.selectedDepartment.value,
-          'district': surveyCTSController.selectedDistrict.value,
-          'taluka': surveyCTSController.selectedTaluka.value,
-          'village': surveyCTSController.selectedVillage.value,
-          'office': surveyCTSController.selectedOffice.value,
-        }
+        // 'survey_cts': {
+        //   'survey_number': surveyCTSController.surveyNumberController.text.trim(),
+        //   'department': surveyCTSController.selectedDepartment.value,
+        //   'district': surveyCTSController.selectedDistrict.value,
+        //   'taluka': surveyCTSController.selectedTaluka.value,
+        //   'village': surveyCTSController.selectedVillage.value,
+        //   'office': surveyCTSController.selectedOffice.value,
+        // }
       };
     } catch (e) {
       print('Error getting SurveyCTS data: $e');
@@ -589,12 +615,12 @@ class GovernmentCensusController extends GetxController {
 
     developer.log('=== SURVEY CTS DATA DEBUG ===', name: 'DebugInfo');
 
-    developer.log('Survey number: "${surveyCTSController.surveyNumberController.text.trim()}"', name: 'SurveyCTS');
-    developer.log('Department: "${surveyCTSController.selectedDepartment.value}"', name: 'SurveyCTS');
-    developer.log('District: "${surveyCTSController.selectedDistrict.value}"', name: 'SurveyCTS');
-    developer.log('Taluka: "${surveyCTSController.selectedTaluka.value}"', name: 'SurveyCTS');
-    developer.log('Village: "${surveyCTSController.selectedVillage.value}"', name: 'SurveyCTS');
-    developer.log('Office: "${surveyCTSController.selectedOffice.value}"', name: 'SurveyCTS');
+    // developer.log('Survey number: "${surveyCTSController.surveyNumberController.text.trim()}"', name: 'SurveyCTS');
+    // developer.log('Department: "${surveyCTSController.selectedDepartment.value}"', name: 'SurveyCTS');
+    // developer.log('District: "${surveyCTSController.selectedDistrict.value}"', name: 'SurveyCTS');
+    // developer.log('Taluka: "${surveyCTSController.selectedTaluka.value}"', name: 'SurveyCTS');
+    // developer.log('Village: "${surveyCTSController.selectedVillage.value}"', name: 'SurveyCTS');
+    // developer.log('Office: "${surveyCTSController.selectedOffice.value}"', name: 'SurveyCTS');
 
     developer.log('=== END SURVEY CTS DATA DEBUG ===', name: 'DebugInfo');
 
@@ -757,12 +783,19 @@ class GovernmentCensusController extends GetxController {
       "survey_details": personalInfoController.governmentCountingDetailsController.text.trim(),
 
       // === SURVEY CTS INFO ===
-      "survey_number": surveyCTSController.surveyNumberController.text,
+      "survey_number": surveyCTSController.surveyCtsNumber.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
       "division": "1", // Hardcoded as per your example
       "district": "26", // Hardcoded as per your example
       "taluka": "5", // Hardcoded as per your example
       "village": "3", // Hardcoded as per your example
+
+
+      // "survey_number": surveyCTSController.surveyCtsNumber.text,
+      // "department": surveyCTSController.selectedDepartment.value.toString(),
+      // "district": surveyCTSController.districtController.text.trim(),
+      // "taluka": surveyCTSController.talukaController.text.trim(),
+      // "village": surveyCTSController.villageController.text.trim(),
 
       // === CENSUS FOURTH INFO ===
       "calculation_type": censusFourthController.selectedCalculationType.value ?? "",

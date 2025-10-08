@@ -90,8 +90,7 @@ class MainSurveyController extends GetxController {
         Get.put(SurveyFifthController(), tag: 'survey_fifth'); // Add this line
     surveySixthController =
         Get.put(SurveySixthController(), tag: 'survey_sixth'); // Add this line
-    surveySeventhController = Get.put(SurveySeventhController(),
-        tag: 'survey_seventh'); // Add this line
+    surveySeventhController = Get.put(SurveySeventhController(), tag: 'survey_seventh'); // Add this line
     surveyEightController =
         Get.put(SurveyEightController(), tag: 'survey_eight'); // Add this line
   }

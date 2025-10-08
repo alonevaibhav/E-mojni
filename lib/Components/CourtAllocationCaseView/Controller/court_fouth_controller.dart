@@ -107,22 +107,12 @@ class CourtAlloFouthController extends GetxController with StepValidationMixin, 
   @override
   bool validateCurrentSubStep(String field) {
     switch (field) {
-      case 'government_survey':
-        return true; // Temporarily return true to bypass validation
+      case 'calculation':
+        return _validateCalculationFields();
       default:
-        return true;
+        return false;
     }
   }
-  // bool validateCurrentSubStep(String field) {
-  //   switch (field) {
-  //     case 'calculation':
-  //       return _validateCalculationFields();
-  //     case 'status':
-  //       return true; // Status field validation if needed
-  //     default:
-  //       return false;
-  //   }
-  // }
 
   bool _validateCalculationFields() {
     return selectedCalculationType.value != null &&
@@ -157,9 +147,6 @@ class CourtAlloFouthController extends GetxController with StepValidationMixin, 
         }
         if (selectedLocationCategory.value == null) {
           return 'Please select location category';
-        }
-        if (calculationFeeController.text.isEmpty) {
-          return 'Calculation fee is required';
         }
         return 'Please complete all calculation fields';
       default:

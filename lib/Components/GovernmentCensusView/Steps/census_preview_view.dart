@@ -91,18 +91,18 @@ class GovernmentCensusPreviewStep extends StatelessWidget {
       title: 'Survey CTS Information',
       icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
       children: [
-        if (controller.isNotEmpty(controller.surveyNumber))
-          buildInfoRow('Survey Number', controller.surveyNumber),
-        if (controller.isNotEmpty(controller.department))
-          buildInfoRow('Department', controller.department),
-        if (controller.isNotEmpty(controller.district))
-          buildInfoRow('District', controller.district),
-        if (controller.isNotEmpty(controller.taluka))
-          buildInfoRow('Taluka', controller.taluka),
-        if (controller.isNotEmpty(controller.village))
-          buildInfoRow('Village', controller.village),
-        if (controller.isNotEmpty(controller.office))
-          buildInfoRow('Office', controller.office),
+        // if (controller.isNotEmpty(controller.surveyNumber))
+        //   buildInfoRow('Survey Number', controller.surveyNumber),
+        // if (controller.isNotEmpty(controller.department))
+        //   buildInfoRow('Department', controller.department),
+        // if (controller.isNotEmpty(controller.district))
+        //   buildInfoRow('District', controller.district),
+        // if (controller.isNotEmpty(controller.taluka))
+        //   buildInfoRow('Taluka', controller.taluka),
+        // if (controller.isNotEmpty(controller.village))
+        //   buildInfoRow('Village', controller.village),
+        // if (controller.isNotEmpty(controller.office))
+        //   buildInfoRow('Office', controller.office),
       ],
     );
   }

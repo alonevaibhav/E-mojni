@@ -86,14 +86,14 @@ class CourtAllocationPreviewController extends GetxController {
 
   Map<String, dynamic> _getSurveyCTSDataDirect() {
     return {
-      'survey_cts': {
-        'survey_number': mainController.surveyCTSController.surveyNumberController.text.trim(),
-        'department': mainController.surveyCTSController.selectedDepartment.value,
-        'district': mainController.surveyCTSController.selectedDistrict.value,
-        'taluka': mainController.surveyCTSController.selectedTaluka.value,
-        'village': mainController.surveyCTSController.selectedVillage.value,
-        'office': mainController.surveyCTSController.selectedOffice.value,
-      }
+      // 'survey_cts': {
+      //   'survey_number': mainController.surveyCTSController.surveyNumberController.text.trim(),
+      //   'department': mainController.surveyCTSController.selectedDepartment.value,
+      //   'district': mainController.surveyCTSController.selectedDistrict.value,
+      //   'taluka': mainController.surveyCTSController.selectedTaluka.value,
+      //   'village': mainController.surveyCTSController.selectedVillage.value,
+      //   'office': mainController.surveyCTSController.selectedOffice.value,
+      // }
     };
   }
 
