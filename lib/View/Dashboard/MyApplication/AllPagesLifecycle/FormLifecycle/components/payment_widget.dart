@@ -474,7 +474,6 @@ class PaymentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sizeFactor = 0.85;
-
     return controller.obx(
           (paymentData) {
         // Check if both payments are completed
