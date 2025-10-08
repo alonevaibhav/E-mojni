@@ -147,7 +147,6 @@ class SignUpView extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(24.w * scaleFactor * 0.8),
         child: Form(
-          key: controller.formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

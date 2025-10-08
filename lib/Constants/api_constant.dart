@@ -3,7 +3,7 @@
 
 String loginUrl = "/api/user/login";
 
-String signUp = "/api/user/login";
+String setuSignUp = "/api/user/register";
 
 
 
