@@ -823,7 +823,6 @@ class CourtVatapPage extends StatelessWidget {
       color: SetuColors.primaryGreen,
       child: Column(
         children: [
-          _buildSummaryHeader(forms, sizeFactor),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(16.w * sizeFactor),
@@ -848,68 +847,6 @@ class CourtVatapPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryHeader(List<CourtVatapForm> forms, double sizeFactor) {
-    final verifiedCount = forms.where((f) => f.isVerifiedBool).length;
-    final pendingCount = forms.where((f) => f.isPending).length;
-    final scheduleProposedCount =
-        forms.where((f) => f.isScheduleProposed).length;
-    final totalCount = forms.length;
-
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            SetuColors.primaryGreen,
-            SetuColors.primaryGreen.withOpacity(0.8),
-          ],
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20.w * sizeFactor),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: buildHeaderStatCard(
-                    icon: PhosphorIcons.files(PhosphorIconsStyle.fill),
-                    label: 'Total',
-                    value: '$totalCount',
-                    color: Colors.blue,
-                    sizeFactor: sizeFactor,
-                  ),
-                ),
-                Gap(12.w * sizeFactor),
-                Expanded(
-                  child: buildHeaderStatCard(
-                    icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
-                    label: 'Verified',
-                    value: '$verifiedCount',
-                    color: Colors.green,
-                    sizeFactor: sizeFactor,
-                  ),
-                ),
-                Gap(12.w * sizeFactor),
-                Expanded(
-                  child: buildHeaderStatCard(
-                    icon: PhosphorIcons.clock(PhosphorIconsStyle.fill),
-                    label: 'Pending',
-                    value: '$pendingCount',
-                    color: Colors.orange,
-                    sizeFactor: sizeFactor,
-                  ),
-                ),
-                Gap(12.w * sizeFactor),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ).animate().fadeIn(duration: 400.ms);
-  }
 
   Widget _buildFormItem(CourtVatapForm form, double sizeFactor, int index) {
     return InkWell(
