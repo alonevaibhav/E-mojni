@@ -65,7 +65,6 @@
 import 'package:get/get.dart';
 import 'dart:developer' as developer;
 import 'dart:io';
-
 import '../../../../API Service/api_service.dart';
 import '../../../../Constants/api_constant.dart';
 import '../../../../Models/payment_model.dart';
@@ -73,6 +72,7 @@ import '../../../../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle
 
 class LifeCountingController extends GetxController with StateMixin<PaymentData> {
   final int formId;
+
 
   LifeCountingController({required this.formId});
 
@@ -160,7 +160,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
         Get.snackbar(
           'Success',
           'Measurement chalan uploaded successfully',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
         // Refresh payment details
         await fetchPaymentDetails();
@@ -172,7 +172,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
       Get.snackbar(
         'Error',
         'Failed to upload measurement chalan: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } finally {
       isMeasurementUploading.value = false;
@@ -231,6 +231,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
       isConvenienceUploading.value = false;
     }
   }
+
 
   Future<void> refreshPaymentStatus() async {
     await fetchPaymentDetails();

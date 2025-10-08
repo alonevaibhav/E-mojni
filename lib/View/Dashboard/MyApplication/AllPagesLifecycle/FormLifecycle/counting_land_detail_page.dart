@@ -25,30 +25,36 @@ class CountingLandDetailPage extends StatelessWidget {
     final form = Get.arguments as CountingLandForm;
     final controller = Get.put(LifeCountingController(formId: form.id), tag: 'payment_${form.id}');
 
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: GetTranslatableText('Application #${form.id}'),
-        backgroundColor: SetuColors.primaryGreen,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header Section
-            _buildHeader(sizeFactor, form),
+    return RefreshIndicator(
+      onRefresh: controller.refreshPaymentStatus,
+      child: Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: AppBar(
+          title: GetTranslatableText('Application #${form.id}'),
+          backgroundColor: SetuColors.primaryGreen,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(), // ✅ Add this
 
-            // PREVIEW BANNER (Clickable to open bottom sheet)
-            _buildPreviewBanner(sizeFactor, form),
+          child: Column(
+            children: [
+              // Header Section
+              _buildHeader(sizeFactor, form),
 
-            PaymentWidget(
-              sizeFactor: sizeFactor,
-              controller: controller,
-            ),
+              // PREVIEW BANNER (Clickable to open bottom sheet)
+              _buildPreviewBanner(sizeFactor, form),
 
-            Gap(20.h * sizeFactor),
-          ],
+              PaymentWidget(
+                sizeFactor: sizeFactor,
+                controller: controller,
+                  form:form
+              ),
+
+              Gap(20.h * sizeFactor),
+            ],
+          ),
         ),
       ),
     );
