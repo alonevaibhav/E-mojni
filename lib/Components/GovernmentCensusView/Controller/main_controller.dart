@@ -46,6 +46,7 @@ class GovernmentCensusController extends GetxController {
     1: [
       'survey_number',
       'department',
+      'division',
       'district',
       'taluka',
       'village',
@@ -785,10 +786,10 @@ class GovernmentCensusController extends GetxController {
       // === SURVEY CTS INFO ===
       "survey_number": surveyCTSController.surveyCtsNumber.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
-      "division": "1", // Hardcoded as per your example
-      "district": "26", // Hardcoded as per your example
-      "taluka": "5", // Hardcoded as per your example
-      "village": "3", // Hardcoded as per your example
+      "district": surveyCTSController.districtController.text.trim(),
+      "division": surveyCTSController.divisionController.text.trim(),
+      "taluka": surveyCTSController.talukaController.text.trim(),
+      "village": surveyCTSController.villageController.text.trim(),
 
 
       // "survey_number": surveyCTSController.surveyCtsNumber.text,

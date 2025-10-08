@@ -47,6 +47,7 @@ class CourtCommissionCaseController extends GetxController {
     1: [
       'survey_number',
       'department',
+      'division',
       'district',
       'taluka',
       'village',
@@ -493,12 +494,12 @@ class CourtCommissionCaseController extends GetxController {
       // "village": surveyCTSController.villageController.text.trim(),
 
 
-      "survey_number": surveyCTSController.surveyCtsNumber.text.trim(),
-      "department": surveyCTSController.selectedDepartment.value,
-      "division": "1",
-      "district": "26",
-      "taluka": "5",
-      "village": "3",
+      "survey_number": surveyCTSController.surveyCtsNumber.text,
+      "department": surveyCTSController.selectedDepartment.value.toString(),
+      "division": surveyCTSController.divisionController.text.trim(),
+      "district": surveyCTSController.districtController.text.trim(),
+      "taluka": surveyCTSController.talukaController.text.trim(),
+      "village": surveyCTSController.villageController.text.trim(),
 
 
       // === COURT FOURTH INFO === // there is change in UI as per the conditions we have to manage that in controller

@@ -34,6 +34,8 @@ class SurveyCTSStep extends StatelessWidget {
         return _buildSurveyNumberInput();
       case 'department':
         return _buildDepartmentInput();
+        case 'division':
+        return _buildDivisionInput();
       case 'district':
         return _buildDistrictInput();
       case 'taluka':
@@ -93,6 +95,34 @@ class SurveyCTSStep extends StatelessWidget {
           onChanged: controller.updateDepartment,
           icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
         )),
+        Gap(32.h),
+        CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
+      ],
+    );
+  }
+
+  Widget _buildDivisionInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CourtCommissionCaseUIUtils.buildStepHeader(
+          'Location Details',
+          'Enter your division',
+        ),
+        Gap(24.h),
+        CourtCommissionCaseUIUtils.buildTextFormField(
+          controller: controller.divisionController,
+          label: 'Division*',
+          hint: 'Enter division name',
+          icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the division';
+            }
+            return null;
+          },
+        ),
         Gap(32.h),
         CourtCommissionCaseUIUtils.buildNavigationButtons(mainController),
       ],

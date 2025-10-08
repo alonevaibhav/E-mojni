@@ -250,8 +250,13 @@ import 'package:flutter/material.dart';
 import 'main_controller.dart';
 
 class LandSecondController extends GetxController with StepValidationMixin, StepDataMixin {
+
+
+
+  // Form Controllers
   final surveyCtsNumber = TextEditingController();
   final districtController = TextEditingController();
+  final divisionController = TextEditingController();
   final talukaController = TextEditingController();
   final villageController = TextEditingController();
 
@@ -259,14 +264,13 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
   final selectedDepartment = 'Land Records Department'.obs;
 
   // Dropdown Options
-  final List<String> departmentOptions = [
-    'Land Records Department'
-  ];
+  final List<String> departmentOptions = ['Land Records Department'];
 
   @override
   void onClose() {
     surveyCtsNumber.dispose();
     districtController.dispose();
+    divisionController.dispose();
     talukaController.dispose();
     villageController.dispose();
     super.onClose();
@@ -288,6 +292,8 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
         return selectedDepartment.value.isNotEmpty;
       case 'district':
         return districtController.text.trim().isNotEmpty;
+      case 'division':
+        return divisionController.text.trim().isNotEmpty;
       case 'taluka':
         return talukaController.text.trim().isNotEmpty;
       case 'village':
@@ -315,6 +321,8 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
         return 'Please select a department';
       case 'district':
         return 'Please enter a district';
+      case 'division':
+        return 'Please enter a division';
       case 'taluka':
         return 'Please enter a taluka';
       case 'village':
@@ -331,19 +339,19 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
         'survey_number': surveyCtsNumber.text.trim(),
         'department': selectedDepartment.value,
         'district': districtController.text.trim(),
+        'division': divisionController.text.trim(),
         'taluka': talukaController.text.trim(),
         'village': villageController.text.trim(),
       }
     };
   }
 
-
-
   // Method to clear all fields
   void clearAllFields() {
     surveyCtsNumber.clear();
     selectedDepartment.value = 'Land Records Department';
     districtController.clear();
+    divisionController.clear();
     talukaController.clear();
     villageController.clear();
   }
@@ -353,8 +361,10 @@ class LandSecondController extends GetxController with StepValidationMixin, Step
     if (savedData.containsKey('survey_cts')) {
       final ctsData = savedData['survey_cts'];
       surveyCtsNumber.text = ctsData['survey_number'] ?? '';
-      selectedDepartment.value = ctsData['department'] ?? 'Land Records Department';
+      selectedDepartment.value =
+          ctsData['department'] ?? 'Land Records Department';
       districtController.text = ctsData['district'] ?? '';
+      divisionController.text = ctsData['division'] ?? '';
       talukaController.text = ctsData['taluka'] ?? '';
       villageController.text = ctsData['village'] ?? '';
     }

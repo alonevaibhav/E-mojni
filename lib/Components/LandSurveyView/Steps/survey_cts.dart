@@ -1,3 +1,4 @@
+//
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:get/get.dart';
@@ -38,8 +39,6 @@
 //         return _buildTalukaInput();
 //       case 'village':
 //         return _buildVillageInput();
-//       // case 'office':
-//       //   return _buildOfficeInput();
 //       default:
 //         return _buildSurveyNumberInput();
 //     }
@@ -54,8 +53,6 @@
 //           // 'Enter Survey No./Gat No./CTS No.',
 //         ),
 //         Gap(24.h),
-//
-//
 //
 //         SurveyUIUtils.buildTextFormField(
 //           controller: controller.surveyCtsNumber,
@@ -87,12 +84,12 @@
 //         ),
 //         Gap(24.h),
 //         Obx(() => SurveyUIUtils.buildDropdownField(
-//               label: 'Department*',
-//               value: controller.selectedDepartment.value,
-//               items: controller.departmentOptions,
-//               onChanged: controller.updateDepartment,
-//               icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
-//             )),
+//           label: 'Department*',
+//           value: controller.selectedDepartment.value,
+//           items: controller.departmentOptions,
+//           onChanged: controller.updateDepartment,
+//           icon: PhosphorIcons.buildings(PhosphorIconsStyle.regular),
+//         )),
 //         Gap(32.h),
 //         SurveyUIUtils.buildNavigationButtons(mainController),
 //       ],
@@ -105,16 +102,22 @@
 //       children: [
 //         SurveyUIUtils.buildStepHeader(
 //           'Location Details',
-//           'Select your district',
+//           'Enter your district',
 //         ),
 //         Gap(24.h),
-//         Obx(() => SurveyUIUtils.buildDropdownField(
-//               label: 'District*',
-//               value: controller.selectedDistrict.value,
-//               items: controller.districtOptions,
-//               onChanged: controller.updateDistrict,
-//               icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-//             )),
+//         SurveyUIUtils.buildTextFormField(
+//           controller: controller.districtController,
+//           label: 'District*',
+//           hint: 'Enter district name',
+//           icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+//           keyboardType: TextInputType.text,
+//           validator: (value) {
+//             if (value == null || value.trim().isEmpty) {
+//               return 'Please enter the district';
+//             }
+//             return null;
+//           },
+//         ),
 //         Gap(32.h),
 //         SurveyUIUtils.buildNavigationButtons(mainController),
 //       ],
@@ -127,16 +130,22 @@
 //       children: [
 //         SurveyUIUtils.buildStepHeader(
 //           'Location Details',
-//           'Select your taluka',
+//           'Enter your taluka',
 //         ),
 //         Gap(24.h),
-//         Obx(() => SurveyUIUtils.buildDropdownField(
-//               label: 'Taluka*',
-//               value: controller.selectedTaluka.value,
-//               items: controller.getTalukaOptions(),
-//               onChanged: controller.updateTaluka,
-//               icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
-//             )),
+//         SurveyUIUtils.buildTextFormField(
+//           controller: controller.talukaController,
+//           label: 'Taluka*',
+//           hint: 'Enter taluka name',
+//           icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+//           keyboardType: TextInputType.text,
+//           validator: (value) {
+//             if (value == null || value.trim().isEmpty) {
+//               return 'Please enter the taluka';
+//             }
+//             return null;
+//           },
+//         ),
 //         Gap(32.h),
 //         SurveyUIUtils.buildNavigationButtons(mainController),
 //       ],
@@ -149,16 +158,22 @@
 //       children: [
 //         SurveyUIUtils.buildStepHeader(
 //           'Location Details',
-//           'Select your village',
+//           'Enter your village',
 //         ),
 //         Gap(24.h),
-//         Obx(() => SurveyUIUtils.buildDropdownField(
-//               label: 'Village*',
-//               value: controller.selectedVillage.value,
-//               items: controller.getVillageOptions(),
-//               onChanged: controller.updateVillage,
-//               icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
-//             )),
+//         SurveyUIUtils.buildTextFormField(
+//           controller: controller.villageController,
+//           label: 'Village*',
+//           hint: 'Enter village name',
+//           icon: PhosphorIcons.house(PhosphorIconsStyle.regular),
+//           keyboardType: TextInputType.text,
+//           validator: (value) {
+//             if (value == null || value.trim().isEmpty) {
+//               return 'Please enter the village';
+//             }
+//             return null;
+//           },
+//         ),
 //         Gap(32.h),
 //         SurveyUIUtils.buildNavigationButtons(mainController),
 //       ],
@@ -201,14 +216,14 @@ class SurveyCTSStep extends StatelessWidget {
         return _buildSurveyNumberInput();
       case 'department':
         return _buildDepartmentInput();
+      case 'division':
+        return _buildDivisionInput();
       case 'district':
         return _buildDistrictInput();
       case 'taluka':
         return _buildTalukaInput();
       case 'village':
         return _buildVillageInput();
-    // case 'office':
-    //   return _buildOfficeInput();
       default:
         return _buildSurveyNumberInput();
     }
@@ -223,8 +238,6 @@ class SurveyCTSStep extends StatelessWidget {
           // 'Enter Survey No./Gat No./CTS No.',
         ),
         Gap(24.h),
-
-
 
         SurveyUIUtils.buildTextFormField(
           controller: controller.surveyCtsNumber,
@@ -268,6 +281,34 @@ class SurveyCTSStep extends StatelessWidget {
     );
   }
 
+  Widget _buildDivisionInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SurveyUIUtils.buildStepHeader(
+          'Location Details',
+          'Enter your division',
+        ),
+        Gap(24.h),
+        SurveyUIUtils.buildTextFormField(
+          controller: controller.divisionController,
+          label: 'Division*',
+          hint: 'Enter division name',
+          icon: PhosphorIcons.mapPin(PhosphorIconsStyle.regular),
+          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please enter the division';
+            }
+            return null;
+          },
+        ),
+        Gap(32.h),
+        SurveyUIUtils.buildNavigationButtons(mainController),
+      ],
+    );
+  }
+
   Widget _buildDistrictInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,6 +336,8 @@ class SurveyCTSStep extends StatelessWidget {
       ],
     );
   }
+
+
 
   Widget _buildTalukaInput() {
     return Column(
@@ -351,5 +394,4 @@ class SurveyCTSStep extends StatelessWidget {
       ],
     );
   }
-
 }

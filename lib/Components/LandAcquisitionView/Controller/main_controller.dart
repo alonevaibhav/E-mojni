@@ -39,6 +39,7 @@ class MainLandAcquisitionController extends GetxController {
     1: [
       'survey_number',
       'department',
+      'division',
       'district',
       'taluka',
       'village',
@@ -773,6 +774,7 @@ class MainLandAcquisitionController extends GetxController {
       "survey_number": surveyCTSController.surveyCtsNumber.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
       "district": surveyCTSController.districtController.text.trim(),
+      "division": surveyCTSController.divisionController.text.trim(),
       "taluka": surveyCTSController.talukaController.text.trim(),
       "village": surveyCTSController.villageController.text.trim(),
       // "office": surveyCTSController.selectedOffice.value,

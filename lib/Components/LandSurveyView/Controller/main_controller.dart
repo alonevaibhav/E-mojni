@@ -45,6 +45,7 @@ class MainSurveyController extends GetxController {
     1: [
       'survey_number',
       'department',
+      'division',
       'district',
       'taluka',
       'village',
@@ -1237,6 +1238,7 @@ class MainSurveyController extends GetxController {
       // === SURVEY INFO ===
       "survey_number": surveyCTSController.surveyCtsNumber.text,
       "department": surveyCTSController.selectedDepartment.value.toString(),
+      "division": surveyCTSController.divisionController.text.trim(),
       "district": surveyCTSController.districtController.text.trim(),
       "taluka": surveyCTSController.talukaController.text.trim(),
       "village": surveyCTSController.villageController.text.trim(),
