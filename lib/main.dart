@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -42,16 +43,17 @@ Future<String> _determineInitialRoute() async {
   try {
     // Check if user has a valid token and session
     if (await TokenManager.hasToken() && !await TokenManager.isTokenExpired()) {
-      print('Valid session found, navigating to dashboard');
+      developer.log("Valid session found, navigating to dashboard");
       return AppRoutes.mainDashboard;
     } else {
-      print('No valid session, navigating to login');
+      developer.log("No valid session, navigating to login");
+
       // Clear any invalid session data
       await TokenManager.clearToken();
       return AppRoutes.login;
     }
   } catch (e) {
-    print('Error determining initial route: $e');
+    developer.log("Error determining initial route: $e");
     // Default to login on error
     return AppRoutes.login;
   }

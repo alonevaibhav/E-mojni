@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:get/get.dart';
 import '../../../Constants/color_constant.dart';
 import '../../../Controller/get_translation_controller/get_text_form.dart';
 
@@ -109,7 +108,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                 ),
                 Gap(6.w * sizeFactor),
                 Text(
-                  'Last Updated: [Date]',
+                  'Last Updated: October 2025',
                   style: TextStyle(
                     fontSize: 12.sp * sizeFactor,
                     fontWeight: FontWeight.w600,
@@ -134,89 +133,20 @@ class PrivacyPolicyPage extends StatelessWidget {
           _buildWelcomeSection(sizeFactor),
           Gap(16.h * sizeFactor),
           _buildSection(
-            '1. Information We Collect',
-            'When you use Emojani, we may collect the following types of information:',
-            PhosphorIcons.database(PhosphorIconsStyle.regular),
+            'Privacy Policy for Uploaded Documents',
+            null,
+            PhosphorIcons.fileText(PhosphorIconsStyle.regular),
             sizeFactor,
             bulletPoints: [
-              'Personal Information: Your name, contact number, email address, date of birth, address, and identity details (such as Aadhaar, PAN, etc.) provided for government service applications.',
-              'Documents: Any uploaded files or certificates required for your application.',
-              'Device Information: Basic device details, IP address, and usage data to improve our services.',
-              'Communication Data: Messages or queries you send to our support team.',
+              'Document Security: All attached documents and information will be secured through complex encryption technology, ensuring no unauthorized access, theft, or compromise.',
+              'Purpose of Data Usage: Uploaded documents will be used only for processing applications and properly submitting them to relevant government websites. Information will not be shared with any third party or used for any other purpose.',
+              'Access and Consent: No employee or third party will be given access to documents without the applicant\'s consent. Only authorized officers and processing staff will be given limited access rights.',
+              'Data Retention Period: Attached documents will be retained until the required work is completed. After completion, provisions will be made for their secure destruction or data deletion upon customer request.',
+              'Data Breach Response: In case of any information breach or security violation, applicants will be immediately notified and necessary technical, legal, and security measures will be taken.',
+              'User Rights: Applicants will have the right to view, correct, and remove their uploaded documents as needed.',
+              'Misuse Prevention: Attached documents will be used only for purposes specified in the agreement.',
             ],
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '2. How We Use Your Information',
-            'We use your information only for the following purposes:',
-            PhosphorIcons.gear(PhosphorIconsStyle.regular),
-            sizeFactor,
-            bulletPoints: [
-              'To help you fill and submit your government service applications.',
-              'To communicate with you regarding your application status or any required updates.',
-              'To maintain records and improve our services.',
-              'To comply with legal or regulatory requirements.',
-            ],
-            footerText: 'We do not sell, rent, or trade your personal information to any third party.',
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '3. Data Security',
-            'We follow strict security practices to protect your personal information:',
-            PhosphorIcons.lockKey(PhosphorIconsStyle.regular),
-            sizeFactor,
-            bulletPoints: [
-              'All sensitive data and documents are transmitted using secure (SSL) encryption.',
-              'Your data is stored on secure servers with restricted access.',
-              'Only authorized personnel can view or process your information for service-related purposes.',
-              'We regularly review our security systems to prevent unauthorized access, loss, or misuse.',
-            ],
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '4. Data Sharing',
-            'Your information may be shared only in the following cases:',
-            PhosphorIcons.shareNetwork(PhosphorIconsStyle.regular),
-            sizeFactor,
-            bulletPoints: [
-              'With government departments or authorized agents to process your applications.',
-              'With trusted third-party service providers who assist us in operating the platform (bound by confidentiality agreements).',
-              'When required by law, court order, or government regulation.',
-            ],
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '5. Data Retention',
-            'We keep your information only for as long as necessary to complete your service request or as required by law. After that, your personal data is securely deleted or anonymized.',
-            PhosphorIcons.clockClockwise(PhosphorIconsStyle.regular),
-            sizeFactor,
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '6. Your Rights',
-            'You have the right to:',
-            PhosphorIcons.scales(PhosphorIconsStyle.regular),
-            sizeFactor,
-            bulletPoints: [
-              'Access and review the information you\'ve provided.',
-              'Request correction or deletion of your personal data (where applicable).',
-              'Withdraw consent for data processing, which may affect your ability to use our services.',
-            ],
-            footerText: 'You can exercise these rights by contacting us at [Your Email Address].',
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '7. Third-Party Links',
-            'Our app may include links to government or third-party websites. We are not responsible for the privacy practices or content of those websites. Please review their policies before sharing any personal information.',
-            PhosphorIcons.link(PhosphorIconsStyle.regular),
-            sizeFactor,
-          ),
-          Gap(16.h * sizeFactor),
-          _buildSection(
-            '8. Updates to This Policy',
-            'We may update this Privacy & Security Policy from time to time. Updates will be posted in the app, and continued use after changes means you accept the updated policy.',
-            PhosphorIcons.arrowsClockwise(PhosphorIconsStyle.regular),
-            sizeFactor,
+            footerText: 'This privacy policy for uploaded documents will be clearly displayed to applicants in the app, and no process will be initiated without their consent.',
           ),
           Gap(16.h * sizeFactor),
           _buildContactSection(sizeFactor),
@@ -479,7 +409,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                 Gap(12.w * sizeFactor),
                 Expanded(
                   child: GetTranslatableText(
-                    '9. Contact Us',
+                    'Contact Us',
                     style: TextStyle(
                       fontSize: 16.sp * sizeFactor,
                       fontWeight: FontWeight.bold,
@@ -507,13 +437,13 @@ class PrivacyPolicyPage extends StatelessWidget {
                 Gap(16.h * sizeFactor),
                 _buildContactItem(
                   PhosphorIcons.envelope(PhosphorIconsStyle.regular),
-                  '[Your Email Address]',
+                  'info@emojni.com',
                   sizeFactor,
                 ),
                 Gap(12.h * sizeFactor),
                 _buildContactItem(
                   PhosphorIcons.phone(PhosphorIconsStyle.regular),
-                  '[Your Contact Number]',
+                  '7397-877740',
                   sizeFactor,
                 ),
               ],

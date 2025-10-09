@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:get/get.dart';
 import '../../Auth/login_view_controller.dart';
@@ -22,7 +21,7 @@ import 'components/terms_conditions.dart';
 class ProfileView extends StatelessWidget {
   final ScrollController scrollController;
 
-  ProfileView({Key? key, required this.scrollController}) : super(key: key);
+  const ProfileView({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +145,8 @@ class ProfileView extends StatelessWidget {
         'icon': PhosphorIcons.question(PhosphorIconsStyle.regular)
       },
       {
-        'title': 'Terms & Conditions',
-        'subtitle': 'Read our terms and conditions',
+        'title': 'Rules and Regulations',
+        'subtitle': 'Read our Rules and Regulations',
         'icon': PhosphorIcons.fileText(PhosphorIconsStyle.regular)
       },
       {
@@ -260,7 +259,7 @@ class ProfileView extends StatelessWidget {
       case 'Help & Support':
         _navigateToHelpSupport(context);
         break;
-      case 'Terms & Conditions':
+      case 'Rules and Regulations':
         _navigateToTermsConditions(context);
         break;
       case 'Share App':
