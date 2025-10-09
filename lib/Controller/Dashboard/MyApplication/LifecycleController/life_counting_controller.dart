@@ -71,15 +71,44 @@ import '../../../../View/Dashboard/MyApplication/AllPagesLifecycle/FormLifecycle
 
 class LifeCountingController extends GetxController with StateMixin<PaymentData> {
   final int formId;
+  final String formType;
 
 
-  LifeCountingController({required this.formId});
+
+  LifeCountingController({
+    required this.formId,
+    required this.formType,
+  });
+
 
   // File upload observables
   final measurementChalanFiles = <String>[].obs;
   final convenienceChalanFiles = <String>[].obs;
 
+  // Add these missing observables
+  final isMeasurementUploading = false.obs;
+  final measurementUploadSuccess = false.obs;
+  final isConvenienceUploading = false.obs;
+  final convenienceUploadSuccess = false.obs;
 
+
+// Helper method to map backend form type to frontend form type
+  String _getMappedFormType() {
+    switch (formType) {
+      case 'counting_land':
+        return 'landCounting';
+      case 'bhusampadan_citizen':
+        return 'bhusampadan';
+      case 'court_land_details':
+        return 'courtLand';
+      case 'court_vatap_citizen_application':
+        return 'courtVatap';
+      case 'shaskiya_mojni':
+        return 'shaskiya';
+      default:
+        return 'landCounting'; // Default fallback
+    }
+  }
   @override
   void onInit() {
     super.onInit();
@@ -89,9 +118,10 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
   Future<void> fetchPaymentDetails() async {
     try {
       change(null, status: RxStatus.loading());
+      final mappedFormType = _getMappedFormType();
 
       final response = await ApiService.get<PaymentResponse>(
-        endpoint: lifeCycleCountingLand(formId),
+        endpoint: lifeCycleCountingLand(formId,mappedFormType),
         fromJson: (json) => PaymentResponse.fromJson(json),
         includeToken: true,
       );
@@ -130,7 +160,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
     }
 
     try {
-      // isMeasurementUploading.value = true;
+      isMeasurementUploading.value = true;
 
       final response = await ApiService.multipartPost(
         endpoint: lifeCycleCountingLandChalanSubmission(state!.id),
@@ -148,7 +178,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
       developer.log('Measurement Chalan Upload Response: ${response.data}');
 
       if (response.success) {
-        // measurementUploadSuccess.value = true;
+        measurementUploadSuccess.value = true;
         Get.snackbar(
           'Success',
           'Measurement chalan uploaded successfully',
@@ -167,7 +197,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
         snackPosition: SnackPosition.TOP,
       );
     } finally {
-      // isMeasurementUploading.value = false;
+      isMeasurementUploading.value = false;
     }
   }
 
@@ -183,7 +213,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
     }
 
     try {
-      // isConvenienceUploading.value = true;
+      isConvenienceUploading.value = true;
 
       final response = await ApiService.multipartPost(
         endpoint: lifeCycleCountingLandConvenienceSubmission(state!.id),
@@ -201,7 +231,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
       developer.log('Convenience Chalan Upload Response: ${response.data}');
 
       if (response.success) {
-        // convenienceUploadSuccess.value = true;
+        convenienceUploadSuccess.value = true;
         Get.snackbar(
           'Success',
           'Convenience chalan uploaded successfully',
@@ -220,7 +250,7 @@ class LifeCountingController extends GetxController with StateMixin<PaymentData>
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
-      // isConvenienceUploading.value = false;
+      isConvenienceUploading.value = false;
     }
   }
 

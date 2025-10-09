@@ -615,6 +615,7 @@ class ImagePickerUtil {
       }
     } catch (e) {
       _showErrorMessage('Failed to pick image: $e');
+      print("The error is: $e");
     }
   }
 

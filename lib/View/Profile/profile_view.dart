@@ -254,6 +254,9 @@ class ProfileView extends StatelessWidget {
       case 'Privacy & Security':
         _navigateToPrivacySettings(context);
         break;
+        case 'Language':
+          _showLanguageSelectionDialog(context);
+        break;
       case 'Help & Support':
         _navigateToHelpSupport(context);
         break;
@@ -375,11 +378,8 @@ class ProfileView extends StatelessWidget {
                       onTap: () async {
                         if (!isSelected) {
                           Navigator.of(context).pop();
-
-
                           try {
                             _showLanguageChangeLoading(context);
-
                             await translationController.changeLanguage(
                               language,
                               showProgress: false,
@@ -534,7 +534,7 @@ class ProfileView extends StatelessWidget {
     Get.snackbar(
       'Success',
       'Language changed to ${language.nativeName}',
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
       backgroundColor: SetuColors.primaryGreen.withOpacity(0.9),
       colorText: Colors.white,
       duration: const Duration(seconds: 2),

@@ -230,10 +230,10 @@ Widget _buildChalanUploadSections(PaymentData payment,sizeFactor,controller) {
               hint: 'Upload Payment Screenshot/Receipt',
               icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
               uploadedFiles: controller.measurementChalanFiles,
-              onFilesSelected: (files) =>
-                  controller.measurementChalanFiles.assignAll(files),
-            ),
+              onFilesSelected: (files) => controller.measurementChalanFiles.value = List<String>.from(files),            ),
+
             Gap(12.h * sizeFactor),
+
             Obx(() => SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -332,9 +332,7 @@ Widget _buildConenienceUploadSections(PaymentData payment,sizeFactor,controller)
               hint: 'Upload Payment Screenshot/Receipt',
               icon: PhosphorIcons.fileText(PhosphorIconsStyle.regular),
               uploadedFiles: controller.convenienceChalanFiles,
-              onFilesSelected: (files) =>
-                  controller.convenienceChalanFiles.assignAll(files),
-            ),
+              onFilesSelected: (files) => controller.convenienceChalanFiles.value = List<String>.from(files),            ),
             Gap(12.h * sizeFactor),
             Obx(() => SizedBox(
               width: double.infinity,

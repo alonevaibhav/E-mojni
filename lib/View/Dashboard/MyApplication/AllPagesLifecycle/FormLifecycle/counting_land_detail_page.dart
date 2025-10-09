@@ -22,8 +22,13 @@ class CountingLandDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizeFactor = 0.85;
 
-    final form = Get.arguments as CountingLandForm;
-    final controller = Get.put(LifeCountingController(formId: form.id), tag: 'payment_${form.id}');
+// Get arguments as Map
+    final arguments = Get.arguments as Map<String, dynamic>;
+    final form = arguments['form'] ;
+    final formType = arguments['formType'] as String;
+
+    // Pass formType to controller
+    final controller = Get.put(LifeCountingController(formId: form.id, formType: formType,), tag: 'payment_${form.id}');
 
     return RefreshIndicator(
       onRefresh: controller.refreshPaymentStatus,

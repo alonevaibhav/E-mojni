@@ -24,7 +24,12 @@ String userProfileDetails(int id) => "/api/user/$id";
 
 String getMyApplication(int id) => "/api/user/$id/forms/summary";
 
-String lifeCycleCountingLand(int id) => "/api/user/payment/$id/landCounting";
+// String lifeCycleCountingLand(int id) => "/api/user/payment/$id/landCounting";
+
+String lifeCycleCountingLand(int id, String formType) {return "/api/user/payment/$id/$formType";}
+
+
+
 
 String lifeCycleCountingLandChalanSubmission(int id) => "/api/user/payment/$id/measurement-chalan";
 String lifeCycleCountingLandConvenienceSubmission(int id) => "/api/user/payment/$id/convenience-chalan";

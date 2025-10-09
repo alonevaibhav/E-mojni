@@ -6,10 +6,12 @@ import 'package:gap/gap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../Constants/color_constant.dart';
+import '../../../../../Controller/Dashboard/MyApplication/LifecycleController/life_counting_controller.dart';
 import '../../../../../Controller/Dashboard/MyApplication/court_vatap_controller.dart';
 import '../../../../../Controller/get_translation_controller/get_text_form.dart';
 import '../../../../../Models/court_vatap_model.dart';
 import '../../../../../Utils/file_full_screen_view.dart';
+import 'components/payment_widget.dart';
 
 class CourtVatapDetailPage extends StatelessWidget {
   const CourtVatapDetailPage({super.key});
@@ -17,7 +19,12 @@ class CourtVatapDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sizeFactor = 0.85;
-    final form = Get.arguments as CourtVatapForm;
+    final arguments = Get.arguments as Map<String, dynamic>;
+    final form = arguments['form'] ;
+    final formType = arguments['formType'] as String;
+
+    // Pass formType to controller
+    final controller = Get.put(LifeCountingController(formId: form.id, formType: formType,), tag: 'payment_${form.id}');
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -36,49 +43,14 @@ class CourtVatapDetailPage extends StatelessWidget {
             // PREVIEW BANNER (Clickable to open bottom sheet)
             _buildPreviewBanner(sizeFactor, form),
 
-            // TODO: Add Payment Section Here
-            Container(
-              margin: EdgeInsets.all(16.w * sizeFactor),
-              padding: EdgeInsets.all(20.w * sizeFactor),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.r * sizeFactor),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    PhosphorIcons.gavel(PhosphorIconsStyle.regular),
-                    size: 48.sp * sizeFactor,
-                    color: Colors.grey[400],
-                  ),
-                  Gap(12.h * sizeFactor),
-                  GetTranslatableText(
-                    'Court Vatap Fee & Actions',
-                    style: TextStyle(
-                      fontSize: 16.sp * sizeFactor,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  Gap(8.h * sizeFactor),
-                  GetTranslatableText(
-                    'Add your court vatap fee payment and form actions here',
-                    style: TextStyle(
-                      fontSize: 12.sp * sizeFactor,
-                      color: Colors.grey[500],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+            PaymentWidget(
+              sizeFactor: sizeFactor,
+              controller: controller,
+              onRefresh: () => controller.refreshPaymentStatus(),
+              formStatus: form.status,
             ),
+
+
 
             Gap(20.h * sizeFactor),
           ],

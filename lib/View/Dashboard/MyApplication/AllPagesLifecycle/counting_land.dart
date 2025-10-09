@@ -651,8 +651,6 @@
 //   }
 // }
 
-
-
 import 'package:emojni/View/Dashboard/MyApplication/AllPagesLifecycle/preview_component/preview_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -674,6 +672,10 @@ class CountingLand extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CountingLandController>();
     final sizeFactor = 0.85;
+    // Access the arguments
+    final arguments = Get.arguments as Map<String, dynamic>;
+    final formType = arguments['formType'] as String;
+    print("Form type: $formType");
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -684,8 +686,8 @@ class CountingLand extends StatelessWidget {
         elevation: 0,
       ),
       body: controller.obx(
-            (formsList) =>
-            _buildFormsListContent(formsList!, sizeFactor, controller),
+        (formsList) => _buildFormsListContent(
+            formsList!, sizeFactor, controller, formType),
         onLoading: CommonStateWidgets.loading(
           message: 'Loading ${controller.formName}...',
           sizeFactor: sizeFactor,
@@ -706,7 +708,7 @@ class CountingLand extends StatelessWidget {
   }
 
   Widget _buildFormsListContent(List<CountingLandForm> forms, double sizeFactor,
-      CountingLandController controller) {
+      CountingLandController controller, String formType) {
     return RefreshIndicator(
       onRefresh: () => controller.refreshForms(),
       color: SetuColors.primaryGreen,
@@ -720,8 +722,14 @@ class CountingLand extends StatelessWidget {
                 final form = forms[index];
                 return Padding(
                   padding: EdgeInsets.only(bottom: 12.h * sizeFactor),
-                  child: _buildFormItem(form, sizeFactor, index),
-                ).animate().fadeIn(delay: (50 * index).ms, duration: 400.ms,).slideX(begin: -0.1, end: 0);
+                  child: _buildFormItem(form, sizeFactor, index, formType),
+                )
+                    .animate()
+                    .fadeIn(
+                      delay: (50 * index).ms,
+                      duration: 400.ms,
+                    )
+                    .slideX(begin: -0.1, end: 0);
               },
             ),
           ),
@@ -730,11 +738,17 @@ class CountingLand extends StatelessWidget {
     );
   }
 
-
-  Widget _buildFormItem(CountingLandForm form, double sizeFactor, int index) {
+  Widget _buildFormItem(
+      CountingLandForm form, double sizeFactor, int index, String formType) {
     return InkWell(
       onTap: () {
-        Get.toNamed(AppRoutes.countingLandDetailPage, arguments: form);
+        Get.toNamed(
+          AppRoutes.countingLandDetailPage,
+          arguments: {
+            'form': form,
+            'formType': formType,
+          },
+        );
       },
       borderRadius: BorderRadius.circular(16.r * sizeFactor),
       child: Container(
@@ -911,4 +925,3 @@ class CountingLand extends StatelessWidget {
     );
   }
 }
-
