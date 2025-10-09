@@ -46,10 +46,17 @@ class CountingLandDetailPage extends StatelessWidget {
               // PREVIEW BANNER (Clickable to open bottom sheet)
               _buildPreviewBanner(sizeFactor, form),
 
+              // PaymentWidget(
+              //   sizeFactor: sizeFactor,
+              //   controller: controller,
+              //     form:form
+              // ),
+
               PaymentWidget(
                 sizeFactor: sizeFactor,
                 controller: controller,
-                  form:form
+                onRefresh: () => controller.refreshPaymentStatus(),
+                formStatus: form.status,
               ),
 
               Gap(20.h * sizeFactor),

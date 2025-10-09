@@ -721,13 +721,7 @@ class CountingLand extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 12.h * sizeFactor),
                   child: _buildFormItem(form, sizeFactor, index),
-                )
-                    .animate()
-                    .fadeIn(
-                  delay: (50 * index).ms,
-                  duration: 400.ms,
-                )
-                    .slideX(begin: -0.1, end: 0);
+                ).animate().fadeIn(delay: (50 * index).ms, duration: 400.ms,).slideX(begin: -0.1, end: 0);
               },
             ),
           ),

@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../API Service/api_service.dart';
 import '../../../Constants/api_constant.dart';
-import '../../../Route Manager/app_routes.dart';
 import '../../LandSurveyView/Controller/personal_info_controller.dart';
 import '../../LandSurveyView/Controller/step_three_controller.dart';
 import '../../LandSurveyView/Controller/survey_cts.dart';
@@ -1765,7 +1764,7 @@ class MainSurveyController extends GetxController {
           colorText: Colors.white,
           duration: Duration(seconds: 3),
         );
-        Get.offAllNamed(AppRoutes.mainDashboard);
+        // Get.offAllNamed(AppRoutes.mainDashboard);
 
         // Show success animation
         update(); // Update UI

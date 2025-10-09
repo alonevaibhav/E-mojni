@@ -145,7 +145,7 @@ Widget buildPaymentContent(PaymentData payment, controller,sizeFactor) {
             amount: payment.measurementFee,
             qrCode: payment.measurementQrCode,
             status: payment.measurementPaymentStatus,
-  sizeFactor:sizeFactor,
+             sizeFactor:sizeFactor,
             onTap: () => controller.openQrCodeFullScreen(
               payment.measurementQrCode,
               'Measurement Fee QR Code',
@@ -161,7 +161,6 @@ Widget buildPaymentContent(PaymentData payment, controller,sizeFactor) {
             qrCode: payment.convenienceQrCode,
             status: payment.conveniencePaymentStatus,
             sizeFactor:sizeFactor,
-
             onTap: () => controller.openQrCodeFullScreen(
               payment.convenienceQrCode,
               'Convenience Fee QR Code',
