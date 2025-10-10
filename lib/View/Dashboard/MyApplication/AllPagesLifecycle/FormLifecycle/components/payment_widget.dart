@@ -143,20 +143,8 @@ class PaymentWidget extends StatelessWidget {
       );
     }
 
-    // if (status == 'verified') {
-    //   return buildStatusCard(
-    //     sizeFactor: sizeFactor,
-    //     gradientColors: [Colors.blue[400]!, Colors.blue[600]!],
-    //     shadowColor: Colors.blue,
-    //     icon: PhosphorIcons.sealCheck(PhosphorIconsStyle.fill),
-    //     title: 'Form Verified',
-    //     description:
-    //     'Your application form has been successfully verified and approved',
-    //     infoMessage: 'Please proceed with the payment process',
-    //   );
-    // }
 
-    if (status == 'rejected') {
+    if (status == 'failed') {
       return buildStatusCard(
         sizeFactor: sizeFactor,
         gradientColors: [Colors.red[400]!, Colors.red[600]!],

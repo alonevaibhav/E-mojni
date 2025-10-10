@@ -280,7 +280,7 @@ class LandAcquisitionPreviewController extends GetxController {
           duration: Duration(seconds: 3),
         );
 
-        // Get.offAllNamed(AppRoutes.mainDashboard);
+        Get.offAllNamed(AppRoutes.mainDashboard);
       } else {
         // Show actual error message from API
         final errorMsg = result['error'] ?? 'Failed to submit land acquisition survey';
