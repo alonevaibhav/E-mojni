@@ -1771,8 +1771,7 @@ class MainSurveyController extends GetxController {
 
         isLoading.value = false;
       } else {
-        print(
-            '❌ Survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
+        print('❌ Survey submission failed: ${response.errorMessage ?? 'Unknown error'}');
 
         Get.snackbar(
           'Error',

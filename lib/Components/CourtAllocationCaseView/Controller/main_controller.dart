@@ -529,7 +529,7 @@ class CourtAllocationCaseController extends GetxController {
         final filePath = personalInfoController.courtOrderFiles!.first.toString();
         if (filePath.isNotEmpty) {
           files.add(MultipartFiles(
-            field: "court_allocation_order",
+            field: "court_allocation_order_path",
             filePath: filePath,
           ));
 
@@ -547,7 +547,7 @@ class CourtAllocationCaseController extends GetxController {
     // Add seven twelve files
     if (allocationSeventhController.sevenTwelveFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "seven_twelve_path",
+        field: "seven_twelve_extract_path",
         filePath: allocationSeventhController.sevenTwelveFiles!.first.toString(),
       ));
     }
@@ -579,7 +579,7 @@ class CourtAllocationCaseController extends GetxController {
     // Add old census map files
     if (allocationSeventhController.oldCensusMapFiles?.isNotEmpty == true) {
       files.add(MultipartFiles(
-        field: "old_census_map_path",
+        field: "old_measurement_path",
         filePath: allocationSeventhController.oldCensusMapFiles!.first.toString(),
       ));
     }
