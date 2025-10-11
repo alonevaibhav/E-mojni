@@ -896,28 +896,28 @@ class BhusampadanPage extends StatelessWidget {
               Gap(16.h * sizeFactor),
               Row(
                 children: [
-                  if (form.isPaymentDone)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
-                      label: 'Payment Done',
-                      color: Colors.green,
-                      sizeFactor: sizeFactor,
-                    ),
-                  if (!form.isPaymentDone)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
-                      label: 'Payment Pending',
-                      color: Colors.orange,
-                      sizeFactor: sizeFactor,
-                    ),
+                  // if (form.isPaymentDone)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
+                  //     label: 'Payment Done',
+                  //     color: Colors.green,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
+                  // if (!form.isPaymentDone)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
+                  //     label: 'Payment Pending',
+                  //     color: Colors.orange,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
                   const Spacer(),
-                  if (form.isBhusampadanApproved)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.seal(PhosphorIconsStyle.fill),
-                      label: 'Approved',
-                      color: Colors.purple,
-                      sizeFactor: sizeFactor,
-                    ),
+                  // if (form.isBhusampadanApproved)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.seal(PhosphorIconsStyle.fill),
+                  //     label: 'Approved',
+                  //     color: Colors.purple,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
                   Gap(8.w * sizeFactor),
                   Icon(
                     PhosphorIcons.caretRight(PhosphorIconsStyle.bold),

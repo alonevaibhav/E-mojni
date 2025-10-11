@@ -48,6 +48,7 @@ class CountingLandData {
 
 class CountingLandForm {
   final int id;
+  final String formId;
   final int isLandholder;
   final int isPowerOfAttorney;
   final String? poaRegistrationNumber;
@@ -106,6 +107,7 @@ class CountingLandForm {
 
   CountingLandForm({
     required this.id,
+    required this.formId,
     required this.isLandholder,
     required this.isPowerOfAttorney,
     this.poaRegistrationNumber,
@@ -166,6 +168,7 @@ class CountingLandForm {
   factory CountingLandForm.fromJson(Map<String, dynamic> json) {
     return CountingLandForm(
       id: json['id'] ?? 0,
+      formId: json['form_id'] ?? '',
       isLandholder: json['is_landholder'] ?? 0,
       isPowerOfAttorney: json['is_power_of_attorney'] ?? 0,
       poaRegistrationNumber: json['poa_registration_number'],

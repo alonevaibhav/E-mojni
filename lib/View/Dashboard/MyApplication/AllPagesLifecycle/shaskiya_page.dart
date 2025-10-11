@@ -855,20 +855,20 @@ class ShaskiyaPage extends StatelessWidget {
               Gap(16.h * sizeFactor),
               Row(
                 children: [
-                  if (form.hasSurveyDetails)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
-                      label: 'Details Available',
-                      color: Colors.green,
-                      sizeFactor: sizeFactor,
-                    ),
-                  if (!form.hasSurveyDetails)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
-                      label: 'Details Pending',
-                      color: Colors.orange,
-                      sizeFactor: sizeFactor,
-                    ),
+                  // if (form.hasSurveyDetails)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
+                  //     label: 'Details Available',
+                  //     color: Colors.green,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
+                  // if (!form.hasSurveyDetails)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
+                  //     label: 'Details Pending',
+                  //     color: Colors.orange,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
                   const Spacer(),
                   Gap(8.w * sizeFactor),
                   Icon(

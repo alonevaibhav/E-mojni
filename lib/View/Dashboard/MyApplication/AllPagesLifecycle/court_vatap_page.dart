@@ -976,20 +976,20 @@ class CourtVatapPage extends StatelessWidget {
               Gap(16.h * sizeFactor),
               Row(
                 children: [
-                  if (form.isPaymentDone)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
-                      label: 'Fee Set',
-                      color: Colors.green,
-                      sizeFactor: sizeFactor,
-                    ),
-                  if (!form.isPaymentDone)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
-                      label: 'Fee Pending',
-                      color: Colors.orange,
-                      sizeFactor: sizeFactor,
-                    ),
+                  // if (form.isPaymentDone)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
+                  //     label: 'Fee Set',
+                  //     color: Colors.green,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
+                  // if (!form.isPaymentDone)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
+                  //     label: 'Fee Pending',
+                  //     color: Colors.orange,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
                   const Spacer(),
                   Gap(8.w * sizeFactor),
                   Icon(

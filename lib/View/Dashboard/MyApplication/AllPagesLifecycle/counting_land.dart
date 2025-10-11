@@ -794,7 +794,9 @@ class CountingLand extends StatelessWidget {
                         Row(
                           children: [
                             GetTranslatableText(
-                              'Application #${form.id}',
+                              form.formId.isNotEmpty
+                                  ? form.formId
+                                  : 'Form #${form.id}',
                               style: TextStyle(
                                 fontSize: 15.sp * sizeFactor,
                                 fontWeight: FontWeight.bold,
@@ -862,20 +864,20 @@ class CountingLand extends StatelessWidget {
               Gap(16.h * sizeFactor),
               Row(
                 children: [
-                  if (form.isPaymentDone)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
-                      label: 'Payment Done',
-                      color: Colors.green,
-                      sizeFactor: sizeFactor,
-                    ),
-                  if (!form.isPaymentDone)
-                    buildFeatureChip(
-                      icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
-                      label: 'Payment Pending',
-                      color: Colors.orange,
-                      sizeFactor: sizeFactor,
-                    ),
+                  // if (form.isPaymentDone)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
+                  //     label: 'Payment Done',
+                  //     color: Colors.green,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
+                  // if (!form.isPaymentDone)
+                  //   buildFeatureChip(
+                  //     icon: PhosphorIcons.warning(PhosphorIconsStyle.fill),
+                  //     label: 'Payment Pending',
+                  //     color: Colors.orange,
+                  //     sizeFactor: sizeFactor,
+                  //   ),
                   const Spacer(),
                   Icon(
                     PhosphorIcons.caretRight(PhosphorIconsStyle.bold),
